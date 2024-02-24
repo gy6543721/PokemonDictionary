@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -55,7 +56,7 @@ fun PokemonListScreen(
                     .align(CenterHorizontally)
             )
             SearchBar(
-                hint = "Search...",
+                hint = stringResource(id = R.string.search_bar_placeholder),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
@@ -80,9 +81,9 @@ fun SearchBar(
     Box(modifier = modifier) {
         BasicTextField(
             value = text,
-            onValueChange = {
-                text = it
-                onSearch(it.text)
+            onValueChange = { textFieldValue ->
+                text = textFieldValue
+                onSearch(textFieldValue.text)
             },
             maxLines = 1,
             singleLine = true,
@@ -124,13 +125,13 @@ fun PokemonList(
         } else {
             pokemonList.size / 2 + 1
         }
-        items(itemCount) {
-            if(it >= itemCount - 1 && !endReached && !isLoading && !isSearching) {
+        items(itemCount) { index ->
+            if(index >= itemCount - 1 && !endReached && !isLoading && !isSearching) {
                 LaunchedEffect(key1 = true) {
-                    viewModel.loadPokemonPaginated()
+                    viewModel.loadPokemonList()
                 }
             }
-            PokemonRow(rowIndex = it, entries = pokemonList, navController = navController)
+            PokemonRow(rowIndex = index, entries = pokemonList, navController = navController)
         }
     }
 
@@ -143,7 +144,7 @@ fun PokemonList(
         }
         if(loadError.isNotEmpty()) {
             RetrySection(error = loadError) {
-                viewModel.loadPokemonPaginated()
+                viewModel.loadPokemonList()
             }
         }
     }

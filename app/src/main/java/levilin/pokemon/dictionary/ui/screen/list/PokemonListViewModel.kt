@@ -35,7 +35,7 @@ class PokemonListViewModel @Inject constructor(
     var isSearching = mutableStateOf(false)
 
     init {
-        loadPokemonPaginated()
+        loadPokemonList()
     }
 
     fun searchPokemonList(query: String) {
@@ -51,9 +51,9 @@ class PokemonListViewModel @Inject constructor(
                 isSearchStarting = true
                 return@launch
             }
-            val results = listToSearch.filter {
-                it.pokemonName.contains(query.trim(), ignoreCase = true) ||
-                        it.number.toString() == query.trim()
+            val results = listToSearch.filter { pokemonListEntry ->
+                pokemonListEntry.pokemonName.contains(query.trim(), ignoreCase = true) ||
+                        pokemonListEntry.number.toString() == query.trim()
             }
             if (isSearchStarting) {
                 cachedPokemonList = pokemonList.value
@@ -64,14 +64,14 @@ class PokemonListViewModel @Inject constructor(
         }
     }
 
-    fun loadPokemonPaginated() {
+    fun loadPokemonList() {
         viewModelScope.launch {
             isLoading.value = true
-            when (val result = repository.getPokemonList(PAGE_SIZE, currentPage * PAGE_SIZE)) {
+            when (val result = repository.getPokemonList(limit = PAGE_SIZE, offset = currentPage * PAGE_SIZE)) {
                 is Resource.Success -> {
                     endReached.value = currentPage * PAGE_SIZE >= result.data!!.count
                     val pokemonEntries = result.data.results.mapIndexed { index, entry ->
-                        val number = if (entry.url.endsWith("/")) {
+                        val number = if (entry.url.endsWith(suffix = "/")) {
                             entry.url.dropLast(n = 1).takeLastWhile { character ->
                                 character.isDigit()
                             }
@@ -82,11 +82,12 @@ class PokemonListViewModel @Inject constructor(
                         }
                         val url =
                             "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.png"
-                        PokemonListEntry(entry.name.replaceFirstChar { character ->
-                            if (character.isLowerCase()) character.titlecase(
-                                Locale.ROOT
-                            ) else character.toString()
-                        }, url, number.toInt())
+                        PokemonListEntry(
+                            pokemonName = entry.name.replaceFirstChar { character ->
+                                if (character.isLowerCase()) character.titlecase(Locale.ROOT) else character.toString() },
+                            imageUrl = url,
+                            number = number.toInt()
+                        )
                     }
                     currentPage++
 

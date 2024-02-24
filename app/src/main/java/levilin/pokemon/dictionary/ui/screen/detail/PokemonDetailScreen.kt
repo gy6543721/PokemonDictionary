@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -377,7 +378,7 @@ fun PokemonBaseStats(
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = "Base Status:",
+            text = stringResource(id = R.string.base_status),
             fontSize = 20.sp,
             color = MaterialTheme.colors.onSurface
         )
