@@ -1,4 +1,4 @@
-package levilin.pokemon.dictionary.ui.screen.list
+package levilin.pokemon.dictionary.viewmodel.list
 
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -14,6 +14,8 @@ import levilin.pokemon.dictionary.utility.ConstantValue.PAGE_SIZE
 import levilin.pokemon.dictionary.utility.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -67,28 +69,54 @@ class PokemonListViewModel @Inject constructor(
     fun loadPokemonList() {
         viewModelScope.launch {
             isLoading.value = true
-            when (val result = repository.getPokemonList(limit = PAGE_SIZE, offset = currentPage * PAGE_SIZE)) {
+            when (val result =
+                repository.getPokemonList(limit = PAGE_SIZE, offset = currentPage * PAGE_SIZE)) {
                 is Resource.Success -> {
                     endReached.value = currentPage * PAGE_SIZE >= result.data!!.count
-                    val pokemonEntries = result.data.results.mapIndexed { index, entry ->
-                        val number = if (entry.url.endsWith(suffix = "/")) {
-                            entry.url.dropLast(n = 1).takeLastWhile { character ->
-                                character.isDigit()
+
+                    val entriesDeferred = result.data.results.map { entry ->
+                        async(Dispatchers.IO) {
+                            val number = if (entry.url.endsWith(suffix = "/")) {
+                                entry.url.dropLast(n = 1).takeLastWhile { character ->
+                                    character.isDigit()
+                                }
+                            } else {
+                                entry.url.takeLastWhile { character ->
+                                    character.isDigit()
+                                }
                             }
-                        } else {
-                            entry.url.takeLastWhile { character ->
-                                character.isDigit()
+
+                            val pokemonName = entry.name.replaceFirstChar { character ->
+                                if (character.isLowerCase()) character.titlecase(Locale.ROOT) else character.toString()
                             }
+
+                            val pokemonNameLocalized =
+                                when (val speciesResult =
+                                    repository.getPokemonSpecies(id = number)) {
+                                    is Resource.Success -> {
+                                        speciesResult.data?.names?.find { names ->
+                                            names.language.name.contains(Locale.getDefault().language)
+                                        }?.name ?: pokemonName
+                                    }
+
+                                    else -> {
+                                        pokemonName
+                                    }
+                                }
+
+                            val imageUrl =
+                                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$number.png"
+
+                            PokemonListEntry(
+                                pokemonName = pokemonNameLocalized,
+                                imageUrl = imageUrl,
+                                number = number.toInt()
+                            )
                         }
-                        val url =
-                            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.png"
-                        PokemonListEntry(
-                            pokemonName = entry.name.replaceFirstChar { character ->
-                                if (character.isLowerCase()) character.titlecase(Locale.ROOT) else character.toString() },
-                            imageUrl = url,
-                            number = number.toInt()
-                        )
                     }
+
+                    val pokemonEntries = entriesDeferred.awaitAll()
+
                     currentPage++
 
                     loadError.value = ""

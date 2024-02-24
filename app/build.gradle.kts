@@ -71,15 +71,20 @@ dependencies {
 
     implementation("androidx.compose.material:material-icons-core:1.6.2")
     implementation("androidx.compose.material:material-icons-extended:1.6.2")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
+    // Navigation Compose
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     implementation("androidx.navigation:navigation-compose:2.7.7")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // OkHttp
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
 
     // Timber
     implementation("com.jakewharton.timber:timber:4.7.1")

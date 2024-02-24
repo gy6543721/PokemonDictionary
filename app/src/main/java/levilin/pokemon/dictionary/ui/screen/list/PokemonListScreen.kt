@@ -36,6 +36,7 @@ import levilin.pokemon.dictionary.ui.theme.RobotoCondensed
 import levilin.pokemon.dictionary.R
 import levilin.pokemon.dictionary.data.model.PokemonListEntry
 import levilin.pokemon.dictionary.ui.component.LoadableAsyncImage
+import levilin.pokemon.dictionary.viewmodel.list.PokemonListViewModel
 
 @Composable
 fun PokemonListScreen(
@@ -179,7 +180,7 @@ fun PokemonEntry(
             )
             .clickable {
                 navController.navigate(
-                    "pokemon_detail_screen/${dominantColor.toArgb()}/${entry.pokemonName}"
+                    route = "pokemon_detail_screen/${dominantColor.toArgb()}/${entry.number}"
                 )
             }
     ) {

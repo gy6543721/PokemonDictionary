@@ -36,27 +36,34 @@ import androidx.navigation.NavController
 import coil.request.ImageRequest
 import levilin.pokemon.dictionary.R
 import levilin.pokemon.dictionary.data.remote.response.Pokemon
+import levilin.pokemon.dictionary.data.remote.response.PokemonSpecies
 import levilin.pokemon.dictionary.data.remote.response.Type
 import levilin.pokemon.dictionary.ui.component.LoadableAsyncImage
 import levilin.pokemon.dictionary.utility.Resource
 import levilin.pokemon.dictionary.utility.parseStatToAbbr
 import levilin.pokemon.dictionary.utility.parseStatToColor
 import levilin.pokemon.dictionary.utility.parseTypeToColor
+import levilin.pokemon.dictionary.viewmodel.detail.PokemonDetailViewModel
 import java.util.*
 import kotlin.math.round
 
 @Composable
 fun PokemonDetailScreen(
     dominantColor: Color,
-    pokemonName: String,
+    pokemonID: String,
     navController: NavController,
     topPadding: Dp = 20.dp,
     pokemonImageSize: Dp = 200.dp,
     viewModel: PokemonDetailViewModel = hiltViewModel()
 ) {
     val pokemonInfo = produceState<Resource<Pokemon>>(initialValue = Resource.Loading()) {
-        value = viewModel.getPokemonInfo(pokemonName)
+        value = viewModel.getPokemonInfo(id = pokemonID)
     }.value
+
+    val pokemonNameLocalized =
+        produceState<Resource<PokemonSpecies>>(initialValue = Resource.Loading()) {
+            value = viewModel.getPokemonSpecies(id = pokemonID)
+        }.value
 
     Box(
         modifier = Modifier
@@ -73,6 +80,7 @@ fun PokemonDetailScreen(
         )
         PokemonDetailStateWrapper(
             pokemonInfo = pokemonInfo,
+            pokemonNameLocalized = pokemonNameLocalized,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
@@ -154,13 +162,43 @@ fun PokemonDetailTopSection(
 @Composable
 fun PokemonDetailStateWrapper(
     pokemonInfo: Resource<Pokemon>,
+    pokemonNameLocalized: Resource<PokemonSpecies>,
     modifier: Modifier = Modifier,
     loadingModifier: Modifier = Modifier
 ) {
     when (pokemonInfo) {
         is Resource.Success -> {
+            val pokemonInfoLocalized = Pokemon(
+                abilities = pokemonInfo.data!!.abilities,
+                baseExperience = pokemonInfo.data.baseExperience,
+                forms = pokemonInfo.data.forms,
+                gameIndices = pokemonInfo.data.gameIndices,
+                height = pokemonInfo.data.height,
+                heldItems = pokemonInfo.data.heldItems,
+                id = pokemonInfo.data.id,
+                isDefault = pokemonInfo.data.isDefault,
+                locationAreaEncounters = pokemonInfo.data.locationAreaEncounters,
+                moves = pokemonInfo.data.moves,
+                name = pokemonNameLocalized.data?.names?.find { names ->
+                    names.language.name.contains(Locale.getDefault().language)
+                }?.name ?: pokemonInfo.data.name.replaceFirstChar { character ->
+                    if (character.isLowerCase()) {
+                        character.titlecase(Locale.ROOT)
+                    } else {
+                        character.toString()
+                    }
+                },
+                order = pokemonInfo.data.order,
+                pastTypes = pokemonInfo.data.pastTypes,
+                species = pokemonInfo.data.species,
+                sprites = pokemonInfo.data.sprites,
+                stats = pokemonInfo.data.stats,
+                types = pokemonInfo.data.types,
+                weight = pokemonInfo.data.weight,
+            )
+
             PokemonDetailSection(
-                pokemonInfo = pokemonInfo.data!!,
+                pokemonInfo = pokemonInfoLocalized,
                 modifier = modifier
                     .offset(y = (-20).dp)
             )
@@ -197,12 +235,7 @@ fun PokemonDetailSection(
             .verticalScroll(scrollState)
     ) {
         Text(
-            text = "${String.format("%03d", pokemonInfo.id)} ${pokemonInfo.name.replaceFirstChar { character ->
-                    if (character.isLowerCase()) character.titlecase(
-                        Locale.ROOT
-                    ) else character.toString()
-                }
-            }",
+            text = "${String.format("%03d", pokemonInfo.id)} ${pokemonInfo.name}",
             fontWeight = FontWeight.Bold,
             fontSize = 30.sp,
             textAlign = TextAlign.Center,
