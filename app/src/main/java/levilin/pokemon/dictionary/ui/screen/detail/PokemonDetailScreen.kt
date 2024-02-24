@@ -57,10 +57,11 @@ fun PokemonDetailScreen(
         value = viewModel.getPokemonInfo(pokemonName)
     }.value
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(dominantColor)
-        .padding(bottom = 16.dp)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(dominantColor)
+            .padding(bottom = 16.dp)
     ) {
         PokemonDetailTopSection(
             navController = navController,
@@ -94,10 +95,12 @@ fun PokemonDetailScreen(
                     bottom = 16.dp
                 )
         )
-        Box(contentAlignment = Alignment.TopCenter,
+        Box(
+            contentAlignment = Alignment.TopCenter,
             modifier = Modifier
-            .fillMaxSize()) {
-            if(pokemonInfo is Resource.Success) {
+                .fillMaxSize()
+        ) {
+            if (pokemonInfo is Resource.Success) {
                 pokemonInfo.data?.sprites?.let { sprite ->
                     LoadableAsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
@@ -153,7 +156,7 @@ fun PokemonDetailStateWrapper(
     modifier: Modifier = Modifier,
     loadingModifier: Modifier = Modifier
 ) {
-    when(pokemonInfo) {
+    when (pokemonInfo) {
         is Resource.Success -> {
             PokemonDetailSection(
                 pokemonInfo = pokemonInfo.data!!,
@@ -161,6 +164,7 @@ fun PokemonDetailStateWrapper(
                     .offset(y = (-20).dp)
             )
         }
+
         is Resource.Error -> {
             Text(
                 text = pokemonInfo.message!!,
@@ -168,6 +172,7 @@ fun PokemonDetailStateWrapper(
                 modifier = modifier
             )
         }
+
         is Resource.Loading -> {
             CircularProgressIndicator(
                 color = MaterialTheme.colors.primary,
@@ -191,11 +196,12 @@ fun PokemonDetailSection(
             .verticalScroll(scrollState)
     ) {
         Text(
-            text = "#${pokemonInfo.id} ${pokemonInfo.name.replaceFirstChar { character -> 
-                if (character.isLowerCase()) character.titlecase(
-                    Locale.ROOT
-                ) else character.toString()
-            }}",
+            text = "${String.format("%03d", pokemonInfo.id)} ${pokemonInfo.name.replaceFirstChar { character ->
+                    if (character.isLowerCase()) character.titlecase(
+                        Locale.ROOT
+                    ) else character.toString()
+                }
+            }",
             fontWeight = FontWeight.Bold,
             fontSize = 30.sp,
             textAlign = TextAlign.Center,
@@ -217,7 +223,7 @@ fun PokemonTypeSection(types: List<Type>) {
         modifier = Modifier
             .padding(16.dp)
     ) {
-        for(type in types) {
+        for (type in types) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -263,9 +269,11 @@ fun PokemonDetailDataSection(
             dataIcon = painterResource(id = R.drawable.ic_weight),
             modifier = Modifier.weight(1f)
         )
-        Spacer(modifier = Modifier
-            .size(1.dp, sectionHeight)
-            .background(Color.LightGray))
+        Spacer(
+            modifier = Modifier
+                .size(1.dp, sectionHeight)
+                .background(Color.LightGray)
+        )
         PokemonDetailDataItem(
             dataValue = pokemonHeightInMeters,
             dataUnit = "m",
@@ -310,7 +318,7 @@ fun PokemonStat(
         mutableStateOf(false)
     }
     val currentPercent = animateFloatAsState(
-        targetValue = if(animationPlayed) {
+        targetValue = if (animationPlayed) {
             statValue / statMaxValue.toFloat()
         } else 0f,
         animationSpec = tween(
@@ -375,7 +383,7 @@ fun PokemonBaseStats(
         )
         Spacer(modifier = Modifier.height(4.dp))
 
-        for(i in pokemonInfo.stats.indices) {
+        for (i in pokemonInfo.stats.indices) {
             val stat = pokemonInfo.stats[i]
             PokemonStat(
                 statName = parseStatToAbbr(stat),
