@@ -191,10 +191,10 @@ fun PokemonDetailSection(
             .verticalScroll(scrollState)
     ) {
         Text(
-            text = "#${pokemonInfo.id} ${pokemonInfo.name.replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase(
+            text = "#${pokemonInfo.id} ${pokemonInfo.name.replaceFirstChar { character -> 
+                if (character.isLowerCase()) character.titlecase(
                     Locale.ROOT
-                ) else it.toString()
+                ) else character.toString()
             }}",
             fontWeight = FontWeight.Bold,
             fontSize = 30.sp,
@@ -369,7 +369,7 @@ fun PokemonBaseStats(
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = "Base stats:",
+            text = "Base Status:",
             fontSize = 20.sp,
             color = MaterialTheme.colors.onSurface
         )
