@@ -212,7 +212,7 @@ fun PokemonDetailSection(
         modifier = modifier
             .fillMaxSize()
             .offset(y = 100.dp)
-            .verticalScroll(scrollState)
+            .verticalScroll(state = scrollState)
     ) {
         Text(
             text = "${String.format("%03d", pokemonDetail.pokemonInfo.id)} ${
@@ -258,10 +258,12 @@ fun PokemonTypeSection(types: List<Type>) {
                     .height(35.dp)
             ) {
                 Text(
-                    text = type.type.name.replaceFirstChar {
-                        if (it.isLowerCase()) it.titlecase(
-                            Locale.ROOT
-                        ) else it.toString()
+                    text = type.type.name.replaceFirstChar { character ->
+                        if (character.isLowerCase()) {
+                            character.titlecase(Locale.ROOT)
+                        } else {
+                            character.toString()
+                        }
                     },
                     color = Color.White,
                     fontSize = 18.sp
@@ -278,10 +280,10 @@ fun PokemonDetailDataSection(
     sectionHeight: Dp = 80.dp
 ) {
     val pokemonWeightInKg = remember {
-        round(pokemonWeight * 100f) / 1000f
+        round(x = pokemonWeight * 100f) / 1000f
     }
     val pokemonHeightInMeters = remember {
-        round(pokemonHeight * 100f) / 1000f
+        round(x = pokemonHeight * 100f) / 1000f
     }
     Row(
         modifier = Modifier

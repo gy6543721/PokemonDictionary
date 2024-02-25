@@ -12,16 +12,15 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import levilin.pokemon.dictionary.ui.screen.detail.PokemonDetailScreen
 import levilin.pokemon.dictionary.ui.screen.list.PokemonListScreen
-import levilin.pokemon.dictionary.ui.theme.JetpackComposePokemonDictionaryTheme
+import levilin.pokemon.dictionary.ui.theme.PokemonDictionaryTheme
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            JetpackComposePokemonDictionaryTheme {
+            PokemonDictionaryTheme {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
