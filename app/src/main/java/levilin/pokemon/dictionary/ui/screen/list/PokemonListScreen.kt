@@ -30,7 +30,8 @@ import coil.request.ImageRequest
 import levilin.pokemon.dictionary.ui.theme.RobotoCondensed
 import levilin.pokemon.dictionary.R
 import levilin.pokemon.dictionary.data.model.PokemonListEntry
-import levilin.pokemon.dictionary.ui.component.LoadableAsyncImage
+import levilin.pokemon.dictionary.ui.screen.list.component.SearchBar
+import levilin.pokemon.dictionary.utility.LoadableAsyncImage
 import levilin.pokemon.dictionary.viewmodel.list.PokemonListViewModel
 
 @Composable

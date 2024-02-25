@@ -1,8 +1,8 @@
 package levilin.pokemon.dictionary.data.remote
 
-import levilin.pokemon.dictionary.data.remote.response.Pokemon
-import levilin.pokemon.dictionary.data.remote.response.PokemonList
-import levilin.pokemon.dictionary.data.remote.response.PokemonSpecies
+import levilin.pokemon.dictionary.data.remote.response.pokemon.Pokemon
+import levilin.pokemon.dictionary.data.remote.response.pokemon.PokemonList
+import levilin.pokemon.dictionary.data.remote.response.species.PokemonSpecies
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

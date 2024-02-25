@@ -27,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,9 +36,13 @@ import androidx.navigation.NavController
 import coil.request.ImageRequest
 import levilin.pokemon.dictionary.R
 import levilin.pokemon.dictionary.data.model.PokemonDetail
-import levilin.pokemon.dictionary.data.remote.response.Pokemon
-import levilin.pokemon.dictionary.data.remote.response.Type
-import levilin.pokemon.dictionary.ui.component.LoadableAsyncImage
+import levilin.pokemon.dictionary.data.remote.response.pokemon.Pokemon
+import levilin.pokemon.dictionary.data.remote.response.pokemon.Type
+import levilin.pokemon.dictionary.ui.screen.detail.component.TypeLocalizedText
+import levilin.pokemon.dictionary.utility.LoadableAsyncImage
+import levilin.pokemon.dictionary.ui.theme.DarkGray
+import levilin.pokemon.dictionary.ui.theme.LightGray
+import levilin.pokemon.dictionary.utility.AdjustableText
 import levilin.pokemon.dictionary.utility.Resource
 import levilin.pokemon.dictionary.utility.parseStatToAbbr
 import levilin.pokemon.dictionary.utility.parseStatToColor
@@ -236,7 +241,7 @@ fun PokemonDetailSection(
             pokemonWeight = pokemonDetail.pokemonInfo.weight,
             pokemonHeight = pokemonDetail.pokemonInfo.height
         )
-        PokemonBaseStats(pokemonInfo = pokemonDetail.pokemonInfo)
+        PokemonBaseStatus(pokemonInfo = pokemonDetail.pokemonInfo)
     }
 }
 
@@ -257,16 +262,8 @@ fun PokemonTypeSection(types: List<Type>) {
                     .background(parseTypeToColor(type))
                     .height(35.dp)
             ) {
-                Text(
-                    text = type.type.name.replaceFirstChar { character ->
-                        if (character.isLowerCase()) {
-                            character.titlecase(Locale.ROOT)
-                        } else {
-                            character.toString()
-                        }
-                    },
-                    color = Color.White,
-                    fontSize = 18.sp
+                TypeLocalizedText(
+                    text = type.type.name.lowercase()
                 )
             }
         }
@@ -324,77 +321,90 @@ fun PokemonDetailDataItem(
         Icon(painter = dataIcon, contentDescription = null, tint = MaterialTheme.colors.onSurface)
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "$dataValue$dataUnit",
+            text = "$dataValue $dataUnit",
             color = MaterialTheme.colors.onSurface
         )
     }
 }
 
 @Composable
-fun PokemonStat(
-    statName: String,
-    statValue: Int,
-    statMaxValue: Int,
-    statColor: Color,
+fun PokemonStatus(
+    statusName: String,
+    statusValue: Int,
+    statusMaxValue: Int,
+    statusColor: Color,
     height: Dp = 28.dp,
-    animDuration: Int = 1000,
-    animDelay: Int = 0
+    animationDuration: Int = 1000,
+    animationDelay: Int = 0
 ) {
-    var animationPlayed by remember {
+    var animationTriggered by remember {
         mutableStateOf(false)
     }
     val currentPercent = animateFloatAsState(
-        targetValue = if (animationPlayed) {
-            statValue / statMaxValue.toFloat()
+        targetValue = if (animationTriggered) {
+            statusValue / statusMaxValue.toFloat()
         } else 0f,
         animationSpec = tween(
-            animDuration,
-            animDelay
+            animationDuration,
+            animationDelay
         ),
         label = "current_percent_animation"
     )
     LaunchedEffect(key1 = true) {
-        animationPlayed = true
+        animationTriggered = true
     }
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(height)
-            .clip(CircleShape)
-            .background(
-                if (isSystemInDarkTheme()) {
-                    Color(0xFF505050)
-                } else {
-                    Color.LightGray
-                }
-            )
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+        AdjustableText(
+            modifier = Modifier.width(50.dp),
+            text = statusName,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            overflow = TextOverflow.Visible
+        )
+
+        Spacer(modifier = Modifier.width(5.dp))
+
+        Box(
             modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth(currentPercent.value)
+                .fillMaxWidth()
+                .height(height)
                 .clip(CircleShape)
-                .background(statColor)
-                .padding(horizontal = 8.dp)
+                .background(
+                    if (isSystemInDarkTheme()) {
+                        DarkGray
+                    } else {
+                        LightGray
+                    }
+                )
         ) {
-            Text(
-                text = statName,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = (currentPercent.value * statMaxValue).toInt().toString(),
-                fontWeight = FontWeight.Bold
-            )
+            Row(
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth(currentPercent.value)
+                    .clip(CircleShape)
+                    .background(statusColor)
+                    .padding(horizontal = 8.dp)
+            ) {
+                AdjustableText(
+                    text = (currentPercent.value * statusMaxValue).toInt().toString(),
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Visible
+                )
+            }
         }
     }
 }
 
 @Composable
-fun PokemonBaseStats(
+fun PokemonBaseStatus(
     pokemonInfo: Pokemon,
-    animDelayPerItem: Int = 100
+    animationDelay: Int = 100
 ) {
     val maxBaseStat = remember {
         pokemonInfo.stats.maxOf { it.baseStat }
@@ -410,13 +420,13 @@ fun PokemonBaseStats(
         Spacer(modifier = Modifier.height(4.dp))
 
         for (i in pokemonInfo.stats.indices) {
-            val stat = pokemonInfo.stats[i]
-            PokemonStat(
-                statName = parseStatToAbbr(stat),
-                statValue = stat.baseStat,
-                statMaxValue = maxBaseStat,
-                statColor = parseStatToColor(stat),
-                animDelay = i * animDelayPerItem
+            val status = pokemonInfo.stats[i]
+            PokemonStatus(
+                statusName = parseStatToAbbr(status),
+                statusValue = status.baseStat,
+                statusMaxValue = maxBaseStat,
+                statusColor = parseStatToColor(status),
+                animationDelay = i * animationDelay
             )
             Spacer(modifier = Modifier.height(8.dp))
         }

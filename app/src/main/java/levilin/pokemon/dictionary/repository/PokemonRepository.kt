@@ -1,11 +1,11 @@
 package levilin.pokemon.dictionary.repository
 
 import levilin.pokemon.dictionary.data.remote.PokemonApi
-import levilin.pokemon.dictionary.data.remote.response.Pokemon
-import levilin.pokemon.dictionary.data.remote.response.PokemonList
+import levilin.pokemon.dictionary.data.remote.response.pokemon.Pokemon
+import levilin.pokemon.dictionary.data.remote.response.pokemon.PokemonList
 import levilin.pokemon.dictionary.utility.Resource
 import dagger.hilt.android.scopes.ActivityScoped
-import levilin.pokemon.dictionary.data.remote.response.PokemonSpecies
+import levilin.pokemon.dictionary.data.remote.response.species.PokemonSpecies
 import javax.inject.Inject
 
 @ActivityScoped

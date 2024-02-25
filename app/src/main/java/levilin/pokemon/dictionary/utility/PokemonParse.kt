@@ -1,8 +1,8 @@
 package levilin.pokemon.dictionary.utility
 
 import androidx.compose.ui.graphics.Color
-import levilin.pokemon.dictionary.data.remote.response.Type
-import levilin.pokemon.dictionary.data.remote.response.Stat
+import levilin.pokemon.dictionary.data.remote.response.pokemon.Type
+import levilin.pokemon.dictionary.data.remote.response.pokemon.Stat
 import levilin.pokemon.dictionary.ui.theme.AtkColor
 import levilin.pokemon.dictionary.ui.theme.DefColor
 import levilin.pokemon.dictionary.ui.theme.HPColor
