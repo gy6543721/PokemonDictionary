@@ -46,8 +46,8 @@ fun PokemonListScreen(
         Column {
             Spacer(modifier = Modifier.height(20.dp))
             Image(
-                painter = painterResource(id = R.drawable.ic_international_pok_mon_logo),
-                contentDescription = "Pokemon",
+                painter = painterResource(id = R.drawable.ic_international_pokmon_logo),
+                contentDescription = "pokemon_logo",
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(CenterHorizontally)
