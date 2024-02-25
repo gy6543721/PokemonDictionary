@@ -36,7 +36,6 @@ import androidx.navigation.NavController
 import coil.request.ImageRequest
 import levilin.pokemon.dictionary.R
 import levilin.pokemon.dictionary.data.model.PokemonDetail
-import levilin.pokemon.dictionary.data.remote.response.pokemon.Pokemon
 import levilin.pokemon.dictionary.data.remote.response.pokemon.Type
 import levilin.pokemon.dictionary.ui.screen.detail.component.TypeLocalizedText
 import levilin.pokemon.dictionary.utility.LoadableAsyncImage
@@ -44,8 +43,8 @@ import levilin.pokemon.dictionary.ui.theme.DarkGray
 import levilin.pokemon.dictionary.ui.theme.LightGray
 import levilin.pokemon.dictionary.utility.AdjustableText
 import levilin.pokemon.dictionary.utility.Resource
-import levilin.pokemon.dictionary.utility.parseStatToAbbr
-import levilin.pokemon.dictionary.utility.parseStatToColor
+import levilin.pokemon.dictionary.utility.parseStatusToAbbreviation
+import levilin.pokemon.dictionary.utility.parseStatusToColor
 import levilin.pokemon.dictionary.utility.parseTypeToColor
 import levilin.pokemon.dictionary.viewmodel.detail.PokemonDetailViewModel
 import java.util.*
@@ -241,7 +240,8 @@ fun PokemonDetailSection(
             pokemonWeight = pokemonDetail.pokemonInfo.weight,
             pokemonHeight = pokemonDetail.pokemonInfo.height
         )
-        PokemonBaseStatus(pokemonInfo = pokemonDetail.pokemonInfo)
+        PokemonDescription(pokemonDetail = pokemonDetail)
+        PokemonBaseStatus(pokemonDetail = pokemonDetail)
     }
 }
 
@@ -249,8 +249,7 @@ fun PokemonDetailSection(
 fun PokemonTypeSection(types: List<Type>) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .padding(16.dp)
+        modifier = Modifier.padding(16.dp)
     ) {
         for (type in types) {
             Box(
@@ -328,13 +327,34 @@ fun PokemonDetailDataItem(
 }
 
 @Composable
+fun PokemonDescription(
+    pokemonDetail: PokemonDetail
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.padding(
+            horizontal = 8.dp,
+            vertical = 10.dp
+        )
+    ) {
+        Text(
+            text = pokemonDetail.pokemonSpecies.flavorTextEntries.find { description ->
+                description.language.name.contains(Locale.getDefault().language)
+            }?.flavorText ?: stringResource(id = R.string.base_status),
+            fontSize = 15.sp,
+            color = MaterialTheme.colors.onSurface
+        )
+    }
+}
+
+@Composable
 fun PokemonStatus(
     statusName: String,
     statusValue: Int,
     statusMaxValue: Int,
     statusColor: Color,
     height: Dp = 28.dp,
-    animationDuration: Int = 1000,
+    animationDuration: Int = 500,
     animationDelay: Int = 0
 ) {
     var animationTriggered by remember {
@@ -360,7 +380,7 @@ fun PokemonStatus(
         AdjustableText(
             modifier = Modifier.width(50.dp),
             text = statusName,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.SemiBold,
             maxLines = 1,
             overflow = TextOverflow.Visible
         )
@@ -403,29 +423,22 @@ fun PokemonStatus(
 
 @Composable
 fun PokemonBaseStatus(
-    pokemonInfo: Pokemon,
+    pokemonDetail: PokemonDetail,
     animationDelay: Int = 100
 ) {
     val maxBaseStat = remember {
-        pokemonInfo.stats.maxOf { it.baseStat }
+        pokemonDetail.pokemonInfo.stats.maxOf { it.baseStat }
     }
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text(
-            text = stringResource(id = R.string.base_status),
-            fontSize = 20.sp,
-            color = MaterialTheme.colors.onSurface
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-
-        for (i in pokemonInfo.stats.indices) {
-            val status = pokemonInfo.stats[i]
+        for (i in pokemonDetail.pokemonInfo.stats.indices) {
+            val status = pokemonDetail.pokemonInfo.stats[i]
             PokemonStatus(
-                statusName = parseStatToAbbr(status),
+                statusName = parseStatusToAbbreviation(status),
                 statusValue = status.baseStat,
                 statusMaxValue = maxBaseStat,
-                statusColor = parseStatToColor(status),
+                statusColor = parseStatusToColor(status),
                 animationDelay = i * animationDelay
             )
             Spacer(modifier = Modifier.height(8.dp))

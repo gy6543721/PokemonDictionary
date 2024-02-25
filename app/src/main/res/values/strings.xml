@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Pokémon Dictionary</string>
     <string name="search_bar_placeholder">Search</string>
-    <string name="base_status">Base Status：</string>
+    <string name="base_status">Base Status</string>
 
     <string name="type_normal">Normal</string>
     <string name="type_fire">Fire</string>

@@ -5,7 +5,7 @@ import levilin.pokemon.dictionary.data.remote.response.pokemon.Type
 import levilin.pokemon.dictionary.data.remote.response.pokemon.Stat
 import levilin.pokemon.dictionary.ui.theme.AtkColor
 import levilin.pokemon.dictionary.ui.theme.DefColor
-import levilin.pokemon.dictionary.ui.theme.HPColor
+import levilin.pokemon.dictionary.ui.theme.HpColor
 import levilin.pokemon.dictionary.ui.theme.SpAtkColor
 import levilin.pokemon.dictionary.ui.theme.SpDefColor
 import levilin.pokemon.dictionary.ui.theme.SpdColor
@@ -26,6 +26,8 @@ import levilin.pokemon.dictionary.ui.theme.TypePoison
 import levilin.pokemon.dictionary.ui.theme.TypePsychic
 import levilin.pokemon.dictionary.ui.theme.TypeRock
 import levilin.pokemon.dictionary.ui.theme.TypeSteel
+import levilin.pokemon.dictionary.ui.theme.TypeStellar
+import levilin.pokemon.dictionary.ui.theme.TypeUnknown
 import levilin.pokemon.dictionary.ui.theme.TypeWater
 import java.util.*
 
@@ -49,13 +51,15 @@ fun parseTypeToColor(type: Type): Color {
         "dark" -> TypeDark
         "steel" -> TypeSteel
         "fairy" -> TypeFairy
+        "stellar" -> TypeStellar
+        "???" -> TypeUnknown
         else -> Color.Black
     }
 }
 
-fun parseStatToColor(stat: Stat): Color {
-    return when(stat.stat.name.lowercase(Locale.ROOT)) {
-        "hp" -> HPColor
+fun parseStatusToColor(status: Stat): Color {
+    return when(status.stat.name.lowercase(Locale.ROOT)) {
+        "hp" -> HpColor
         "attack" -> AtkColor
         "defense" -> DefColor
         "special-attack" -> SpAtkColor
@@ -65,14 +69,14 @@ fun parseStatToColor(stat: Stat): Color {
     }
 }
 
-fun parseStatToAbbr(stat: Stat): String {
-    return when(stat.stat.name.lowercase(Locale.ROOT)) {
+fun parseStatusToAbbreviation(status: Stat): String {
+    return when(status.stat.name.lowercase(Locale.ROOT)) {
         "hp" -> "HP"
-        "attack" -> "Atk"
-        "defense" -> "Def"
-        "special-attack" -> "SpAtk"
-        "special-defense" -> "SpDef"
-        "speed" -> "Spd"
+        "attack" -> "ATK"
+        "defense" -> "DEF"
+        "special-attack" -> "SP-ATK"
+        "special-defense" -> "SP-DEF"
+        "speed" -> "SPD"
         else -> ""
     }
 }

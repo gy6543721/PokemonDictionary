@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">ポケモン図鑑</string>
     <string name="search_bar_placeholder">検索</string>
-    <string name="base_status">基本情報：</string>
+    <string name="base_status">基本情報</string>
 
     <string name="type_normal">ノーマル</string>
     <string name="type_fire">ほのお</string>
