@@ -5,6 +5,13 @@
     <string name="search_bar_placeholder">Search</string>
     <string name="base_status">Base Status</string>
 
+    <string name="text_hp">HP</string>
+    <string name="text_atk">ATK</string>
+    <string name="text_def">DEF</string>
+    <string name="text_sp_atk">SP-ATK</string>
+    <string name="text_sp_def">SP-DEF</string>
+    <string name="text_spd">SPD</string>
+
     <string name="type_normal">Normal</string>
     <string name="type_fire">Fire</string>
     <string name="type_water">Water</string>

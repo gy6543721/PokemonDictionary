@@ -6,6 +6,13 @@
     <string name="search_bar_placeholder">検索</string>
     <string name="base_status">基本情報</string>
 
+    <string name="text_hp">ＨＰ</string>
+    <string name="text_atk">こうげき</string>
+    <string name="text_def">ぼうぎょ</string>
+    <string name="text_sp_atk">とくこう</string>
+    <string name="text_sp_def">とくぼう</string>
+    <string name="text_spd">すばやさ</string>
+
     <string name="type_normal">ノーマル</string>
     <string name="type_fire">ほのお</string>
     <string name="type_water">みず</string>

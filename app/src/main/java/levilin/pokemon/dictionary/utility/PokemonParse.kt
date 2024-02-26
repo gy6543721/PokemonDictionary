@@ -1,6 +1,7 @@
 package levilin.pokemon.dictionary.utility
 
 import androidx.compose.ui.graphics.Color
+import levilin.pokemon.dictionary.R
 import levilin.pokemon.dictionary.data.remote.response.pokemon.Type
 import levilin.pokemon.dictionary.data.remote.response.pokemon.Stat
 import levilin.pokemon.dictionary.ui.theme.AtkColor
@@ -69,14 +70,14 @@ fun parseStatusToColor(status: Stat): Color {
     }
 }
 
-fun parseStatusToAbbreviation(status: Stat): String {
+fun parseStatusToLocalizedStringID(status: Stat): Int {
     return when(status.stat.name.lowercase(Locale.ROOT)) {
-        "hp" -> "HP"
-        "attack" -> "ATK"
-        "defense" -> "DEF"
-        "special-attack" -> "SP-ATK"
-        "special-defense" -> "SP-DEF"
-        "speed" -> "SPD"
-        else -> ""
+        "hp" -> R.string.text_hp
+        "attack" -> R.string.text_atk
+        "defense" -> R.string.text_def
+        "special-attack" -> R.string.text_sp_atk
+        "special-defense" -> R.string.text_sp_def
+        "speed" -> R.string.text_spd
+        else -> R.string.type_unknown
     }
 }

@@ -6,6 +6,13 @@
     <string name="search_bar_placeholder">搜寻宝可梦</string>
     <string name="base_status">基本资讯</string>
 
+    <string name="text_hp">ＨＰ</string>
+    <string name="text_atk">攻击</string>
+    <string name="text_def">防御</string>
+    <string name="text_sp_atk">特攻</string>
+    <string name="text_sp_def">特防</string>
+    <string name="text_spd">速度</string>
+
     <string name="type_normal">一般</string>
     <string name="type_fire">火</string>
     <string name="type_water">水</string>

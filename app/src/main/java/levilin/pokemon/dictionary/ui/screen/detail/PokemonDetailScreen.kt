@@ -43,7 +43,7 @@ import levilin.pokemon.dictionary.ui.theme.LightMediumGray
 import levilin.pokemon.dictionary.ui.theme.MediumDarkGray
 import levilin.pokemon.dictionary.utility.AdjustableText
 import levilin.pokemon.dictionary.utility.Resource
-import levilin.pokemon.dictionary.utility.parseStatusToAbbreviation
+import levilin.pokemon.dictionary.utility.parseStatusToLocalizedStringID
 import levilin.pokemon.dictionary.utility.parseStatusToColor
 import levilin.pokemon.dictionary.utility.parseTypeToColor
 import java.util.*
@@ -247,8 +247,9 @@ fun PokemonDetailSection(
 @Composable
 fun PokemonTypeSection(types: List<Type>) {
     Row(
+        modifier = Modifier.padding(15.dp),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(16.dp)
+        horizontalArrangement = Arrangement.Center
     ) {
         for (type in types) {
             Box(
@@ -258,7 +259,7 @@ fun PokemonTypeSection(types: List<Type>) {
                     .padding(horizontal = 8.dp)
                     .clip(CircleShape)
                     .background(parseTypeToColor(type))
-                    .height(35.dp)
+                    .height(40.dp)
             ) {
                 TypeLocalizedText(
                     text = type.type.name.lowercase()
@@ -281,8 +282,9 @@ fun PokemonDetailDataSection(
         round(x = pokemonHeight * 100f) / 1000f
     }
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         PokemonDetailDataItem(
             dataValue = pokemonWeightInKg,
@@ -348,7 +350,7 @@ fun PokemonDescription(
 
 @Composable
 fun PokemonStatus(
-    statusName: String,
+    statusNameStringID: Int,
     statusValue: Int,
     statusMaxValue: Int,
     statusColor: Color,
@@ -378,7 +380,7 @@ fun PokemonStatus(
     ) {
         AdjustableText(
             modifier = Modifier.width(50.dp),
-            text = statusName,
+            text = stringResource(id = statusNameStringID),
             fontWeight = FontWeight.Medium,
             maxLines = 1,
             overflow = TextOverflow.Visible
@@ -434,7 +436,7 @@ fun PokemonBaseStatus(
         for (i in pokemonDetail.pokemonInfo.stats.indices) {
             val status = pokemonDetail.pokemonInfo.stats[i]
             PokemonStatus(
-                statusName = parseStatusToAbbreviation(status),
+                statusNameStringID = parseStatusToLocalizedStringID(status),
                 statusValue = status.baseStat,
                 statusMaxValue = maxBaseStat,
                 statusColor = parseStatusToColor(status),
