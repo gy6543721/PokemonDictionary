@@ -89,34 +89,46 @@ class PokemonListViewModel @Inject constructor(
                                 entry.url.takeLastWhile { it.isDigit() }
                             }.toInt()
 
+                            val pokemonName = entry.name.replaceFirstChar {
+                                if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
+                            }
+
+                            val pokemonNameLocalized = when (val speciesResult =
+                                remoteRepository.getPokemonSpecies(id = id)) {
+                                is Resource.Success -> speciesResult.data?.names?.find {
+                                    it.language.name.contains(
+                                        Locale.getDefault().language
+                                    )
+                                }?.name ?: pokemonName
+
+                                else -> pokemonName
+                            }
+
+                            if ((pokemonList.value.find { it.id == id }?.pokemonName
+                                    ?: pokemonName) != pokemonNameLocalized
+                            ) {
+                                val updatedEntry = pokemonList.value.find { it.id == id }
+                                    ?.copy(pokemonName = pokemonNameLocalized)
+                                if (updatedEntry != null) {
+                                    updateItem(pokemonListEntry = updatedEntry)
+                                }
+                            }
+
                             if (pokemonList.value.any { it.id == id }) {
                                 null
                             } else {
-                                val pokemonName = entry.name.replaceFirstChar {
-                                    if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
-                                }
-
-                                val pokemonNameLocalized = when (val speciesResult = remoteRepository.getPokemonSpecies(id = id)) {
-                                    is Resource.Success -> speciesResult.data?.names?.find {
-                                        it.language.name.contains(
-                                            Locale.getDefault().language
-                                        )
-                                    }?.name ?: pokemonName
-
-                                    else -> pokemonName
-                                }
-
                                 val imageUrl =
                                     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png"
 
-                                PokemonListEntry(
+                                val pokemonListEntry = PokemonListEntry(
                                     id = id,
                                     pokemonName = pokemonNameLocalized,
                                     imageUrl = imageUrl,
                                     isFavorite = false
-                                ).also {
-                                    insertItem(pokemonListEntry = it)
-                                }
+                                )
+                                insertItem(pokemonListEntry = pokemonListEntry)
+
+                                pokemonListEntry
                             }
                         }
                     } ?: emptyList()
@@ -166,6 +178,31 @@ class PokemonListViewModel @Inject constructor(
     fun loadFavoriteList() {
         getAllItems()
     }
+
+//    private fun refreshPokemonList() {
+//        viewModelScope.launch {
+//            val updateJobs = pokemonList.value.map { pokemonListEntry ->
+//                async(Dispatchers.IO) {
+//                    val pokemonNameLocalized = when (val speciesResult =
+//                        remoteRepository.getPokemonSpecies(id = pokemonListEntry.id)) {
+//                        is Resource.Success -> speciesResult.data?.names?.find {
+//                            it.language.name.contains(Locale.getDefault().language)
+//                        }?.name ?: pokemonListEntry.pokemonName
+//
+//                        else -> pokemonListEntry.pokemonName
+//                    }
+//                    val updatedEntry = pokemonListEntry.copy(pokemonName = pokemonNameLocalized)
+//                    updateItem(pokemonListEntry = updatedEntry)
+//                }
+//            }
+//            updateJobs.awaitAll()
+//
+//            // Update latest data from local
+//            localRepository.getAllItems.collect { itemList ->
+//                pokemonList.value = itemList
+//            }
+//        }
+//    }
 
     private fun getAllItems() {
         viewModelScope.launch {
