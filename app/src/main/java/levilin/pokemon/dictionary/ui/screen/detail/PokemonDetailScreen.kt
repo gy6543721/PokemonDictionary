@@ -42,7 +42,7 @@ import levilin.pokemon.dictionary.utility.LoadableAsyncImage
 import levilin.pokemon.dictionary.ui.theme.LightMediumGray
 import levilin.pokemon.dictionary.ui.theme.MediumDarkGray
 import levilin.pokemon.dictionary.utility.AdjustableText
-import levilin.pokemon.dictionary.utility.Resource
+import levilin.pokemon.dictionary.utility.NetworkResult
 import levilin.pokemon.dictionary.utility.parseStatusToLocalizedStringID
 import levilin.pokemon.dictionary.utility.parseStatusToColor
 import levilin.pokemon.dictionary.utility.parseTypeToColor
@@ -71,11 +71,11 @@ fun PokemonDetailScreen(
             .padding(bottom = 16.dp)
     ) {
         when (pokemonDetail) {
-            is Resource.Loading -> {
+            is NetworkResult.Loading -> {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
 
-            is Resource.Success -> {
+            is NetworkResult.Success -> {
                 PokemonDetailTopSection(
                     navController = navController,
                     modifier = Modifier
@@ -129,7 +129,7 @@ fun PokemonDetailScreen(
                 }
             }
 
-            is Resource.Error -> {
+            is NetworkResult.Error -> {
                 Text(
                     text = "Error: ${pokemonDetail.message}",
                     color = Color.Red,
@@ -173,12 +173,12 @@ fun PokemonDetailTopSection(
 
 @Composable
 fun PokemonDetailStateWrapper(
-    pokemonDetail: Resource<PokemonDetail>,
+    pokemonDetail: NetworkResult<PokemonDetail>,
     modifier: Modifier = Modifier,
     loadingModifier: Modifier = Modifier
 ) {
     when (pokemonDetail) {
-        is Resource.Success -> {
+        is NetworkResult.Success -> {
             pokemonDetail.data?.let { detail ->
                 PokemonDetailSection(
                     pokemonDetail = detail,
@@ -187,7 +187,7 @@ fun PokemonDetailStateWrapper(
             }
         }
 
-        is Resource.Error -> {
+        is NetworkResult.Error -> {
             Text(
                 text = pokemonDetail.message ?: "Error",
                 color = Color.Red,
@@ -195,7 +195,7 @@ fun PokemonDetailStateWrapper(
             )
         }
 
-        is Resource.Loading -> {
+        is NetworkResult.Loading -> {
             CircularProgressIndicator(
                 color = MaterialTheme.colors.primary,
                 modifier = loadingModifier

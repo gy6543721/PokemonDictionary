@@ -11,7 +11,7 @@ import androidx.palette.graphics.Palette
 import levilin.pokemon.dictionary.data.model.PokemonListEntry
 import levilin.pokemon.dictionary.repository.remote.RemoteRepository
 import levilin.pokemon.dictionary.utility.ConstantValue.PAGE_SIZE
-import levilin.pokemon.dictionary.utility.Resource
+import levilin.pokemon.dictionary.utility.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -77,7 +77,7 @@ class PokemonListViewModel @Inject constructor(
                 limit = PAGE_SIZE,
                 offset = currentPage * PAGE_SIZE
             )) {
-                is Resource.Success -> {
+                is NetworkResult.Success -> {
                     val count = result.data?.count ?: 0
                     endReached.value = currentPage * PAGE_SIZE >= count
 
@@ -95,7 +95,7 @@ class PokemonListViewModel @Inject constructor(
 
                             val pokemonNameLocalized = when (val speciesResult =
                                 remoteRepository.getPokemonSpecies(id = id)) {
-                                is Resource.Success -> speciesResult.data?.names?.find {
+                                is NetworkResult.Success -> speciesResult.data?.names?.find {
                                     it.language.name.contains(
                                         Locale.getDefault().language
                                     )
@@ -143,7 +143,7 @@ class PokemonListViewModel @Inject constructor(
                     pokemonList.value += resultList
                 }
 
-                is Resource.Error -> {
+                is NetworkResult.Error -> {
                     loadError.value = result.message ?: "An unknown error occurred"
                     isLoading.value = false
                     endReached.value = true
@@ -185,7 +185,7 @@ class PokemonListViewModel @Inject constructor(
 //                async(Dispatchers.IO) {
 //                    val pokemonNameLocalized = when (val speciesResult =
 //                        remoteRepository.getPokemonSpecies(id = pokemonListEntry.id)) {
-//                        is Resource.Success -> speciesResult.data?.names?.find {
+//                        is NetworkResult.Success -> speciesResult.data?.names?.find {
 //                            it.language.name.contains(Locale.getDefault().language)
 //                        }?.name ?: pokemonListEntry.pokemonName
 //

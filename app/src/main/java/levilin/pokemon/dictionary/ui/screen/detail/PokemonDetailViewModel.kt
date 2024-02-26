@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import levilin.pokemon.dictionary.repository.remote.RemoteRepository
-import levilin.pokemon.dictionary.utility.Resource
+import levilin.pokemon.dictionary.utility.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import levilin.pokemon.dictionary.data.model.PokemonDetail
@@ -15,12 +15,12 @@ import javax.inject.Inject
 class PokemonDetailViewModel @Inject constructor(
     private val remoteRepository: RemoteRepository
 ) : ViewModel() {
-    private val _pokemonDetail = mutableStateOf<Resource<PokemonDetail>>(Resource.Loading())
-    val pokemonDetail: MutableState<Resource<PokemonDetail>> = _pokemonDetail
+    private val _pokemonDetail = mutableStateOf<NetworkResult<PokemonDetail>>(NetworkResult.Loading())
+    val pokemonDetail: MutableState<NetworkResult<PokemonDetail>> = _pokemonDetail
 
     fun loadPokemonDetail(pokemonID: Int) {
         viewModelScope.launch {
-            _pokemonDetail.value = Resource.Loading()
+            _pokemonDetail.value = NetworkResult.Loading()
             val pokemonInfoResult = remoteRepository.getPokemonInfo(id = pokemonID)
             val speciesResult = remoteRepository.getPokemonSpecies(id = pokemonID)
 
@@ -28,8 +28,8 @@ class PokemonDetailViewModel @Inject constructor(
             val pokemonSpecies = speciesResult.data
 
             when {
-                pokemonInfoResult is Resource.Success && speciesResult is Resource.Success && pokemonInfo != null && pokemonSpecies != null -> {
-                    _pokemonDetail.value = Resource.Success(
+                pokemonInfoResult is NetworkResult.Success && speciesResult is NetworkResult.Success && pokemonInfo != null && pokemonSpecies != null -> {
+                    _pokemonDetail.value = NetworkResult.Success(
                         PokemonDetail(
                             pokemonInfo = pokemonInfo,
                             pokemonSpecies = pokemonSpecies
@@ -37,20 +37,20 @@ class PokemonDetailViewModel @Inject constructor(
                     )
                 }
 
-                pokemonInfoResult is Resource.Error -> {
-                    _pokemonDetail.value = Resource.Error(
+                pokemonInfoResult is NetworkResult.Error -> {
+                    _pokemonDetail.value = NetworkResult.Error(
                         pokemonInfoResult.message ?: "An error occurred fetching Pokemon info."
                     )
                 }
 
-                speciesResult is Resource.Error -> {
-                    _pokemonDetail.value = Resource.Error(
+                speciesResult is NetworkResult.Error -> {
+                    _pokemonDetail.value = NetworkResult.Error(
                         speciesResult.message ?: "An error occurred fetching Pokemon species."
                     )
                 }
 
                 else -> {
-                    _pokemonDetail.value = Resource.Error("An unexpected error occurred.")
+                    _pokemonDetail.value = NetworkResult.Error("An unexpected error occurred.")
                 }
             }
         }
