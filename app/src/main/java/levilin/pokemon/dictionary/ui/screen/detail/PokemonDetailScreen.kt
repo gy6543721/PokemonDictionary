@@ -46,21 +46,20 @@ import levilin.pokemon.dictionary.utility.Resource
 import levilin.pokemon.dictionary.utility.parseStatusToAbbreviation
 import levilin.pokemon.dictionary.utility.parseStatusToColor
 import levilin.pokemon.dictionary.utility.parseTypeToColor
-import levilin.pokemon.dictionary.viewmodel.detail.PokemonDetailViewModel
 import java.util.*
 import kotlin.math.round
 
 @Composable
 fun PokemonDetailScreen(
     dominantColor: Color,
-    pokemonID: String,
+    pokemonID: Int,
     navController: NavController,
     topPadding: Dp = 20.dp,
     pokemonImageSize: Dp = 200.dp,
     viewModel: PokemonDetailViewModel = hiltViewModel()
 ) {
     LaunchedEffect(pokemonID) {
-        viewModel.loadPokemonDetail(pokemonID)
+        viewModel.loadPokemonDetail(pokemonID = pokemonID)
     }
 
     val pokemonDetail = viewModel.pokemonDetail.value
@@ -334,7 +333,7 @@ fun PokemonDescription(
         contentAlignment = Alignment.Center,
         modifier = Modifier.padding(
             horizontal = 8.dp,
-            vertical = 10.dp
+            vertical = 15.dp
         )
     ) {
         Text(
@@ -380,7 +379,7 @@ fun PokemonStatus(
         AdjustableText(
             modifier = Modifier.width(50.dp),
             text = statusName,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Medium,
             maxLines = 1,
             overflow = TextOverflow.Visible
         )

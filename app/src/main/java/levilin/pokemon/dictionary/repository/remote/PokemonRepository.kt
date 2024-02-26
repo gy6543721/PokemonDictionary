@@ -21,18 +21,18 @@ class PokemonRepository @Inject constructor(
         return Resource.Success(response)
     }
 
-    suspend fun getPokemonInfo(id: String): Resource<Pokemon> {
+    suspend fun getPokemonInfo(id: Int): Resource<Pokemon> {
         val response = try {
-            api.getPokemonInfo(id = id)
+            api.getPokemonInfo(id = id.toString())
         } catch (e: Exception) {
             return Resource.Error("An unknown error occurred.")
         }
         return Resource.Success(response)
     }
 
-    suspend fun getPokemonSpecies(id: String): Resource<PokemonSpecies> {
+    suspend fun getPokemonSpecies(id: Int): Resource<PokemonSpecies> {
         val response = try {
-            api.getPokemonSpecies(id = id)
+            api.getPokemonSpecies(id = id.toString())
         } catch (e: Exception) {
             return Resource.Error("An unknown error occurred.")
         }

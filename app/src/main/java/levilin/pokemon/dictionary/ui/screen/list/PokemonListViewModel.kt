@@ -1,4 +1,4 @@
-package levilin.pokemon.dictionary.viewmodel.list
+package levilin.pokemon.dictionary.ui.screen.list
 
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -30,6 +30,7 @@ class PokemonListViewModel @Inject constructor(
     private var currentPage = 0
 
     var pokemonList = mutableStateOf<List<PokemonListEntry>>(listOf())
+
     var loadError = mutableStateOf("")
     var isLoading = mutableStateOf(false)
     var endReached = mutableStateOf(false)
@@ -72,83 +73,68 @@ class PokemonListViewModel @Inject constructor(
     fun loadPokemonList() {
         viewModelScope.launch {
             isLoading.value = true
-            when (val result =
-                remoteRepository.getPokemonList(limit = PAGE_SIZE, offset = currentPage * PAGE_SIZE)) {
+            when (val result = remoteRepository.getPokemonList(
+                limit = PAGE_SIZE,
+                offset = currentPage * PAGE_SIZE
+            )) {
                 is Resource.Success -> {
-                    endReached.value = currentPage * PAGE_SIZE >= result.data!!.count
-                    
-                    val entriesDeferred = result.data.results.map { entry ->
+                    // 使用安全调用和Elvis操作符处理可能的null值
+                    val count = result.data?.count ?: 0
+                    endReached.value = currentPage * PAGE_SIZE >= count
+
+                    val resultListDeferred = result.data?.results?.map { entry ->
                         async(Dispatchers.IO) {
-                            val id = if (entry.url.endsWith(suffix = "/")) {
-                                entry.url.dropLast(n = 1).takeLastWhile { character ->
-                                    character.isDigit()
-                                }
+                            val id = if (entry.url.endsWith("/")) {
+                                entry.url.dropLast(1).takeLastWhile { it.isDigit() }
                             } else {
-                                entry.url.takeLastWhile { character ->
-                                    character.isDigit()
+                                entry.url.takeLastWhile { it.isDigit() }
+                            }.toInt()
+
+                            if (pokemonList.value.any { it.id == id }) {
+                                null
+                            } else {
+                                val pokemonName = entry.name.replaceFirstChar {
+                                    if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
                                 }
-                            }
+                                val speciesResult = remoteRepository.getPokemonSpecies(id = id)
 
-                            val pokemonName = entry.name.replaceFirstChar { character ->
-                                if (character.isLowerCase()) character.titlecase(Locale.ROOT) else character.toString()
-                            }
+                                val pokemonNameLocalized = when (speciesResult) {
+                                    is Resource.Success -> speciesResult.data?.names?.find {
+                                        it.language.name.contains(
+                                            Locale.getDefault().language
+                                        )
+                                    }?.name ?: pokemonName
 
-                            val pokemonNameLocalized =
-                                when (val speciesResult =
-                                    remoteRepository.getPokemonSpecies(id = id)) {
-                                    is Resource.Success -> {
-                                        speciesResult.data?.names?.find { names ->
-                                            names.language.name.contains(Locale.getDefault().language)
-                                        }?.name ?: pokemonName
-                                    }
-
-                                    else -> {
-                                        pokemonName
-                                    }
+                                    else -> pokemonName
                                 }
 
-                            val imageUrl =
-                                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png"
+                                val imageUrl =
+                                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png"
 
-                            PokemonListEntry(
-                                id = id.toInt(),
-                                pokemonName = pokemonNameLocalized,
-                                imageUrl = imageUrl,
-                                isFavorite = false
-                            )
+                                PokemonListEntry(
+                                    id = id,
+                                    pokemonName = pokemonNameLocalized,
+                                    imageUrl = imageUrl,
+                                    isFavorite = false
+                                ).also {
+                                    insertItem(pokemonListEntry = it)
+                                }
+                            }
                         }
-                    }
-
-                    val pokemonEntries = entriesDeferred.awaitAll().sortedBy { it.id }
+                    } ?: emptyList()
 
                     currentPage++
 
                     loadError.value = ""
                     isLoading.value = false
 
-                    pokemonEntries.forEach { pokemonListEntry ->
-                        if (pokemonList.value.last().id < pokemonListEntry.id) {
-                            pokemonList.value += pokemonListEntry
-                            insertItem(pokemonListEntry)
-                        } else {
-                            val duplicatedItem = pokemonList.value.find { target ->
-                                target.id == pokemonListEntry.id
-                            }
-                            if (duplicatedItem != null) {
-                                if (pokemonListEntry.isFavorite != duplicatedItem.isFavorite) {
-                                    pokemonList.value[duplicatedItem.id - 1].isFavorite = pokemonListEntry.isFavorite
-                                    updateItem(pokemonListEntry = pokemonListEntry)
-                                } else if (pokemonListEntry.pokemonName != duplicatedItem.pokemonName) {
-                                    pokemonList.value[duplicatedItem.id - 1].pokemonName.replace(oldValue = pokemonList.value[duplicatedItem.id - 1].pokemonName, newValue = duplicatedItem.pokemonName)
-                                    updateItem(pokemonListEntry = pokemonListEntry)
-                                }
-                            }
-                        }
-                    }
+                    val resultList =
+                        resultListDeferred.awaitAll().filterNotNull().sortedBy { it.id }
+                    pokemonList.value += resultList
                 }
 
                 is Resource.Error -> {
-                    loadError.value = result.message!!
+                    loadError.value = result.message ?: "An unknown error occurred"
                     isLoading.value = false
                     endReached.value = true
                 }
@@ -166,6 +152,21 @@ class PokemonListViewModel @Inject constructor(
                 onFinish(Color(colorValue))
             }
         }
+    }
+
+    fun checkFavorite(input: PokemonListEntry): Boolean {
+        return input.isFavorite
+    }
+
+    fun changeFavorite(isFavorite: Boolean, entry: PokemonListEntry) {
+        if (isFavorite != checkFavorite(input = entry)) {
+            val updatedEntry = entry.copy(isFavorite = isFavorite)
+            updateItem(pokemonListEntry = updatedEntry)
+        }
+    }
+
+    fun loadFavoriteList() {
+        getAllItems()
     }
 
     private fun getAllItems() {

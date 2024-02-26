@@ -11,7 +11,7 @@ val MediumGray = Color(0xFFACA9A9)
 val MediumDarkGray = Color(0xFF6F6C6C)
 val DarkGray = Color(0xFF3D3C3C)
 
-val HpColor = Color(0xFFF5FF00)
+val HpColor = Color(0xFFD3A124)
 val AtkColor = Color(1f, 0f, 0f, 0.66f)
 val DefColor = Color(0f, 0f, 1f, 0.44f)
 val SpAtkColor = Color(0.671f, 0f, 1f, 0.57f)

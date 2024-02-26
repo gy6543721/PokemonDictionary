@@ -10,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -30,9 +31,9 @@ import coil.request.ImageRequest
 import levilin.pokemon.dictionary.ui.theme.RobotoCondensed
 import levilin.pokemon.dictionary.R
 import levilin.pokemon.dictionary.data.model.PokemonListEntry
+import levilin.pokemon.dictionary.ui.screen.list.component.FavoriteButton
 import levilin.pokemon.dictionary.ui.screen.list.component.SearchBar
 import levilin.pokemon.dictionary.utility.LoadableAsyncImage
-import levilin.pokemon.dictionary.viewmodel.list.PokemonListViewModel
 
 @Composable
 fun PokemonListScreen(
@@ -107,7 +108,6 @@ fun PokemonList(
             }
         }
     }
-
 }
 
 @Composable
@@ -166,6 +166,12 @@ fun PokemonEntry(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
+        }
+        Box(
+            // Align this box to the top end
+            modifier = Modifier.align(Alignment.TopEnd)
+        ) {
+            FavoriteButton(entry = entry, viewModel = viewModel)
         }
     }
 }

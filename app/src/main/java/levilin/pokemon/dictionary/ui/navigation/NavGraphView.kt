@@ -44,10 +44,10 @@ fun NavGraphView(navController: NavHostController, modifier: Modifier) {
             }
             val pokemonID = remember {
                 navBackStackEntry.arguments?.getString("pokemonID")
-            }
+            }?.toInt()
             PokemonDetailScreen(
                 dominantColor = dominantColor,
-                pokemonID = pokemonID ?: "1",
+                pokemonID = pokemonID ?: 1,
                 navController = navController
             )
         }
