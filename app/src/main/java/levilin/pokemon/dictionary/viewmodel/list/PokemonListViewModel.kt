@@ -134,9 +134,14 @@ class PokemonListViewModel @Inject constructor(
                             val duplicatedItem = pokemonList.value.find { target ->
                                 target.id == pokemonListEntry.id
                             }
-                            if (duplicatedItem != null && pokemonListEntry.isFavorite != duplicatedItem.isFavorite) {
-                                pokemonList.value[duplicatedItem.id - 1].isFavorite = pokemonListEntry.isFavorite
-                                updateItem(pokemonListEntry = pokemonListEntry)
+                            if (duplicatedItem != null) {
+                                if (pokemonListEntry.isFavorite != duplicatedItem.isFavorite) {
+                                    pokemonList.value[duplicatedItem.id - 1].isFavorite = pokemonListEntry.isFavorite
+                                    updateItem(pokemonListEntry = pokemonListEntry)
+                                } else if (pokemonListEntry.pokemonName != duplicatedItem.pokemonName) {
+                                    pokemonList.value[duplicatedItem.id - 1].pokemonName.replace(oldValue = pokemonList.value[duplicatedItem.id - 1].pokemonName, newValue = duplicatedItem.pokemonName)
+                                    updateItem(pokemonListEntry = pokemonListEntry)
+                                }
                             }
                         }
                     }

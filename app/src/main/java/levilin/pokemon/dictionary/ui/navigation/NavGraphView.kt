@@ -37,13 +37,13 @@ fun NavGraphView(navController: NavHostController, modifier: Modifier) {
                     type = NavType.StringType
                 }
             )
-        ) {
+        ) { navBackStackEntry ->
             val dominantColor = remember {
-                val color = it.arguments?.getInt("dominantColor")
+                val color = navBackStackEntry.arguments?.getInt("dominantColor")
                 color?.let { Color(it) } ?: Color.White
             }
             val pokemonID = remember {
-                it.arguments?.getString("pokemonID")
+                navBackStackEntry.arguments?.getString("pokemonID")
             }
             PokemonDetailScreen(
                 dominantColor = dominantColor,

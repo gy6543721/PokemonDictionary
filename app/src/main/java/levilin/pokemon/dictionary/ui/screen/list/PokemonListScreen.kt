@@ -99,10 +99,11 @@ fun PokemonList(
     ) {
         if (isLoading) {
             CircularProgressIndicator(color = MaterialTheme.colors.primary)
-        }
-        if (loadError.isNotEmpty()) {
-            RetrySection(error = loadError) {
-                viewModel.loadPokemonList()
+        } else {
+            if (loadError.isNotEmpty()) {
+                RetrySection(error = loadError) {
+                    viewModel.loadPokemonList()
+                }
             }
         }
     }
