@@ -1,10 +1,15 @@
 package levilin.pokemon.dictionary.ui.theme
 
+import androidx.compose.material.Colors
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 val LightBlue = Color(0xFFBAC7FF)
-val LightGray = Color(0xFFAAAAAA)
-val DarkGray = Color(0xFF505050)
+val LightGray = Color(0xFFFAFAFA)
+val LightMediumGray = Color(0xFFD1CFCF)
+val MediumGray = Color(0xFFACA9A9)
+val MediumDarkGray = Color(0xFF6F6C6C)
+val DarkGray = Color(0xFF3D3C3C)
 
 val HpColor = Color(0xFFF5FF00)
 val AtkColor = Color(1f, 0f, 0f, 0.66f)
@@ -33,3 +38,15 @@ val TypeSteel = Color(0xFFB7B7CE)
 val TypeFairy = Color(0xFFD685AD)
 val TypeStellar = Color(0xFF4D8BA3)
 val TypeUnknown = Color(0xFF4C675E)
+
+val Colors.buttonBackgroundColor: Color
+    @Composable
+    get() = if (isLight) LightGray else DarkGray
+
+val Colors.buttonIconColor: Color
+    @Composable
+    get() = if (isLight) DarkGray else LightGray
+
+val Colors.favouriteButtonColor: Color
+    @Composable
+    get() = if (isLight) LightMediumGray else MediumDarkGray

@@ -119,16 +119,26 @@ class PokemonListViewModel @Inject constructor(
                         }
                     }
 
-                    val pokemonEntries = entriesDeferred.awaitAll()
+                    val pokemonEntries = entriesDeferred.awaitAll().sortedBy { it.id }
 
                     currentPage++
 
                     loadError.value = ""
                     isLoading.value = false
-                    pokemonList.value += pokemonEntries
 
                     pokemonEntries.forEach { pokemonListEntry ->
-                        insertItem(pokemonListEntry)
+                        if (pokemonList.value.last().id < pokemonListEntry.id) {
+                            pokemonList.value += pokemonListEntry
+                            insertItem(pokemonListEntry)
+                        } else {
+                            val duplicatedItem = pokemonList.value.find { target ->
+                                target.id == pokemonListEntry.id
+                            }
+                            if (duplicatedItem != null && pokemonListEntry.isFavorite != duplicatedItem.isFavorite) {
+                                pokemonList.value[duplicatedItem.id - 1].isFavorite = pokemonListEntry.isFavorite
+                                updateItem(pokemonListEntry = pokemonListEntry)
+                            }
+                        }
                     }
                 }
 

@@ -39,8 +39,8 @@ import levilin.pokemon.dictionary.data.model.PokemonDetail
 import levilin.pokemon.dictionary.data.remote.response.pokemon.Type
 import levilin.pokemon.dictionary.ui.screen.detail.component.TypeLocalizedText
 import levilin.pokemon.dictionary.utility.LoadableAsyncImage
-import levilin.pokemon.dictionary.ui.theme.DarkGray
-import levilin.pokemon.dictionary.ui.theme.LightGray
+import levilin.pokemon.dictionary.ui.theme.LightMediumGray
+import levilin.pokemon.dictionary.ui.theme.MediumDarkGray
 import levilin.pokemon.dictionary.utility.AdjustableText
 import levilin.pokemon.dictionary.utility.Resource
 import levilin.pokemon.dictionary.utility.parseStatusToAbbreviation
@@ -394,9 +394,9 @@ fun PokemonStatus(
                 .clip(CircleShape)
                 .background(
                     if (isSystemInDarkTheme()) {
-                        DarkGray
+                        MediumDarkGray
                     } else {
-                        LightGray
+                        LightMediumGray
                     }
                 )
         ) {

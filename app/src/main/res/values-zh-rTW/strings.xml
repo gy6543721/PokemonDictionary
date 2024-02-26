@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">寶可夢圖鑑</string>
+    <string name="nav_item_pokemon_list">寶可夢</string>
+    <string name="nav_item_favorite_list">我的最愛</string>
     <string name="search_bar_placeholder">搜尋寶可夢</string>
     <string name="base_status">基本資訊</string>
 

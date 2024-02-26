@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Pokémon Dictionary</string>
+    <string name="nav_item_pokemon_list">Pokémon</string>
+    <string name="nav_item_favorite_list">Favorite</string>
     <string name="search_bar_placeholder">Search</string>
     <string name="base_status">Base Status</string>
 

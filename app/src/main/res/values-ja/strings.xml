@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ポケモン図鑑</string>
+    <string name="nav_item_pokemon_list">ポケモン</string>
+    <string name="nav_item_favorite_list">お気に入り</string>
     <string name="search_bar_placeholder">検索</string>
     <string name="base_status">基本情報</string>
 
