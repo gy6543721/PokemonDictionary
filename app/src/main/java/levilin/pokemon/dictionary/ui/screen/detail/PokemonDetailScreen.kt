@@ -381,6 +381,7 @@ fun PokemonStatus(
         AdjustableText(
             modifier = Modifier.width(50.dp),
             text = stringResource(id = statusNameStringID),
+            textAlign = TextAlign.Center,
             fontWeight = FontWeight.Medium,
             maxLines = 1,
             overflow = TextOverflow.Visible

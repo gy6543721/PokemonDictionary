@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
 import levilin.pokemon.dictionary.data.model.PokemonListEntry
-import levilin.pokemon.dictionary.repository.remote.PokemonRepository
+import levilin.pokemon.dictionary.repository.remote.RemoteRepository
 import levilin.pokemon.dictionary.utility.ConstantValue.PAGE_SIZE
 import levilin.pokemon.dictionary.utility.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PokemonListViewModel @Inject constructor(
     private val localRepository: LocalRepository,
-    private val remoteRepository: PokemonRepository
+    private val remoteRepository: RemoteRepository
 ) : ViewModel() {
 
     private var currentPage = 0
@@ -78,7 +78,6 @@ class PokemonListViewModel @Inject constructor(
                 offset = currentPage * PAGE_SIZE
             )) {
                 is Resource.Success -> {
-                    // 使用安全调用和Elvis操作符处理可能的null值
                     val count = result.data?.count ?: 0
                     endReached.value = currentPage * PAGE_SIZE >= count
 
@@ -96,9 +95,8 @@ class PokemonListViewModel @Inject constructor(
                                 val pokemonName = entry.name.replaceFirstChar {
                                     if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
                                 }
-                                val speciesResult = remoteRepository.getPokemonSpecies(id = id)
 
-                                val pokemonNameLocalized = when (speciesResult) {
+                                val pokemonNameLocalized = when (val speciesResult = remoteRepository.getPokemonSpecies(id = id)) {
                                     is Resource.Success -> speciesResult.data?.names?.find {
                                         it.language.name.contains(
                                             Locale.getDefault().language

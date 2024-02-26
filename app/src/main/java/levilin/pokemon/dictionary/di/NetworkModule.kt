@@ -1,6 +1,6 @@
 package levilin.pokemon.dictionary.di
 
-import levilin.pokemon.dictionary.repository.remote.PokemonRepository
+import levilin.pokemon.dictionary.repository.remote.RemoteRepository
 import levilin.pokemon.dictionary.utility.ConstantValue.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -18,7 +18,7 @@ object NetworkModule {
     @Provides
     fun providePokemonRepository(
         api: PokemonApi
-    ) = PokemonRepository(api)
+    ) = RemoteRepository(api)
 
     @Singleton
     @Provides

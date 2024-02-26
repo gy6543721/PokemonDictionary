@@ -9,7 +9,7 @@ import levilin.pokemon.dictionary.data.remote.response.species.PokemonSpecies
 import javax.inject.Inject
 
 @ActivityScoped
-class PokemonRepository @Inject constructor(
+class RemoteRepository @Inject constructor(
     private val api: PokemonApi
 ) {
     suspend fun getPokemonList(limit: Int, offset: Int): Resource<PokemonList> {

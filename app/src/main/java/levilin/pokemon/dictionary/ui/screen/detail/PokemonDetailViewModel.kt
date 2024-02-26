@@ -4,7 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import levilin.pokemon.dictionary.repository.remote.PokemonRepository
+import levilin.pokemon.dictionary.repository.remote.RemoteRepository
 import levilin.pokemon.dictionary.utility.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PokemonDetailViewModel @Inject constructor(
-    private val repository: PokemonRepository
+    private val remoteRepository: RemoteRepository
 ) : ViewModel() {
     private val _pokemonDetail = mutableStateOf<Resource<PokemonDetail>>(Resource.Loading())
     val pokemonDetail: MutableState<Resource<PokemonDetail>> = _pokemonDetail
@@ -21,8 +21,8 @@ class PokemonDetailViewModel @Inject constructor(
     fun loadPokemonDetail(pokemonID: Int) {
         viewModelScope.launch {
             _pokemonDetail.value = Resource.Loading()
-            val pokemonInfoResult = repository.getPokemonInfo(id = pokemonID)
-            val speciesResult = repository.getPokemonSpecies(id = pokemonID)
+            val pokemonInfoResult = remoteRepository.getPokemonInfo(id = pokemonID)
+            val speciesResult = remoteRepository.getPokemonSpecies(id = pokemonID)
 
             val pokemonInfo = pokemonInfoResult.data
             val pokemonSpecies = speciesResult.data
