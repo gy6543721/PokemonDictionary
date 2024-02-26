@@ -1,6 +1,6 @@
 package levilin.pokemon.dictionary.di
 
-import levilin.pokemon.dictionary.repository.PokemonRepository
+import levilin.pokemon.dictionary.repository.remote.PokemonRepository
 import levilin.pokemon.dictionary.utility.ConstantValue.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object NetworkModule {
     @Singleton
     @Provides
     fun providePokemonRepository(

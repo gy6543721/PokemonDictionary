@@ -1,4 +1,4 @@
-package levilin.pokemon.dictionary.repository
+package levilin.pokemon.dictionary.repository.remote
 
 import levilin.pokemon.dictionary.data.remote.PokemonApi
 import levilin.pokemon.dictionary.data.remote.response.pokemon.Pokemon

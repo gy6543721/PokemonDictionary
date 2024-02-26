@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
 import levilin.pokemon.dictionary.data.model.PokemonListEntry
-import levilin.pokemon.dictionary.repository.PokemonRepository
+import levilin.pokemon.dictionary.repository.remote.PokemonRepository
 import levilin.pokemon.dictionary.utility.ConstantValue.PAGE_SIZE
 import levilin.pokemon.dictionary.utility.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,12 +17,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import levilin.pokemon.dictionary.repository.local.LocalRepository
 import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class PokemonListViewModel @Inject constructor(
-    private val repository: PokemonRepository
+    private val localRepository: LocalRepository,
+    private val remoteRepository: PokemonRepository
 ) : ViewModel() {
 
     private var currentPage = 0
@@ -37,6 +39,7 @@ class PokemonListViewModel @Inject constructor(
     var isSearching = mutableStateOf(false)
 
     init {
+        getAllItems()
         loadPokemonList()
     }
 
@@ -55,7 +58,7 @@ class PokemonListViewModel @Inject constructor(
             }
             val results = listToSearch.filter { pokemonListEntry ->
                 pokemonListEntry.pokemonName.contains(query.trim(), ignoreCase = true) ||
-                        String.format("%03d", pokemonListEntry.number).contains(query.trim())
+                        String.format("%03d", pokemonListEntry.id).contains(query.trim())
             }
             if (isSearchStarting) {
                 cachedPokemonList = pokemonList.value
@@ -70,13 +73,13 @@ class PokemonListViewModel @Inject constructor(
         viewModelScope.launch {
             isLoading.value = true
             when (val result =
-                repository.getPokemonList(limit = PAGE_SIZE, offset = currentPage * PAGE_SIZE)) {
+                remoteRepository.getPokemonList(limit = PAGE_SIZE, offset = currentPage * PAGE_SIZE)) {
                 is Resource.Success -> {
                     endReached.value = currentPage * PAGE_SIZE >= result.data!!.count
-
+                    
                     val entriesDeferred = result.data.results.map { entry ->
                         async(Dispatchers.IO) {
-                            val number = if (entry.url.endsWith(suffix = "/")) {
+                            val id = if (entry.url.endsWith(suffix = "/")) {
                                 entry.url.dropLast(n = 1).takeLastWhile { character ->
                                     character.isDigit()
                                 }
@@ -92,7 +95,7 @@ class PokemonListViewModel @Inject constructor(
 
                             val pokemonNameLocalized =
                                 when (val speciesResult =
-                                    repository.getPokemonSpecies(id = number)) {
+                                    remoteRepository.getPokemonSpecies(id = id)) {
                                     is Resource.Success -> {
                                         speciesResult.data?.names?.find { names ->
                                             names.language.name.contains(Locale.getDefault().language)
@@ -105,12 +108,13 @@ class PokemonListViewModel @Inject constructor(
                                 }
 
                             val imageUrl =
-                                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$number.png"
+                                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png"
 
                             PokemonListEntry(
+                                id = id.toInt(),
                                 pokemonName = pokemonNameLocalized,
                                 imageUrl = imageUrl,
-                                number = number.toInt()
+                                isFavorite = false
                             )
                         }
                     }
@@ -122,11 +126,16 @@ class PokemonListViewModel @Inject constructor(
                     loadError.value = ""
                     isLoading.value = false
                     pokemonList.value += pokemonEntries
+
+                    pokemonEntries.forEach { pokemonListEntry ->
+                        insertItem(pokemonListEntry)
+                    }
                 }
 
                 is Resource.Error -> {
                     loadError.value = result.message!!
                     isLoading.value = false
+                    endReached.value = true
                 }
 
                 else -> {}
@@ -141,6 +150,32 @@ class PokemonListViewModel @Inject constructor(
             palette?.dominantSwatch?.rgb?.let { colorValue ->
                 onFinish(Color(colorValue))
             }
+        }
+    }
+
+    private fun getAllItems() {
+        viewModelScope.launch {
+            localRepository.getAllItems.collect { itemList ->
+                pokemonList.value = itemList
+            }
+        }
+    }
+
+    private fun insertItem(pokemonListEntry: PokemonListEntry) {
+        viewModelScope.launch(Dispatchers.IO) {
+            localRepository.insertItem(pokemonListEntry = pokemonListEntry)
+        }
+    }
+
+    private fun updateItem(pokemonListEntry: PokemonListEntry) {
+        viewModelScope.launch(Dispatchers.IO) {
+            localRepository.updateItem(pokemonListEntry = pokemonListEntry)
+        }
+    }
+
+    private fun deleteItem(pokemonListEntry: PokemonListEntry) {
+        viewModelScope.launch(Dispatchers.IO) {
+            localRepository.deleteItem(pokemonListEntry = pokemonListEntry)
         }
     }
 }
