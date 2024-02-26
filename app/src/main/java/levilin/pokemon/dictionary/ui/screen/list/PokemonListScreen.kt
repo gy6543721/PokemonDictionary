@@ -137,7 +137,7 @@ fun PokemonEntry(
             )
             .clickable {
                 navController.navigate(
-                    route = "pokemon_detail_screen/${dominantColor.toArgb()}/${entry.number}"
+                    route = "pokemon_detail_screen/${dominantColor.toArgb()}/${entry.id}"
                 )
             }
     ) {
@@ -159,7 +159,7 @@ fun PokemonEntry(
                 }
             )
             Text(
-                text = "${String.format("%03d", entry.number)} ${entry.pokemonName}",
+                text = "${String.format("%03d", entry.id)} ${entry.pokemonName}",
                 fontFamily = RobotoCondensed,
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
