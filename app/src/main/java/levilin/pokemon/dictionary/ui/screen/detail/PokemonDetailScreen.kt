@@ -35,8 +35,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.request.ImageRequest
 import levilin.pokemon.dictionary.R
-import levilin.pokemon.dictionary.data.model.PokemonDetail
-import levilin.pokemon.dictionary.data.remote.response.pokemon.Type
+import levilin.pokemon.dictionary.model.local.PokemonDetail
 import levilin.pokemon.dictionary.ui.screen.detail.component.TypeLocalizedText
 import levilin.pokemon.dictionary.utility.LoadableAsyncImage
 import levilin.pokemon.dictionary.ui.theme.LightMediumGray
@@ -46,6 +45,7 @@ import levilin.pokemon.dictionary.utility.NetworkResult
 import levilin.pokemon.dictionary.utility.parseStatusToLocalizedStringID
 import levilin.pokemon.dictionary.utility.parseStatusToColor
 import levilin.pokemon.dictionary.utility.parseTypeToColor
+import levilin.pokemon.dictionary.viewmodel.detail.PokemonDetailViewModel
 import java.util.*
 import kotlin.math.round
 
@@ -213,7 +213,7 @@ fun PokemonDetailSection(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .offset(y = 80.dp)
+            .offset(y = 90.dp)
             .verticalScroll(state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -245,7 +245,7 @@ fun PokemonDetailSection(
 }
 
 @Composable
-fun PokemonTypeSection(types: List<Type>) {
+fun PokemonTypeSection(types: List<levilin.pokemon.dictionary.model.remote.pokemon.Type>) {
     Row(
         modifier = Modifier.padding(15.dp),
         verticalAlignment = Alignment.CenterVertically,

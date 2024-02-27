@@ -1,18 +1,15 @@
 package levilin.pokemon.dictionary.repository.remote
 
 import levilin.pokemon.dictionary.data.remote.PokemonApi
-import levilin.pokemon.dictionary.data.remote.response.pokemon.Pokemon
-import levilin.pokemon.dictionary.data.remote.response.pokemon.PokemonList
 import levilin.pokemon.dictionary.utility.NetworkResult
 import dagger.hilt.android.scopes.ActivityScoped
-import levilin.pokemon.dictionary.data.remote.response.species.PokemonSpecies
 import javax.inject.Inject
 
 @ActivityScoped
 class RemoteRepository @Inject constructor(
     private val api: PokemonApi
 ) {
-    suspend fun getPokemonList(limit: Int, offset: Int): NetworkResult<PokemonList> {
+    suspend fun getPokemonList(limit: Int, offset: Int): NetworkResult<levilin.pokemon.dictionary.model.remote.pokemon.PokemonList> {
         val response = try {
             api.getPokemonList(limit = limit, offset = offset)
         } catch (e: Exception) {
@@ -21,7 +18,7 @@ class RemoteRepository @Inject constructor(
         return NetworkResult.Success(response)
     }
 
-    suspend fun getPokemonInfo(id: Int): NetworkResult<Pokemon> {
+    suspend fun getPokemonInfo(id: Int): NetworkResult<levilin.pokemon.dictionary.model.remote.pokemon.Pokemon> {
         val response = try {
             api.getPokemonInfo(id = id.toString())
         } catch (e: Exception) {
@@ -30,7 +27,7 @@ class RemoteRepository @Inject constructor(
         return NetworkResult.Success(response)
     }
 
-    suspend fun getPokemonSpecies(id: Int): NetworkResult<PokemonSpecies> {
+    suspend fun getPokemonSpecies(id: Int): NetworkResult<levilin.pokemon.dictionary.model.remote.species.PokemonSpecies> {
         val response = try {
             api.getPokemonSpecies(id = id.toString())
         } catch (e: Exception) {
