@@ -16,6 +16,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import levilin.pokemon.dictionary.repository.local.LocalRepository
 import java.util.*
@@ -29,7 +31,8 @@ class PokemonListViewModel @Inject constructor(
 
     private var currentPage = 0
 
-    var pokemonList = mutableStateOf<List<PokemonListEntry>>(listOf())
+    private val _pokemonList = MutableStateFlow<List<PokemonListEntry>>(listOf())
+    val pokemonList: StateFlow<List<PokemonListEntry>> = _pokemonList
 
     var loadError = mutableStateOf("")
     var isLoading = mutableStateOf(false)
@@ -46,13 +49,13 @@ class PokemonListViewModel @Inject constructor(
 
     fun searchPokemonList(query: String) {
         val listToSearch = if (isSearchStarting) {
-            pokemonList.value
+            _pokemonList.value
         } else {
             cachedPokemonList
         }
         viewModelScope.launch(Dispatchers.Default) {
             if (query.isEmpty()) {
-                pokemonList.value = cachedPokemonList
+                _pokemonList.value = cachedPokemonList
                 isSearching.value = false
                 isSearchStarting = true
                 return@launch
@@ -62,10 +65,10 @@ class PokemonListViewModel @Inject constructor(
                         String.format("%03d", pokemonListEntry.id).contains(query.trim())
             }
             if (isSearchStarting) {
-                cachedPokemonList = pokemonList.value
+                cachedPokemonList = _pokemonList.value
                 isSearchStarting = false
             }
-            pokemonList.value = results
+            _pokemonList.value = results
             isSearching.value = true
         }
     }
@@ -104,17 +107,17 @@ class PokemonListViewModel @Inject constructor(
                                 else -> pokemonName
                             }
 
-                            if ((pokemonList.value.find { it.id == id }?.pokemonName
+                            if ((_pokemonList.value.find { it.id == id }?.pokemonName
                                     ?: pokemonName) != pokemonNameLocalized
                             ) {
-                                val updatedEntry = pokemonList.value.find { it.id == id }
+                                val updatedEntry = _pokemonList.value.find { it.id == id }
                                     ?.copy(pokemonName = pokemonNameLocalized)
                                 if (updatedEntry != null) {
                                     updateItem(pokemonListEntry = updatedEntry)
                                 }
                             }
 
-                            if (pokemonList.value.any { it.id == id }) {
+                            if (_pokemonList.value.any { it.id == id }) {
                                 null
                             } else {
                                 val imageUrl =
@@ -140,7 +143,7 @@ class PokemonListViewModel @Inject constructor(
 
                     val resultList =
                         resultListDeferred.awaitAll().filterNotNull().sortedBy { it.id }
-                    pokemonList.value += resultList
+                    _pokemonList.value += resultList
                 }
 
                 is NetworkResult.Error -> {
@@ -207,7 +210,7 @@ class PokemonListViewModel @Inject constructor(
     private fun getAllItems() {
         viewModelScope.launch {
             localRepository.getAllItems.collect { itemList ->
-                pokemonList.value = itemList
+                _pokemonList.value = itemList
             }
         }
     }
