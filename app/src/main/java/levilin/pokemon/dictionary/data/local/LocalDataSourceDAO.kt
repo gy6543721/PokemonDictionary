@@ -7,7 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
-import levilin.pokemon.dictionary.data.model.PokemonListEntry
+import levilin.pokemon.dictionary.model.local.PokemonListEntry
 import levilin.pokemon.dictionary.utility.ConstantValue
 
 @Dao

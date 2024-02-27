@@ -3,7 +3,7 @@ package levilin.pokemon.dictionary.repository.local
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import levilin.pokemon.dictionary.data.local.LocalDataSourceDAO
-import levilin.pokemon.dictionary.data.model.PokemonListEntry
+import levilin.pokemon.dictionary.model.local.PokemonListEntry
 import javax.inject.Inject
 
 @ViewModelScoped
