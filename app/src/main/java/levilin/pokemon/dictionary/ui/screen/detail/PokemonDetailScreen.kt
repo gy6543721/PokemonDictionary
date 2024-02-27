@@ -173,32 +173,32 @@ fun PokemonDetailTopSection(
 
 @Composable
 fun PokemonDetailStateWrapper(
-    pokemonDetail: NetworkResult<PokemonDetail>,
     modifier: Modifier = Modifier,
+    pokemonDetail: NetworkResult<PokemonDetail>,
     loadingModifier: Modifier = Modifier
 ) {
     when (pokemonDetail) {
         is NetworkResult.Success -> {
             pokemonDetail.data?.let { detail ->
                 PokemonDetailSection(
-                    pokemonDetail = detail,
-                    modifier = modifier.offset(y = (-20).dp)
+                    modifier = modifier.offset(y = (-20).dp),
+                    pokemonDetail = detail
                 )
             }
         }
 
         is NetworkResult.Error -> {
             Text(
+                modifier = modifier,
                 text = pokemonDetail.message ?: "Error",
-                color = Color.Red,
-                modifier = modifier
+                color = Color.Red
             )
         }
 
         is NetworkResult.Loading -> {
             CircularProgressIndicator(
-                color = MaterialTheme.colors.primary,
-                modifier = loadingModifier
+                modifier = loadingModifier,
+                color = MaterialTheme.colors.primary
             )
         }
     }
@@ -206,16 +206,16 @@ fun PokemonDetailStateWrapper(
 
 @Composable
 fun PokemonDetailSection(
-    pokemonDetail: PokemonDetail,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    pokemonDetail: PokemonDetail
 ) {
     val scrollState = rememberScrollState()
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxSize()
-            .offset(y = 100.dp)
-            .verticalScroll(state = scrollState)
+            .offset(y = 80.dp)
+            .verticalScroll(state = scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = "${String.format("%03d", pokemonDetail.pokemonInfo.id)} ${
@@ -253,13 +253,13 @@ fun PokemonTypeSection(types: List<Type>) {
     ) {
         for (type in types) {
             Box(
-                contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = 8.dp)
                     .clip(CircleShape)
                     .background(parseTypeToColor(type))
-                    .height(40.dp)
+                    .height(40.dp),
+                contentAlignment = Alignment.Center
             ) {
                 TypeLocalizedText(
                     text = type.type.name.lowercase()
@@ -273,7 +273,7 @@ fun PokemonTypeSection(types: List<Type>) {
 fun PokemonDetailDataSection(
     pokemonWeight: Int,
     pokemonHeight: Int,
-    sectionHeight: Dp = 80.dp
+    sectionHeight: Dp = 60.dp
 ) {
     val pokemonWeightInKg = remember {
         round(x = pokemonWeight * 100f) / 1000f
@@ -287,10 +287,10 @@ fun PokemonDetailDataSection(
         horizontalArrangement = Arrangement.Center
     ) {
         PokemonDetailDataItem(
+            modifier = Modifier.weight(1f),
             dataValue = pokemonWeightInKg,
             dataUnit = "kg",
-            dataIcon = painterResource(id = R.drawable.ic_pokemon_weight),
-            modifier = Modifier.weight(1f)
+            dataIcon = painterResource(id = R.drawable.ic_pokemon_weight)
         )
         Spacer(
             modifier = Modifier
@@ -298,27 +298,32 @@ fun PokemonDetailDataSection(
                 .background(Color.LightGray)
         )
         PokemonDetailDataItem(
+            modifier = Modifier.weight(1f),
             dataValue = pokemonHeightInMeters,
             dataUnit = "m",
-            dataIcon = painterResource(id = R.drawable.ic_pokemon_height),
-            modifier = Modifier.weight(1f)
+            dataIcon = painterResource(id = R.drawable.ic_pokemon_height)
         )
     }
 }
 
 @Composable
 fun PokemonDetailDataItem(
+    modifier: Modifier = Modifier,
     dataValue: Float,
     dataUnit: String,
-    dataIcon: Painter,
-    modifier: Modifier = Modifier
+    dataIcon: Painter
 ) {
     Column(
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = modifier
+        verticalArrangement = Arrangement.Center
     ) {
-        Icon(painter = dataIcon, contentDescription = null, tint = MaterialTheme.colors.onSurface)
+        Icon(
+            modifier = Modifier.size(30.dp),
+            painter = dataIcon,
+            contentDescription = null,
+            tint = MaterialTheme.colors.onSurface
+        )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = "$dataValue $dataUnit",
@@ -332,11 +337,12 @@ fun PokemonDescription(
     pokemonDetail: PokemonDetail
 ) {
     Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.padding(
-            horizontal = 8.dp,
-            vertical = 15.dp
-        )
+        modifier = Modifier
+            .padding(
+                horizontal = 8.dp,
+                vertical = 15.dp
+            ),
+        contentAlignment = Alignment.Center
     ) {
         Text(
             text = pokemonDetail.pokemonSpecies.flavorTextEntries.find { description ->
@@ -403,14 +409,14 @@ fun PokemonStatus(
                 )
         ) {
             Row(
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxHeight()
                     .fillMaxWidth(currentPercent.value)
                     .clip(CircleShape)
                     .background(statusColor)
-                    .padding(horizontal = 8.dp)
+                    .padding(horizontal = 8.dp),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 AdjustableText(
                     text = (currentPercent.value * statusMaxValue).toInt().toString(),

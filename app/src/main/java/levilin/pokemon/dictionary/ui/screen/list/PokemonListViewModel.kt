@@ -182,31 +182,6 @@ class PokemonListViewModel @Inject constructor(
         getAllItems()
     }
 
-//    private fun refreshPokemonList() {
-//        viewModelScope.launch {
-//            val updateJobs = pokemonList.value.map { pokemonListEntry ->
-//                async(Dispatchers.IO) {
-//                    val pokemonNameLocalized = when (val speciesResult =
-//                        remoteRepository.getPokemonSpecies(id = pokemonListEntry.id)) {
-//                        is NetworkResult.Success -> speciesResult.data?.names?.find {
-//                            it.language.name.contains(Locale.getDefault().language)
-//                        }?.name ?: pokemonListEntry.pokemonName
-//
-//                        else -> pokemonListEntry.pokemonName
-//                    }
-//                    val updatedEntry = pokemonListEntry.copy(pokemonName = pokemonNameLocalized)
-//                    updateItem(pokemonListEntry = updatedEntry)
-//                }
-//            }
-//            updateJobs.awaitAll()
-//
-//            // Update latest data from local
-//            localRepository.getAllItems.collect { itemList ->
-//                pokemonList.value = itemList
-//            }
-//        }
-//    }
-
     private fun getAllItems() {
         viewModelScope.launch {
             localRepository.getAllItems.collect { itemList ->

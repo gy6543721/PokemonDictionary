@@ -1,6 +1,5 @@
 package levilin.pokemon.dictionary.ui.navigation
 
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -17,9 +16,9 @@ import levilin.pokemon.dictionary.ui.screen.list.PokemonListScreen
 @Composable
 fun NavGraphView(navController: NavHostController, modifier: Modifier) {
     NavHost(
+        modifier = modifier,
         navController = navController,
-        startDestination = "pokemon_list_screen",
-        modifier = modifier.systemBarsPadding()
+        startDestination = "pokemon_list_screen"
     ) {
         composable(route = "pokemon_list_screen") {
             PokemonListScreen(navController = navController)

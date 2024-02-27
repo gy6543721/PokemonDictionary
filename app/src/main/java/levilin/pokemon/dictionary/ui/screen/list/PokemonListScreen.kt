@@ -47,17 +47,17 @@ fun PokemonListScreen(
         Column {
             Spacer(modifier = Modifier.height(20.dp))
             Image(
-                painter = painterResource(id = R.drawable.ic_international_pokmon_logo),
-                contentDescription = "pokemon_logo",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .align(CenterHorizontally)
+                    .align(CenterHorizontally),
+                painter = painterResource(id = R.drawable.ic_international_pokmon_logo),
+                contentDescription = "pokemon_logo"
             )
             SearchBar(
-                hint = stringResource(id = R.string.search_bar_placeholder),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(16.dp),
+                hint = stringResource(id = R.string.search_bar_placeholder)
             ) { input ->
                 viewModel.searchPokemonList(query = input)
             }
@@ -112,9 +112,9 @@ fun PokemonList(
 
 @Composable
 fun PokemonEntry(
+    modifier: Modifier = Modifier,
     entry: PokemonListEntry,
     navController: NavController,
-    modifier: Modifier = Modifier,
     viewModel: PokemonListViewModel = hiltViewModel()
 ) {
     val defaultDominantColor = MaterialTheme.colors.surface
@@ -123,7 +123,6 @@ fun PokemonEntry(
     }
 
     Box(
-        contentAlignment = Center,
         modifier = modifier
             .shadow(5.dp, RoundedCornerShape(10.dp))
             .clip(RoundedCornerShape(10.dp))
@@ -140,18 +139,19 @@ fun PokemonEntry(
                 navController.navigate(
                     route = "pokemon_detail_screen/${dominantColor.toArgb()}/${entry.id}"
                 )
-            }
+            },
+        contentAlignment = Center
     ) {
         Column {
             LoadableAsyncImage(
+                modifier = Modifier
+                    .size(120.dp)
+                    .align(CenterHorizontally),
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(entry.imageUrl)
                     .crossfade(true)
                     .build(),
                 contentDescription = entry.pokemonName,
-                modifier = Modifier
-                    .size(120.dp)
-                    .align(CenterHorizontally),
                 alignment = Center,
                 onImageLoaded = { drawable ->
                     viewModel.getDominantColor(drawable) { color ->
@@ -160,11 +160,11 @@ fun PokemonEntry(
                 }
             )
             Text(
+                modifier = Modifier.fillMaxWidth(),
                 text = "${String.format("%03d", entry.id)} ${entry.pokemonName}",
                 fontFamily = RobotoCondensed,
                 fontSize = 20.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+                textAlign = TextAlign.Center
             )
         }
         Box(
@@ -185,16 +185,16 @@ fun PokemonRow(
     Column {
         Row {
             PokemonEntry(
+                modifier = Modifier.weight(1f),
                 entry = entries[rowIndex * 2],
-                navController = navController,
-                modifier = Modifier.weight(1f)
+                navController = navController
             )
             Spacer(modifier = Modifier.width(16.dp))
             if (entries.size >= rowIndex * 2 + 2) {
                 PokemonEntry(
+                    modifier = Modifier.weight(1f),
                     entry = entries[rowIndex * 2 + 1],
-                    navController = navController,
-                    modifier = Modifier.weight(1f)
+                    navController = navController
                 )
             } else {
                 Spacer(modifier = Modifier.weight(1f))
@@ -210,11 +210,15 @@ fun RetrySection(
     onRetry: () -> Unit
 ) {
     Column {
-        Text(error, color = Color.Red, fontSize = 18.sp)
+        Text(
+            text = error,
+            color = Color.Red,
+            fontSize = 18.sp
+        )
         Spacer(modifier = Modifier.height(8.dp))
         Button(
-            onClick = { onRetry() },
-            modifier = Modifier.align(CenterHorizontally)
+            modifier = Modifier.align(CenterHorizontally),
+            onClick = { onRetry() }
         ) {
             Text(text = "Retry")
         }

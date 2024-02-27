@@ -80,9 +80,9 @@ fun FavoriteList(
 
 @Composable
 fun FavoriteEntry(
+    modifier: Modifier = Modifier,
     entry: PokemonListEntry,
     navController: NavController,
-    modifier: Modifier = Modifier,
     viewModel: PokemonListViewModel = hiltViewModel()
 ) {
     val defaultDominantColor = MaterialTheme.colors.surface
@@ -91,7 +91,6 @@ fun FavoriteEntry(
     }
 
     Box(
-        contentAlignment = Alignment.Center,
         modifier = modifier
             .shadow(5.dp, RoundedCornerShape(10.dp))
             .clip(RoundedCornerShape(10.dp))
@@ -108,18 +107,19 @@ fun FavoriteEntry(
                 navController.navigate(
                     route = "pokemon_detail_screen/${dominantColor.toArgb()}/${entry.id}"
                 )
-            }
+            },
+        contentAlignment = Alignment.Center
     ) {
         Column {
             LoadableAsyncImage(
+                modifier = Modifier
+                    .size(120.dp)
+                    .align(Alignment.CenterHorizontally),
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(entry.imageUrl)
                     .crossfade(true)
                     .build(),
                 contentDescription = entry.pokemonName,
-                modifier = Modifier
-                    .size(120.dp)
-                    .align(Alignment.CenterHorizontally),
                 alignment = Alignment.Center,
                 onImageLoaded = { drawable ->
                     viewModel.getDominantColor(drawable) { color ->
@@ -128,11 +128,11 @@ fun FavoriteEntry(
                 }
             )
             Text(
+                modifier = Modifier.fillMaxWidth(),
                 text = "${String.format("%03d", entry.id)} ${entry.pokemonName}",
                 fontFamily = RobotoCondensed,
                 fontSize = 20.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+                textAlign = TextAlign.Center
             )
         }
         Box(
@@ -153,16 +153,16 @@ fun FavoriteRow(
     Column {
         Row {
             FavoriteEntry(
+                modifier = Modifier.weight(1f),
                 entry = entries[rowIndex * 2],
-                navController = navController,
-                modifier = Modifier.weight(1f)
+                navController = navController
             )
             Spacer(modifier = Modifier.width(16.dp))
             if (entries.size >= rowIndex * 2 + 2) {
                 FavoriteEntry(
+                    modifier = Modifier.weight(1f),
                     entry = entries[rowIndex * 2 + 1],
-                    navController = navController,
-                    modifier = Modifier.weight(1f)
+                    navController = navController
                 )
             } else {
                 Spacer(modifier = Modifier.weight(1f))

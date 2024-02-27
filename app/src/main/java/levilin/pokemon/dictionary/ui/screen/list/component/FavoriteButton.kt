@@ -32,14 +32,14 @@ fun FavoriteButton(modifier: Modifier = Modifier, entry: PokemonListEntry, viewM
         }
     ) {
         Icon(
+            modifier = modifier.graphicsLayer {
+                scaleX = 1.1f
+                scaleY = 1.1f
+            },
             tint = if (isFavorite) {
                 Color.Red
             } else {
                 MaterialTheme.colors.favouriteButtonColor
-            },
-            modifier = modifier.graphicsLayer {
-                scaleX = 1.1f
-                scaleY = 1.1f
             },
             imageVector = if (isFavorite) {
                 Icons.Filled.Favorite
