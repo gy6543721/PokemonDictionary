@@ -1,5 +1,8 @@
 package levilin.pokemon.dictionary.ui.navigation
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -9,6 +12,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import levilin.pokemon.dictionary.ui.screen.chat.ChatRoomScreen
 import levilin.pokemon.dictionary.ui.screen.detail.PokemonDetailScreen
 import levilin.pokemon.dictionary.ui.screen.favorite.FavoriteListScreen
 import levilin.pokemon.dictionary.ui.screen.list.PokemonListScreen
@@ -18,8 +22,17 @@ fun NavGraphView(navController: NavHostController, modifier: Modifier) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = "pokemon_list_screen"
+        startDestination = "pokemon_list_screen",
+        enterTransition = { fadeIn() },
+        exitTransition = { fadeOut() },
+        popEnterTransition = { fadeIn() },
+        popExitTransition = { fadeOut() },
     ) {
+        composable(
+            route = "chat_room_screen"
+        ) {
+            ChatRoomScreen(navController = navController)
+        }
         composable(route = "pokemon_list_screen") {
             PokemonListScreen(navController = navController)
         }

@@ -17,8 +17,9 @@ import levilin.pokemon.dictionary.ui.theme.buttonIconColor
 @Composable
 fun BottomNavView(navController: NavController, bottomBarState: MutableState<Boolean>) {
     val items = listOf(
-        BottomNavItem.PokemonList,
-        BottomNavItem.FavoriteList
+        BottomNavItem.ChatRoomScreen,
+        BottomNavItem.PokemonListScreen,
+        BottomNavItem.FavoriteListScreen
     )
 
     AnimatedVisibility(

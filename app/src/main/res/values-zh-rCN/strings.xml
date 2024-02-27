@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">宝可梦图鉴</string>
-    <string name="nav_item_pokemon_list">宝可梦</string>
-    <string name="nav_item_favorite_list">我的最爱</string>
+    <string name="nav_item_chat_room_screen">聊天室</string>
+    <string name="nav_item_pokemon_list_screen">宝可梦</string>
+    <string name="nav_item_favorite_list_screen">我的最爱</string>
     <string name="search_bar_placeholder">搜寻宝可梦</string>
-    <string name="base_status">基本资讯</string>
 
+    <string name="text_base_status">基本资讯</string>
     <string name="text_hp">ＨＰ</string>
     <string name="text_atk">攻击</string>
     <string name="text_def">防御</string>

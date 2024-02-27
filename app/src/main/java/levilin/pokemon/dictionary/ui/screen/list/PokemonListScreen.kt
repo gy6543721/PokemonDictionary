@@ -95,8 +95,8 @@ fun PokemonList(
     }
 
     Box(
-        contentAlignment = Center,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Center
     ) {
         if (isLoading) {
             CircularProgressIndicator(color = MaterialTheme.colors.primary)

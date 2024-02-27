@@ -42,6 +42,9 @@ class MainActivity : ComponentActivity() {
                 Scaffold(bottomBar = { BottomNavView(navController = navController, bottomBarState = bottomBarState) }) { innerPadding ->
                     var paddingValue = innerPadding
                     when (navBackStackEntry?.destination?.route) {
+                        "chat_room_screen" -> {
+                            bottomBarState.value = true
+                        }
                         "pokemon_list_screen" -> {
                             bottomBarState.value = true
                         }
