@@ -87,7 +87,7 @@ dependencies {
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
 
     // Timber
-    implementation("com.jakewharton.timber:timber:4.7.1")
+    implementation("com.jakewharton.timber:timber:5.0.1")
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
@@ -105,9 +105,9 @@ dependencies {
     implementation("androidx.palette:palette-ktx:1.0.0")
 
     // Dagger-Hilt
-    implementation("com.google.dagger:hilt-android:2.49")
+    implementation("com.google.dagger:hilt-android:2.50")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-    ksp("com.google.dagger:hilt-android-compiler:2.49")
+    ksp("com.google.dagger:hilt-android-compiler:2.50")
 
     // Room
     implementation("androidx.room:room-runtime:2.6.1")
