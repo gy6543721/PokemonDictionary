@@ -19,7 +19,11 @@ import levilin.pokemon.dictionary.ui.theme.favouriteButtonColor
 import levilin.pokemon.dictionary.viewmodel.list.PokemonListViewModel
 
 @Composable
-fun FavoriteButton(modifier: Modifier = Modifier, entry: PokemonListEntry, viewModel: PokemonListViewModel) {
+fun FavoriteButton(
+    modifier: Modifier = Modifier,
+    entry: PokemonListEntry,
+    viewModel: PokemonListViewModel
+) {
     var isFavorite by remember { mutableStateOf(false) }
     isFavorite = viewModel.checkFavorite(input = entry)
 

@@ -37,7 +37,7 @@ class PokemonListViewModel @Inject constructor(
     val isLoading = MutableStateFlow(false)
     val endReached = MutableStateFlow(false)
 
-    // Search properties
+    // Search Properties
     private val cachedPokemonList = MutableStateFlow<List<PokemonListEntry>>(listOf())
     private val _inputText = MutableStateFlow("")
     val inputText: StateFlow<String> = _inputText

@@ -4,9 +4,11 @@
 
 Pokemon Dictionary written written in Kotlin and Compose.  
 Now support English, Japanese, Traditional Chinese and Simplified Chinese, will support more languages in the future.  
-[Google Play Store](https://play.google.com/store/apps/details?id=levilin.pokemon.dictionary)
 
-<img height="200" alt="QRcode" src="images/QRcode.png"/>
+## API
+- API Documentation: https://pokeapi.co/  
+- Pokemon search API endpoint: **GET** https://pokeapi.co/api/v2/pokemon/{id or name}/  
+- Pokemon detail API endpoint: **GET** https://pokeapi.co/api/v2/pokemon-species/{id or name}/
 
 ### Screenshots
 
