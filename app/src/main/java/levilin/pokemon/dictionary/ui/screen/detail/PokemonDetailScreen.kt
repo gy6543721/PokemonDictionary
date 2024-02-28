@@ -42,7 +42,7 @@ import levilin.pokemon.dictionary.ui.theme.LightMediumGray
 import levilin.pokemon.dictionary.ui.theme.MediumDarkGray
 import levilin.pokemon.dictionary.utility.AdjustableText
 import levilin.pokemon.dictionary.utility.NetworkResult
-import levilin.pokemon.dictionary.utility.parseStatusToLocalizedStringID
+import levilin.pokemon.dictionary.utility.parseStatusToLocalizedStringId
 import levilin.pokemon.dictionary.utility.parseStatusToColor
 import levilin.pokemon.dictionary.utility.parseTypeToColor
 import levilin.pokemon.dictionary.viewmodel.detail.PokemonDetailViewModel
@@ -443,7 +443,7 @@ fun PokemonBaseStatus(
         for (i in pokemonDetail.pokemonInfo.stats.indices) {
             val status = pokemonDetail.pokemonInfo.stats[i]
             PokemonStatus(
-                statusNameStringID = parseStatusToLocalizedStringID(status),
+                statusNameStringID = parseStatusToLocalizedStringId(status),
                 statusValue = status.baseStat,
                 statusMaxValue = maxBaseStat,
                 statusColor = parseStatusToColor(status),
