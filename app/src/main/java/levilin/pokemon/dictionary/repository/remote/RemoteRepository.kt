@@ -21,9 +21,18 @@ class RemoteRepository @Inject constructor(
         return NetworkResult.Success(response)
     }
 
-    suspend fun getPokemonInfo(id: Int): NetworkResult<Pokemon> {
+    suspend fun getPokemonInfoById(id: Int): NetworkResult<Pokemon> {
         val response = try {
-            api.getPokemonInfo(id = id.toString())
+            api.getPokemonInfoById(id = id.toString())
+        } catch (e: Exception) {
+            return NetworkResult.Error("An unknown error occurred.")
+        }
+        return NetworkResult.Success(response)
+    }
+
+    suspend fun getPokemonInfoByName(name: String): NetworkResult<Pokemon> {
+        val response = try {
+            api.getPokemonInfoByName(name = name)
         } catch (e: Exception) {
             return NetworkResult.Error("An unknown error occurred.")
         }

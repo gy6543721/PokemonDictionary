@@ -21,7 +21,7 @@ class PokemonDetailViewModel @Inject constructor(
     fun loadPokemonDetail(pokemonID: Int) {
         viewModelScope.launch {
             _pokemonDetail.value = NetworkResult.Loading()
-            val pokemonInfoResult = remoteRepository.getPokemonInfo(id = pokemonID)
+            val pokemonInfoResult = remoteRepository.getPokemonInfoById(id = pokemonID)
             val speciesResult = remoteRepository.getPokemonSpecies(id = pokemonID)
 
             val pokemonInfo = pokemonInfoResult.data
