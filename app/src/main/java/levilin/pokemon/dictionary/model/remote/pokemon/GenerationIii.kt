@@ -1,12 +1,11 @@
 package levilin.pokemon.dictionary.model.remote.pokemon
 
-
 import com.google.gson.annotations.SerializedName
 
 data class GenerationIii(
-    val emerald: levilin.pokemon.dictionary.model.remote.pokemon.Emerald,
+    val emerald: Emerald,
     @SerializedName("firered-leafgreen")
-    val fireredLeafgreen: levilin.pokemon.dictionary.model.remote.pokemon.FireredLeafgreen,
+    val fireredLeafgreen: FireredLeafgreen,
     @SerializedName("ruby-sapphire")
-    val rubySapphire: levilin.pokemon.dictionary.model.remote.pokemon.RubySapphire
+    val rubySapphire: RubySapphire
 )

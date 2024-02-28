@@ -8,14 +8,14 @@ import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import levilin.pokemon.dictionary.model.local.PokemonListEntry
-import levilin.pokemon.dictionary.utility.ConstantValue
+import levilin.pokemon.dictionary.utility.ConstantValue.LIST_TABLE_NAME
 
 @Dao
 interface LocalDataSourceDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertItem(pokemonListEntry: PokemonListEntry)
 
-    @Query("SELECT * FROM ${ConstantValue.LIST_TABLE_NAME}")
+    @Query("SELECT * FROM $LIST_TABLE_NAME")
     fun getAllItems(): Flow<List<PokemonListEntry>>
 
     @Update

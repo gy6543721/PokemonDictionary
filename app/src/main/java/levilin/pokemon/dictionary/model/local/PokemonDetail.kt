@@ -1,6 +1,9 @@
 package levilin.pokemon.dictionary.model.local
 
+import levilin.pokemon.dictionary.model.remote.pokemon.Pokemon
+import levilin.pokemon.dictionary.model.remote.species.PokemonSpecies
+
 data class PokemonDetail(
-    val pokemonInfo: levilin.pokemon.dictionary.model.remote.pokemon.Pokemon,
-    val pokemonSpecies: levilin.pokemon.dictionary.model.remote.species.PokemonSpecies
+    val pokemonInfo: Pokemon,
+    val pokemonSpecies: PokemonSpecies
 )
