@@ -19,6 +19,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,28 +38,28 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import levilin.pokemon.dictionary.ui.theme.buttonIconColor
+import levilin.pokemon.dictionary.viewmodel.list.PokemonListViewModel
 
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
     hint: String = "",
-    currentText: String = "",
-    onSearch: (String) -> Unit = {}
+    viewModel: PokemonListViewModel
 ) {
     // Focus Control
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
     // Search Query
-    var inputText by remember { mutableStateOf(currentText) }
+    val inputText by viewModel.inputText.collectAsState()
     var isHintDisplayed by remember { mutableStateOf(hint != "") }
 
     val trailingIconView = @Composable {
         IconButton(
             onClick = {
                 isHintDisplayed = true
-                inputText = ""
-                onSearch(inputText)
+                viewModel.clearInputText()
+                viewModel.searchPokemonList("")
                 focusManager.clearFocus()
             },
             modifier = Modifier.padding(end = 5.dp)
@@ -76,12 +77,12 @@ fun SearchBar(
         TextField(
             value = inputText,
             onValueChange = { inputValue ->
-                inputText = inputValue
+                viewModel.setInputText(value = inputValue)
                 if (inputValue.isBlank()) {
-                    onSearch("")
+                    viewModel.searchPokemonList("")
                 } else {
                     isHintDisplayed = false
-                    onSearch(inputValue)
+                    viewModel.searchPokemonList(inputValue)
                 }
             },
             maxLines = 1,
@@ -117,7 +118,7 @@ fun SearchBar(
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    onSearch(inputText)
+                    viewModel.searchPokemonList(inputText)
                     focusManager.clearFocus()
                 }
             ),

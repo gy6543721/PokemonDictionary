@@ -43,8 +43,6 @@ fun PokemonListScreen(
     navController: NavController,
     viewModel: PokemonListViewModel = hiltViewModel()
 ) {
-    val currentText by viewModel.inputText.collectAsState()
-
     Surface(
         color = MaterialTheme.colors.background,
         modifier = Modifier.fillMaxSize()
@@ -63,10 +61,7 @@ fun PokemonListScreen(
                     .fillMaxWidth()
                     .padding(16.dp),
                 hint = stringResource(id = R.string.search_bar_placeholder),
-                currentText = currentText,
-                onSearch = { input ->
-                    viewModel.searchPokemonList(query = input)
-                }
+                viewModel = viewModel
             )
             Spacer(modifier = Modifier.height(16.dp))
             PokemonList(navController = navController)
@@ -80,10 +75,10 @@ fun PokemonList(
     viewModel: PokemonListViewModel = hiltViewModel()
 ) {
     val pokemonList by viewModel.pokemonList.collectAsState()
-    val endReached by remember { viewModel.endReached }
-    val loadError by remember { viewModel.loadError }
-    val isLoading by remember { viewModel.isLoading }
-    val isSearching by remember { viewModel.isSearching }
+    val endReached by viewModel.endReached.collectAsState()
+    val loadError by viewModel.loadError.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val isSearching by viewModel.isSearching.collectAsState()
 
     LazyColumn(contentPadding = PaddingValues(16.dp)) {
         val itemCount = if (pokemonList.size % 2 == 0) {

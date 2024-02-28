@@ -3,7 +3,6 @@ package levilin.pokemon.dictionary.viewmodel.list
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
@@ -34,14 +33,13 @@ class PokemonListViewModel @Inject constructor(
     private val _pokemonList = MutableStateFlow<List<PokemonListEntry>>(listOf())
     val pokemonList: StateFlow<List<PokemonListEntry>> = _pokemonList
 
-    var loadError = mutableStateOf("")
-    var isLoading = mutableStateOf(false)
-    var endReached = mutableStateOf(false)
+    val loadError = MutableStateFlow("")
+    val isLoading = MutableStateFlow(false)
+    val endReached = MutableStateFlow(false)
 
     // Search
-    private var cachedPokemonList = listOf<PokemonListEntry>()
-    private var isSearchStarting = true
-    var isSearching = mutableStateOf(false)
+    val isSearching = MutableStateFlow(false)
+    private val cachedPokemonList = MutableStateFlow<List<PokemonListEntry>>(listOf())
 
     private val _inputText = MutableStateFlow("")
     val inputText: StateFlow<String> = _inputText
@@ -49,87 +47,6 @@ class PokemonListViewModel @Inject constructor(
     init {
         getAllItems()
         loadPokemonList()
-    }
-
-    fun searchPokemonList(query: String) {
-        getAllItems()
-        _inputText.value = query
-
-        val listToSearch = if (isSearchStarting) {
-            _pokemonList.value
-        } else {
-            cachedPokemonList
-        }
-
-        viewModelScope.launch(Dispatchers.Default) {
-            if (_inputText.value.isEmpty()) {
-                _pokemonList.value = cachedPokemonList
-                isSearching.value = false
-                isSearchStarting = true
-                return@launch
-            }
-
-            if (listToSearch.none { pokemonListEntry ->
-                    pokemonListEntry.pokemonName.contains(_inputText.value.trim(), ignoreCase = true) ||
-                            String.format("%03d", pokemonListEntry.id).contains(_inputText.value.trim())
-                }) {
-                val apiResult = withContext(Dispatchers.IO) {
-                    if (_inputText.value.isDigitsOnly()) {
-                        remoteRepository.getPokemonInfoById(id = _inputText.value.trim().toInt())
-                    } else if (Locale.getDefault().language.contains("en")) {
-                        remoteRepository.getPokemonInfoByName(name = _inputText.value.trim())
-                    } else {
-                        null
-                    }
-                }
-
-                when (apiResult) {
-                    is NetworkResult.Success -> {
-                        val pokemonListEntry = apiResult.data?.let { pokemon ->
-                            val pokemonNameLocalized = when (val speciesResult =
-                                remoteRepository.getPokemonSpecies(id = pokemon.id)) {
-                                is NetworkResult.Success -> speciesResult.data?.names?.find {
-                                    it.language.name.contains(
-                                        Locale.getDefault().language
-                                    )
-                                }?.name ?: pokemon.name
-
-                                else -> pokemon.name
-                            }
-
-                            PokemonListEntry(
-                                id = pokemon.id,
-                                pokemonName = pokemonNameLocalized,
-                                imageUrl = pokemon.sprites.frontDefault,
-                                isFavorite = false
-                            )
-                        }
-
-                        if (pokemonListEntry != null) {
-                            insertItem(pokemonListEntry = pokemonListEntry)
-                        }
-                    }
-
-                    is NetworkResult.Error -> {
-                        loadError.value = apiResult.message ?: "No Result Found."
-                    }
-
-                    else -> {}
-                }
-            }
-
-            val results = listToSearch.filter { pokemonListEntry ->
-                pokemonListEntry.pokemonName.contains(_inputText.value.trim(), ignoreCase = true) ||
-                        String.format("%03d", pokemonListEntry.id).contains(_inputText.value.trim())
-            }
-
-            if (isSearchStarting) {
-                cachedPokemonList = _pokemonList.value
-                isSearchStarting = false
-            }
-            _pokemonList.value = results.sortedBy { it.id }
-            isSearching.value = true
-        }
     }
 
     fun loadPokemonList() {
@@ -210,17 +127,88 @@ class PokemonListViewModel @Inject constructor(
 
                 else -> {}
             }
+            cachedPokemonList.value = _pokemonList.value
         }
     }
 
-    fun getDominantColor(drawable: Drawable, onFinish: (Color) -> Unit) {
-        val bmp = (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
+    fun searchPokemonList(query: String) {
+        isSearching.value = true
+        _inputText.value = query
+        _pokemonList.value = cachedPokemonList.value
 
-        Palette.from(bmp).generate { palette ->
-            palette?.dominantSwatch?.rgb?.let { colorValue ->
-                onFinish(Color(colorValue))
+        viewModelScope.launch(Dispatchers.Default) {
+            if (_inputText.value.isEmpty()) {
+                isSearching.value = false
+                return@launch
             }
+
+            if (_pokemonList.value.none { pokemonListEntry ->
+                    pokemonListEntry.pokemonName.contains(_inputText.value.trim(), ignoreCase = true) ||
+                            String.format("%03d", pokemonListEntry.id).contains(_inputText.value.trim())
+                }) {
+                val apiResult = withContext(Dispatchers.IO) {
+                    if (_inputText.value.isDigitsOnly()) {
+                        remoteRepository.getPokemonInfoById(id = _inputText.value.trim().toInt())
+                    } else if (Locale.getDefault().language.contains("en")) {
+                        remoteRepository.getPokemonInfoByName(name = _inputText.value.trim())
+                    } else {
+                        null
+                    }
+                }
+
+                when (apiResult) {
+                    is NetworkResult.Success -> {
+                        val pokemonListEntry = apiResult.data?.let { pokemon ->
+                            val pokemonNameLocalized = when (val speciesResult =
+                                remoteRepository.getPokemonSpecies(id = pokemon.id)) {
+                                is NetworkResult.Success -> speciesResult.data?.names?.find {
+                                    it.language.name.contains(
+                                        Locale.getDefault().language
+                                    )
+                                }?.name ?: pokemon.name
+
+                                else -> pokemon.name
+                            }
+
+                            PokemonListEntry(
+                                id = pokemon.id,
+                                pokemonName = pokemonNameLocalized,
+                                imageUrl = pokemon.sprites.frontDefault,
+                                isFavorite = false
+                            )
+                        }
+
+                        if (pokemonListEntry != null) {
+                            insertItem(pokemonListEntry = pokemonListEntry)
+                            _pokemonList.value += pokemonListEntry
+                            cachedPokemonList.value = _pokemonList.value
+                        }
+                    }
+
+                    is NetworkResult.Error -> {
+                        loadError.value = apiResult.message ?: "No Result Found."
+                    }
+
+                    else -> {}
+                }
+            }
+
+            val results = _pokemonList.value.filter { pokemonListEntry ->
+                pokemonListEntry.pokemonName.contains(_inputText.value.trim(), ignoreCase = true) ||
+                        String.format("%03d", pokemonListEntry.id).contains(_inputText.value.trim())
+            }
+
+            _pokemonList.value = results.sortedBy { it.id }
         }
+    }
+
+    fun setInputText(value: String) {
+        _inputText.value = value
+    }
+
+    fun clearInputText() {
+        _inputText.value = ""
+        searchPokemonList(_inputText.value)
     }
 
     fun checkFavorite(input: PokemonListEntry): Boolean {
@@ -242,10 +230,21 @@ class PokemonListViewModel @Inject constructor(
         }
     }
 
+    fun getDominantColor(drawable: Drawable, onFinish: (Color) -> Unit) {
+        val bmp = (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
+
+        Palette.from(bmp).generate { palette ->
+            palette?.dominantSwatch?.rgb?.let { colorValue ->
+                onFinish(Color(colorValue))
+            }
+        }
+    }
+
     private fun getAllItems() {
         viewModelScope.launch {
             localRepository.getAllItems.collect { itemList ->
                 _pokemonList.value = itemList
+                cachedPokemonList.value = _pokemonList.value
             }
         }
     }
