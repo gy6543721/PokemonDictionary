@@ -28,7 +28,6 @@ fun FavoriteButton(modifier: Modifier = Modifier, entry: PokemonListEntry, viewM
         onCheckedChange = {
             isFavorite = !isFavorite
             viewModel.changeFavorite(isFavorite = isFavorite, entry = entry)
-            viewModel.loadFavoriteList()
         }
     ) {
         Icon(

@@ -5,6 +5,7 @@
     <string name="nav_item_favorite_list">我的最爱</string>
     <string name="search_bar_placeholder">搜寻宝可梦</string>
     <string name="base_status">基本资讯</string>
+    <string name="retry_button">重试</string>
 
     <string name="text_hp">ＨＰ</string>
     <string name="text_atk">攻击</string>

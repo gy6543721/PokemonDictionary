@@ -20,6 +20,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -41,6 +43,8 @@ fun PokemonListScreen(
     navController: NavController,
     viewModel: PokemonListViewModel = hiltViewModel()
 ) {
+    val currentText by viewModel.inputText.collectAsState()
+
     Surface(
         color = MaterialTheme.colors.background,
         modifier = Modifier.fillMaxSize()
@@ -58,10 +62,12 @@ fun PokemonListScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                hint = stringResource(id = R.string.search_bar_placeholder)
-            ) { input ->
-                viewModel.searchPokemonList(query = input)
-            }
+                hint = stringResource(id = R.string.search_bar_placeholder),
+                currentText = currentText,
+                onSearch = { input ->
+                    viewModel.searchPokemonList(query = input)
+                }
+            )
             Spacer(modifier = Modifier.height(16.dp))
             PokemonList(navController = navController)
         }
@@ -87,7 +93,7 @@ fun PokemonList(
         }
         items(itemCount) { index ->
             if (index >= itemCount - 1 && !endReached && !isLoading && !isSearching) {
-                LaunchedEffect(key1 = true) {
+                LaunchedEffect(true) {
                     viewModel.loadPokemonList()
                 }
             }
@@ -95,16 +101,18 @@ fun PokemonList(
         }
     }
 
-    Box(
-        contentAlignment = Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        if (isLoading) {
-            CircularProgressIndicator(color = MaterialTheme.colors.primary)
-        } else {
-            if (loadError.isNotEmpty()) {
-                RetrySection(error = loadError) {
-                    viewModel.loadPokemonList()
+    if (!isSearching) {
+        Box(
+            contentAlignment = Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            if (isLoading) {
+                CircularProgressIndicator(color = MaterialTheme.colors.primary)
+            } else {
+                if (loadError.isNotEmpty()) {
+                    RetrySection(error = loadError) {
+                        viewModel.loadPokemonList()
+                    }
                 }
             }
         }
@@ -118,6 +126,10 @@ fun PokemonEntry(
     navController: NavController,
     viewModel: PokemonListViewModel = hiltViewModel()
 ) {
+    // Focus Control
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     val defaultDominantColor = MaterialTheme.colors.surface
     var dominantColor by remember {
         mutableStateOf(defaultDominantColor)
@@ -140,6 +152,8 @@ fun PokemonEntry(
                 navController.navigate(
                     route = "pokemon_detail_screen/${dominantColor.toArgb()}/${entry.id}"
                 )
+                focusManager.clearFocus()
+                keyboardController?.hide()
             },
         contentAlignment = Center
     ) {
@@ -221,7 +235,7 @@ fun RetrySection(
             modifier = Modifier.align(CenterHorizontally),
             onClick = { onRetry() }
         ) {
-            Text(text = "Retry")
+            Text(text = stringResource(id = R.string.retry_button))
         }
     }
 }

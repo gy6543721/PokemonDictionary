@@ -1,58 +1,137 @@
 package levilin.pokemon.dictionary.ui.screen.list.component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import levilin.pokemon.dictionary.ui.theme.buttonIconColor
 
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
     hint: String = "",
+    currentText: String = "",
     onSearch: (String) -> Unit = {}
 ) {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
+    // Focus Control
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    // Search Query
+    var inputText by remember { mutableStateOf(currentText) }
     var isHintDisplayed by remember { mutableStateOf(hint != "") }
 
+    val trailingIconView = @Composable {
+        IconButton(
+            onClick = {
+                isHintDisplayed = true
+                inputText = ""
+                onSearch(inputText)
+                focusManager.clearFocus()
+            },
+            modifier = Modifier.padding(end = 5.dp)
+        ) {
+            androidx.compose.material.Icon(
+                modifier = Modifier.alpha(ContentAlpha.medium),
+                imageVector = Icons.Filled.Close,
+                tint = MaterialTheme.colors.buttonIconColor,
+                contentDescription = "clear"
+            )
+        }
+    }
+
     Box(modifier = modifier) {
-        BasicTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .shadow(5.dp, CircleShape)
-                .background(Color.White, CircleShape)
-                .padding(horizontal = 20.dp, vertical = 12.dp)
-                .onFocusChanged { focusState ->
-                    isHintDisplayed = !focusState.isFocused && text.text.isEmpty()
-                },
-            value = text,
-            onValueChange = { textFieldValue ->
-                text = textFieldValue
-                onSearch(textFieldValue.text)
+        TextField(
+            value = inputText,
+            onValueChange = { inputValue ->
+                inputText = inputValue
+                if (inputValue.isBlank()) {
+                    onSearch("")
+                } else {
+                    isHintDisplayed = false
+                    onSearch(inputValue)
+                }
             },
             maxLines = 1,
             singleLine = true,
-            textStyle = TextStyle(color = Color.Black)
+            textStyle = TextStyle(
+                color = MaterialTheme.colors.onBackground,
+                textAlign = TextAlign.Start,
+                fontSize = 15.sp
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(5.dp, CircleShape)
+                .background(color = MaterialTheme.colors.background)
+                .border(
+                    border = BorderStroke(
+                        width = 1.dp,
+                        color = MaterialTheme.colors.onBackground
+                    ), shape = RoundedCornerShape(50)
+                )
+                .align(Alignment.Center)
+                .onFocusChanged { focusState ->
+                    isHintDisplayed = !focusState.isFocused && inputText.isBlank()
+                    if (!focusState.isFocused) {
+                        keyboardController?.hide()
+                    }
+                },
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                cursorColor = MaterialTheme.colors.onBackground,
+                errorCursorColor = Color.Red
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    onSearch(inputText)
+                    focusManager.clearFocus()
+                }
+            ),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            trailingIcon = if (inputText.isNotEmpty()) trailingIconView else null
         )
         if (isHintDisplayed) {
             Text(
-                modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
                 text = hint,
-                color = Color.LightGray
+                color = MaterialTheme.colors.onBackground,
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(horizontal = 20.dp),
+                textAlign = TextAlign.Start
             )
         }
     }

@@ -10,6 +10,14 @@ import javax.inject.Inject
 class LocalRepository @Inject constructor(private val localDataSourceDAO: LocalDataSourceDAO) {
     val getAllItems: Flow<List<PokemonListEntry>> = localDataSourceDAO.getAllItems()
 
+    fun getItemById(id: Int): Flow<PokemonListEntry> {
+        return localDataSourceDAO.getItemById(id = id)
+    }
+
+    fun getItemByName(name: String): Flow<PokemonListEntry> {
+        return localDataSourceDAO.getItemByName(name = name)
+    }
+
     suspend fun insertItem(pokemonListEntry: PokemonListEntry) {
         localDataSourceDAO.insertItem(pokemonListEntry = pokemonListEntry)
     }

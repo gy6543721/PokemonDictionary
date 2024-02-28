@@ -15,8 +15,13 @@ interface PokemonApi {
     ): PokemonList
 
     @GET("pokemon/{id}")
-    suspend fun getPokemonInfo(
+    suspend fun getPokemonInfoById(
         @Path("id") id: String
+    ): Pokemon
+
+    @GET("pokemon/{name}")
+    suspend fun getPokemonInfoByName(
+        @Path("name") name: String
     ): Pokemon
 
     @GET("pokemon-species/{id}")

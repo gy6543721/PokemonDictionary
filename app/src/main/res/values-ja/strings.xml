@@ -5,6 +5,7 @@
     <string name="nav_item_favorite_list">お気に入り</string>
     <string name="search_bar_placeholder">検索</string>
     <string name="base_status">基本情報</string>
+    <string name="retry_button">再読み込み</string>
 
     <string name="text_hp">ＨＰ</string>
     <string name="text_atk">こうげき</string>
