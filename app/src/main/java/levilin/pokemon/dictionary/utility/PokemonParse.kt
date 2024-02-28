@@ -2,6 +2,8 @@ package levilin.pokemon.dictionary.utility
 
 import androidx.compose.ui.graphics.Color
 import levilin.pokemon.dictionary.R
+import levilin.pokemon.dictionary.model.remote.pokemon.Stat
+import levilin.pokemon.dictionary.model.remote.pokemon.Type
 import levilin.pokemon.dictionary.ui.theme.AtkColor
 import levilin.pokemon.dictionary.ui.theme.DefColor
 import levilin.pokemon.dictionary.ui.theme.HpColor
@@ -30,7 +32,7 @@ import levilin.pokemon.dictionary.ui.theme.TypeUnknown
 import levilin.pokemon.dictionary.ui.theme.TypeWater
 import java.util.*
 
-fun parseTypeToColor(type: levilin.pokemon.dictionary.model.remote.pokemon.Type): Color {
+fun parseTypeToColor(type: Type): Color {
     return when(type.type.name.lowercase(Locale.ROOT)) {
         "normal" -> TypeNormal
         "fire" -> TypeFire
@@ -56,7 +58,7 @@ fun parseTypeToColor(type: levilin.pokemon.dictionary.model.remote.pokemon.Type)
     }
 }
 
-fun parseStatusToColor(status: levilin.pokemon.dictionary.model.remote.pokemon.Stat): Color {
+fun parseStatusToColor(status: Stat): Color {
     return when(status.stat.name.lowercase(Locale.ROOT)) {
         "hp" -> HpColor
         "attack" -> AtkColor
@@ -68,7 +70,7 @@ fun parseStatusToColor(status: levilin.pokemon.dictionary.model.remote.pokemon.S
     }
 }
 
-fun parseStatusToLocalizedStringID(status: levilin.pokemon.dictionary.model.remote.pokemon.Stat): Int {
+fun parseStatusToLocalizedStringId(status: Stat): Int {
     return when(status.stat.name.lowercase(Locale.ROOT)) {
         "hp" -> R.string.text_hp
         "attack" -> R.string.text_atk
