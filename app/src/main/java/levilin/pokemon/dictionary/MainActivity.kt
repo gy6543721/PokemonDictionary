@@ -2,45 +2,60 @@ package levilin.pokemon.dictionary
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Scaffold
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import levilin.pokemon.dictionary.ui.theme.PokemonDictionaryTheme
+import dagger.hilt.android.AndroidEntryPoint
+import levilin.pokemon.dictionary.ui.navigation.BottomNavView
+import levilin.pokemon.dictionary.ui.navigation.NavGraphView
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Transparent SystemBar
+        enableEdgeToEdge(
+            SystemBarStyle.auto(
+                lightScrim = android.graphics.Color.TRANSPARENT,
+                darkScrim = android.graphics.Color.TRANSPARENT
+            )
+        )
+
         super.onCreate(savedInstanceState)
+
         setContent {
             PokemonDictionaryTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
+                val navController = rememberNavController()
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
+
+                Scaffold(bottomBar = { BottomNavView(navController = navController, bottomBarState = bottomBarState) }) { innerPadding ->
+                    var paddingValue = innerPadding
+                    when (navBackStackEntry?.destination?.route) {
+                        "pokemon_list_screen" -> {
+                            bottomBarState.value = true
+                        }
+                        "favorite_list_screen" -> {
+                            bottomBarState.value = true
+                        }
+                        else -> {
+                            bottomBarState.value = false
+                            paddingValue = PaddingValues(0.dp)
+                        }
+                    }
+                    NavGraphView(navController = navController, modifier = Modifier.padding(paddingValues = paddingValue))
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PokemonDictionaryTheme {
-        Greeting("Android")
     }
 }

@@ -1,3 +1,35 @@
 <resources>
-    <string name="app_name">PokemonDictionary</string>
+    <string name="app_name">Pokémon Dictionary</string>
+    <string name="nav_item_pokemon_list">Pokémon</string>
+    <string name="nav_item_favorite_list">Favorite</string>
+    <string name="search_bar_placeholder">Search</string>
+    <string name="base_status">Base Status</string>
+
+    <string name="text_hp">HP</string>
+    <string name="text_atk">ATK</string>
+    <string name="text_def">DEF</string>
+    <string name="text_sp_atk">SP-ATK</string>
+    <string name="text_sp_def">SP-DEF</string>
+    <string name="text_spd">SPD</string>
+
+    <string name="type_normal">Normal</string>
+    <string name="type_fire">Fire</string>
+    <string name="type_water">Water</string>
+    <string name="type_electric">Electric</string>
+    <string name="type_grass">Grass</string>
+    <string name="type_ice">Ice</string>
+    <string name="type_fighting">Fighting</string>
+    <string name="type_poison">Poison</string>
+    <string name="type_ground">Ground</string>
+    <string name="type_flying">Flying</string>
+    <string name="type_psychic">Psychic</string>
+    <string name="type_bug">Bug</string>
+    <string name="type_rock">Rock</string>
+    <string name="type_ghost">Ghost</string>
+    <string name="type_dragon">Dragon</string>
+    <string name="type_dark">Dark</string>
+    <string name="type_steel">Steel</string>
+    <string name="type_fairy">Fairy</string>
+    <string name="type_stellar">Stellar</string>
+    <string name="type_unknown">？？？</string>
 </resources>

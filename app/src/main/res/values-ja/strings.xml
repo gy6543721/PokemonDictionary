@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ポケモン図鑑</string>
+    <string name="nav_item_pokemon_list">ポケモン</string>
+    <string name="nav_item_favorite_list">お気に入り</string>
+    <string name="search_bar_placeholder">検索</string>
+    <string name="base_status">基本情報</string>
+
+    <string name="text_hp">ＨＰ</string>
+    <string name="text_atk">こうげき</string>
+    <string name="text_def">ぼうぎょ</string>
+    <string name="text_sp_atk">とくこう</string>
+    <string name="text_sp_def">とくぼう</string>
+    <string name="text_spd">すばやさ</string>
+
+    <string name="type_normal">ノーマル</string>
+    <string name="type_fire">ほのお</string>
+    <string name="type_water">みず</string>
+    <string name="type_electric">でんき</string>
+    <string name="type_grass">くさ</string>
+    <string name="type_ice">こおり</string>
+    <string name="type_fighting">かくとう</string>
+    <string name="type_poison">どく</string>
+    <string name="type_ground">じめん</string>
+    <string name="type_flying">ひこう</string>
+    <string name="type_psychic">エスパー</string>
+    <string name="type_bug">むし</string>
+    <string name="type_rock">いわ</string>
+    <string name="type_ghost">ゴースト</string>
+    <string name="type_dragon">ドラゴン</string>
+    <string name="type_dark">あく</string>
+    <string name="type_steel">はがね</string>
+    <string name="type_fairy">フェアリー</string>
+    <string name="type_stellar">ステラ</string>
+    <string name="type_unknown">？？？</string>
+</resources>

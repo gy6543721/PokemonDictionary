@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">寶可夢圖鑑</string>
+    <string name="nav_item_pokemon_list">寶可夢</string>
+    <string name="nav_item_favorite_list">我的最愛</string>
+    <string name="search_bar_placeholder">搜尋寶可夢</string>
+    <string name="base_status">基本資訊</string>
+
+    <string name="text_hp">ＨＰ</string>
+    <string name="text_atk">攻擊</string>
+    <string name="text_def">防禦</string>
+    <string name="text_sp_atk">特攻</string>
+    <string name="text_sp_def">特防</string>
+    <string name="text_spd">速度</string>
+
+    <string name="type_normal">一般</string>
+    <string name="type_fire">火</string>
+    <string name="type_water">水</string>
+    <string name="type_electric">電</string>
+    <string name="type_grass">草</string>
+    <string name="type_ice">冰</string>
+    <string name="type_fighting">格鬥</string>
+    <string name="type_poison">毒</string>
+    <string name="type_ground">地面</string>
+    <string name="type_flying">飛行</string>
+    <string name="type_psychic">超能力</string>
+    <string name="type_bug">蟲</string>
+    <string name="type_rock">岩石</string>
+    <string name="type_ghost">幽靈</string>
+    <string name="type_dragon">龍</string>
+    <string name="type_dark">惡</string>
+    <string name="type_steel">鋼</string>
+    <string name="type_fairy">妖精</string>
+    <string name="type_stellar">星晶</string>
+    <string name="type_unknown">？？？</string>
+
+</resources>
