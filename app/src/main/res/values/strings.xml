@@ -4,6 +4,7 @@
     <string name="nav_item_favorite_list">Favorite</string>
     <string name="search_bar_placeholder">Search</string>
     <string name="base_status">Base Status</string>
+    <string name="retry_button">Retry</string>
 
     <string name="text_hp">HP</string>
     <string name="text_atk">ATK</string>
