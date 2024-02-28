@@ -37,12 +37,11 @@ class PokemonListViewModel @Inject constructor(
     val isLoading = MutableStateFlow(false)
     val endReached = MutableStateFlow(false)
 
-    // Search
-    val isSearching = MutableStateFlow(false)
+    // Search properties
     private val cachedPokemonList = MutableStateFlow<List<PokemonListEntry>>(listOf())
-
     private val _inputText = MutableStateFlow("")
     val inputText: StateFlow<String> = _inputText
+    val isSearching = MutableStateFlow(false)
 
     init {
         getAllItems()
@@ -142,16 +141,26 @@ class PokemonListViewModel @Inject constructor(
                 return@launch
             }
 
-            if (_pokemonList.value.none { pokemonListEntry ->
-                    pokemonListEntry.pokemonName.contains(_inputText.value.trim(), ignoreCase = true) ||
-                            String.format("%03d", pokemonListEntry.id).contains(_inputText.value.trim())
-                }) {
+            val localResults = _pokemonList.value.filter { pokemonListEntry ->
+                pokemonListEntry.pokemonName.contains(_inputText.value.trim(), ignoreCase = true) ||
+                        String.format("%03d", pokemonListEntry.id).contains(_inputText.value.trim())
+            }.toMutableList()
+
+            if (localResults.isEmpty()) {
+                _pokemonList.value = emptyList()
+
                 val apiResult = withContext(Dispatchers.IO) {
-                    if (_inputText.value.isDigitsOnly()) {
-                        remoteRepository.getPokemonInfoById(id = _inputText.value.trim().toInt())
-                    } else if (Locale.getDefault().language.contains("en")) {
-                        remoteRepository.getPokemonInfoByName(name = _inputText.value.trim())
-                    } else {
+                    try {
+                        if (_inputText.value.isDigitsOnly()) {
+                            remoteRepository.getPokemonInfoById(
+                                id = _inputText.value.trim().toInt()
+                            )
+                        } else if (Locale.getDefault().language.contains("en")) {
+                            remoteRepository.getPokemonInfoByName(name = _inputText.value.trim())
+                        } else {
+                            null
+                        }
+                    } catch (e: Exception) {
                         null
                     }
                 }
@@ -180,6 +189,7 @@ class PokemonListViewModel @Inject constructor(
 
                         if (pokemonListEntry != null) {
                             insertItem(pokemonListEntry = pokemonListEntry)
+                            localResults += pokemonListEntry
                             _pokemonList.value += pokemonListEntry
                             cachedPokemonList.value = _pokemonList.value
                         }
@@ -191,19 +201,19 @@ class PokemonListViewModel @Inject constructor(
 
                     else -> {}
                 }
+            } else {
+                _pokemonList.value = localResults.sortedBy { it.id }
             }
-
-            val results = _pokemonList.value.filter { pokemonListEntry ->
-                pokemonListEntry.pokemonName.contains(_inputText.value.trim(), ignoreCase = true) ||
-                        String.format("%03d", pokemonListEntry.id).contains(_inputText.value.trim())
-            }
-
-            _pokemonList.value = results.sortedBy { it.id }
         }
     }
 
-    fun setInputText(value: String) {
-        _inputText.value = value
+    fun setInputText(inputValue: String) {
+        if (inputValue.isBlank()) {
+            clearInputText()
+        } else {
+            _inputText.value = inputValue
+            searchPokemonList(_inputText.value)
+        }
     }
 
     fun clearInputText() {

@@ -59,7 +59,6 @@ fun SearchBar(
             onClick = {
                 isHintDisplayed = true
                 viewModel.clearInputText()
-                viewModel.searchPokemonList("")
                 focusManager.clearFocus()
             },
             modifier = Modifier.padding(end = 5.dp)
@@ -77,12 +76,9 @@ fun SearchBar(
         TextField(
             value = inputText,
             onValueChange = { inputValue ->
-                viewModel.setInputText(value = inputValue)
-                if (inputValue.isBlank()) {
-                    viewModel.searchPokemonList("")
-                } else {
+                viewModel.setInputText(inputValue = inputValue)
+                if (inputValue.isNotBlank()) {
                     isHintDisplayed = false
-                    viewModel.searchPokemonList(inputValue)
                 }
             },
             maxLines = 1,
