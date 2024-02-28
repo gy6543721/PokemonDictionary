@@ -18,11 +18,11 @@ class PokemonDetailViewModel @Inject constructor(
     private val _pokemonDetail = mutableStateOf<NetworkResult<PokemonDetail>>(NetworkResult.Loading())
     val pokemonDetail: MutableState<NetworkResult<PokemonDetail>> = _pokemonDetail
 
-    fun loadPokemonDetail(pokemonID: Int) {
+    fun loadPokemonDetail(pokemonId: Int) {
         viewModelScope.launch {
             _pokemonDetail.value = NetworkResult.Loading()
-            val pokemonInfoResult = remoteRepository.getPokemonInfoById(id = pokemonID)
-            val speciesResult = remoteRepository.getPokemonSpecies(id = pokemonID)
+            val pokemonInfoResult = remoteRepository.getPokemonInfoById(id = pokemonId)
+            val speciesResult = remoteRepository.getPokemonSpecies(id = pokemonId)
 
             val pokemonInfo = pokemonInfoResult.data
             val pokemonSpecies = speciesResult.data

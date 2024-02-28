@@ -52,14 +52,14 @@ import kotlin.math.round
 @Composable
 fun PokemonDetailScreen(
     dominantColor: Color,
-    pokemonID: Int,
+    pokemonId: Int,
     navController: NavController,
     topPadding: Dp = 20.dp,
     pokemonImageSize: Dp = 200.dp,
     viewModel: PokemonDetailViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(pokemonID) {
-        viewModel.loadPokemonDetail(pokemonID = pokemonID)
+    LaunchedEffect(pokemonId) {
+        viewModel.loadPokemonDetail(pokemonId = pokemonId)
     }
 
     val pokemonDetail = viewModel.pokemonDetail.value

@@ -46,7 +46,7 @@ fun NavGraphView(navController: NavHostController, modifier: Modifier) {
             }?.toInt()
             PokemonDetailScreen(
                 dominantColor = dominantColor,
-                pokemonID = pokemonID ?: 1,
+                pokemonId = pokemonID ?: 1,
                 navController = navController
             )
         }

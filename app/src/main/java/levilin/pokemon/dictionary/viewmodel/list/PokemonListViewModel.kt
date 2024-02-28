@@ -27,7 +27,6 @@ class PokemonListViewModel @Inject constructor(
     private val localRepository: LocalRepository,
     private val remoteRepository: RemoteRepository
 ) : ViewModel() {
-
     private var currentPage = 0
 
     private val _pokemonList = MutableStateFlow<List<PokemonListEntry>>(listOf())
