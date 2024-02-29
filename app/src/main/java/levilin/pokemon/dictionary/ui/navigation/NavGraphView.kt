@@ -1,5 +1,7 @@
 package levilin.pokemon.dictionary.ui.navigation
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -18,7 +20,11 @@ fun NavGraphView(navController: NavHostController, modifier: Modifier) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = "pokemon_list_screen"
+        startDestination = "pokemon_list_screen",
+        enterTransition = { fadeIn() },
+        exitTransition = { fadeOut() },
+        popEnterTransition = { fadeIn() },
+        popExitTransition = { fadeOut() }
     ) {
         composable(route = "pokemon_list_screen") {
             PokemonListScreen(navController = navController)
