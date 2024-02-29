@@ -3,18 +3,24 @@
 <img src="https://github.com/gy6543721/PokemonDictionary/blob/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" height="200"/>
 
 Pokemon Dictionary written written in Kotlin and Compose.  
-Now support English, Japanese, Traditional Chinese and Simplified Chinese, will support more languages in the future.  
-[Google Play Store](https://play.google.com/store/apps/details?id=levilin.pokemon.dictionary)
+Now support English, Japanese, Traditional Chinese and Simplified Chinese.  
 
-### Screenshots
+[Demo Video](https://youtu.be/u-Y2pNwB11A)  
+
+## Screenshots
 
 Light | Dark
 :--: | :--:
-<img width="270" alt="Light01" src="https://github.com/gy6543721/PokemonDictionary/assets/46208481/8d9cbfc0-f28f-4b9e-afec-208c6e1e0806"> | <img width="270" alt="Dark01" src="https://github.com/gy6543721/PokemonDictionary/assets/46208481/ea3548c3-e3eb-4cc6-a5dd-a28e2d63f414">
-<img width="270" alt="Light02" src="https://github.com/gy6543721/PokemonDictionary/assets/46208481/7e426f11-85b9-4112-9f59-26c285aed5c0"> | <img width="270" alt="Dark02" src="https://github.com/gy6543721/PokemonDictionary/assets/46208481/f0b1b24d-0144-4e48-81b3-d0efbb9d0c61">
+<img width="270" alt="Light001" src="images/Light001.png"> | <img width="270" alt="Dark001" src="images/Dark001.png">
+<img width="270" alt="Light002" src="images/Light002.png"> | <img width="270" alt="Dark002" src="images/Dark002.png">
+<img width="270" alt="Light003" src="images/Light003.png"> | <img width="270" alt="Dark003" src="images/Dark003.png">
 
+## API
+- API Documentation: https://pokeapi.co/  
+- Pokemon search API endpoint: **GET** https://pokeapi.co/api/v2/pokemon/{id}/  
+- Pokemon detail API endpoint: **GET** https://pokeapi.co/api/v2/pokemon-species/{id}/
 
-### Main Libraries Used
+## Main Libraries Used
 - Compose
 - Coroutines
 - Navigation 

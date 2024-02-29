@@ -1,11 +1,10 @@
 package levilin.pokemon.dictionary.model.remote.pokemon
 
-
 import com.google.gson.annotations.SerializedName
 
 data class Stat(
     @SerializedName("base_stat")
     val baseStat: Int,
     val effort: Int,
-    val stat: levilin.pokemon.dictionary.model.remote.pokemon.StatX
+    val stat: StatX
 )

@@ -42,7 +42,7 @@ import levilin.pokemon.dictionary.ui.theme.LightMediumGray
 import levilin.pokemon.dictionary.ui.theme.MediumDarkGray
 import levilin.pokemon.dictionary.utility.AdjustableText
 import levilin.pokemon.dictionary.utility.NetworkResult
-import levilin.pokemon.dictionary.utility.parseStatusToLocalizedStringID
+import levilin.pokemon.dictionary.utility.parseStatusToLocalizedStringId
 import levilin.pokemon.dictionary.utility.parseStatusToColor
 import levilin.pokemon.dictionary.utility.parseTypeToColor
 import levilin.pokemon.dictionary.viewmodel.detail.PokemonDetailViewModel
@@ -52,14 +52,14 @@ import kotlin.math.round
 @Composable
 fun PokemonDetailScreen(
     dominantColor: Color,
-    pokemonID: Int,
+    pokemonId: Int,
     navController: NavController,
     topPadding: Dp = 20.dp,
     pokemonImageSize: Dp = 200.dp,
     viewModel: PokemonDetailViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(pokemonID) {
-        viewModel.loadPokemonDetail(pokemonID = pokemonID)
+    LaunchedEffect(pokemonId) {
+        viewModel.loadPokemonDetail(pokemonId = pokemonId)
     }
 
     val pokemonDetail = viewModel.pokemonDetail.value
@@ -77,14 +77,13 @@ fun PokemonDetailScreen(
 
             is NetworkResult.Success -> {
                 PokemonDetailTopSection(
-                    navController = navController,
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(0.2f)
-                        .align(Alignment.TopCenter)
+                        .align(Alignment.TopCenter),
+                    navController = navController
                 )
                 PokemonDetailStateWrapper(
-                    pokemonDetail = pokemonDetail,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(
@@ -106,23 +105,23 @@ fun PokemonDetailScreen(
                             start = 16.dp,
                             end = 16.dp,
                             bottom = 16.dp
-                        )
+                        ),
+                    pokemonDetail = pokemonDetail
                 )
                 Box(
-                    contentAlignment = Alignment.TopCenter,
-                    modifier = Modifier
-                        .fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.TopCenter
                 ) {
                     pokemonDetail.data?.pokemonInfo?.sprites.let { sprite ->
                         LoadableAsyncImage(
+                            modifier = Modifier
+                                .size(pokemonImageSize)
+                                .offset(y = topPadding),
                             model = ImageRequest.Builder(LocalContext.current)
                                 .data(sprite?.frontDefault)
                                 .crossfade(true)
                                 .build(),
                             contentDescription = pokemonDetail.data?.pokemonInfo?.name,
-                            modifier = Modifier
-                                .size(pokemonImageSize)
-                                .offset(y = topPadding),
                             alignment = Alignment.Center
                         )
                     }
@@ -131,9 +130,9 @@ fun PokemonDetailScreen(
 
             is NetworkResult.Error -> {
                 Text(
+                    modifier = Modifier.align(Alignment.Center),
                     text = "Error: ${pokemonDetail.message}",
-                    color = Color.Red,
-                    modifier = Modifier.align(Alignment.Center)
+                    color = Color.Red
                 )
             }
         }
@@ -146,7 +145,6 @@ fun PokemonDetailTopSection(
     modifier: Modifier = Modifier
 ) {
     Box(
-        contentAlignment = Alignment.TopStart,
         modifier = modifier
             .background(
                 Brush.verticalGradient(
@@ -155,18 +153,20 @@ fun PokemonDetailTopSection(
                         Color.Transparent
                     )
                 )
-            )
+            ),
+        contentAlignment = Alignment.TopStart
     ) {
         Icon(
-            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = null,
-            tint = Color.White,
             modifier = Modifier
                 .size(36.dp)
                 .offset(16.dp, 16.dp)
+                .clip(CircleShape)
                 .clickable {
                     navController.popBackStack()
-                }
+                },
+            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+            contentDescription = null,
+            tint = Color.White
         )
     }
 }
@@ -443,7 +443,7 @@ fun PokemonBaseStatus(
         for (i in pokemonDetail.pokemonInfo.stats.indices) {
             val status = pokemonDetail.pokemonInfo.stats[i]
             PokemonStatus(
-                statusNameStringID = parseStatusToLocalizedStringID(status),
+                statusNameStringID = parseStatusToLocalizedStringId(status),
                 statusValue = status.baseStat,
                 statusMaxValue = maxBaseStat,
                 statusColor = parseStatusToColor(status),

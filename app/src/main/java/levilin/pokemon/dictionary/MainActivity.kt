@@ -2,9 +2,7 @@ package levilin.pokemon.dictionary
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
@@ -23,16 +21,7 @@ import levilin.pokemon.dictionary.ui.navigation.NavGraphView
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Transparent SystemBar
-        enableEdgeToEdge(
-            SystemBarStyle.auto(
-                lightScrim = android.graphics.Color.TRANSPARENT,
-                darkScrim = android.graphics.Color.TRANSPARENT
-            )
-        )
-
         super.onCreate(savedInstanceState)
-
         setContent {
             PokemonDictionaryTheme {
                 val navController = rememberNavController()

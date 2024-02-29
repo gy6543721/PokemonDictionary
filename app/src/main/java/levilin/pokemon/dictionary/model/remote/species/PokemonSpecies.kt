@@ -7,25 +7,25 @@ data class PokemonSpecies(
     val baseHappiness: Int,
     @SerializedName("capture_rate")
     val captureRate: Int,
-    val color: levilin.pokemon.dictionary.model.remote.species.Color,
+    val color: Color,
     @SerializedName("egg_groups")
-    val eggGroups: List<levilin.pokemon.dictionary.model.remote.species.EggGroup>,
+    val eggGroups: List<EggGroup>,
     @SerializedName("evolution_chain")
-    val evolutionChain: levilin.pokemon.dictionary.model.remote.species.EvolutionChain,
+    val evolutionChain: EvolutionChain,
     @SerializedName("evolves_from_species")
-    val evolvesFromSpecies: levilin.pokemon.dictionary.model.remote.species.EvolvesFromSpecies,
+    val evolvesFromSpecies: EvolvesFromSpecies,
     @SerializedName("flavor_text_entries")
-    val flavorTextEntries: List<levilin.pokemon.dictionary.model.remote.species.FlavorTextEntry>,
+    val flavorTextEntries: List<FlavorTextEntry>,
     @SerializedName("form_descriptions")
-    val formDescriptions: List<levilin.pokemon.dictionary.model.remote.species.FormDescription>,
+    val formDescriptions: List<FormDescription>,
     @SerializedName("forms_switchable")
     val formsSwitchable: Boolean,
     @SerializedName("gender_rate")
     val genderRate: Int,
-    val genera: List<levilin.pokemon.dictionary.model.remote.species.Genera>,
-    val generation: levilin.pokemon.dictionary.model.remote.species.Generation,
+    val genera: List<Genera>,
+    val generation: Generation,
     @SerializedName("growth_rate")
-    val growthRate: levilin.pokemon.dictionary.model.remote.species.GrowthRate,
+    val growthRate: GrowthRate,
     val habitat: Any,
     @SerializedName("has_gender_differences")
     val hasGenderDifferences: Boolean,
@@ -39,10 +39,10 @@ data class PokemonSpecies(
     @SerializedName("is_mythical")
     val isMythical: Boolean,
     val name: String,
-    val names: List<levilin.pokemon.dictionary.model.remote.species.Name>,
+    val names: List<Name>,
     val order: Int,
     @SerializedName("pokedex_numbers")
-    val pokedexNumbers: List<levilin.pokemon.dictionary.model.remote.species.PokedexNumber>,
-    val shape: levilin.pokemon.dictionary.model.remote.species.Shape,
-    val varieties: List<levilin.pokemon.dictionary.model.remote.species.Variety>
+    val pokedexNumbers: List<PokedexNumber>,
+    val shape: Shape,
+    val varieties: List<Variety>
 )

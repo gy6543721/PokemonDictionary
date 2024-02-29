@@ -5,6 +5,7 @@
     <string name="nav_item_pokemon_list_screen">ポケモン</string>
     <string name="nav_item_favorite_list_screen">お気に入り</string>
     <string name="search_bar_placeholder">検索</string>
+    <string name="retry_button">再読み込み</string>
 
     <string name="text_base_status">基本情報</string>
     <string name="text_hp">ＨＰ</string>

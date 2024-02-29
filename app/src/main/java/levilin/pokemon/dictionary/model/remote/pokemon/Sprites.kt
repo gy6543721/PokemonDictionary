@@ -1,6 +1,5 @@
 package levilin.pokemon.dictionary.model.remote.pokemon
 
-
 import com.google.gson.annotations.SerializedName
 
 data class Sprites(
@@ -20,6 +19,6 @@ data class Sprites(
     val frontShiny: String,
     @SerializedName("front_shiny_female")
     val frontShinyFemale: Any,
-    val other: levilin.pokemon.dictionary.model.remote.pokemon.Other,
-    val versions: levilin.pokemon.dictionary.model.remote.pokemon.Versions
+    val other: Other,
+    val versions: Versions
 )
