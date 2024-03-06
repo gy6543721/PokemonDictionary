@@ -73,12 +73,13 @@ class ChatRoomViewModel (
             } catch (e: Exception) {
                 _chatState.value.replaceLastPendingMessage()
                 e.localizedMessage?.let { errorMessage ->
-                    ChatMessage(
-                        text = errorMessage,
-                        messageType = MessageType.ERROR
+                    _chatState.value.addMessage(
+                        ChatMessage(
+                            text = errorMessage,
+                            messageType = MessageType.ERROR,
+                            isPending = false
+                        )
                     )
-                }?.let { chatMessage ->
-                    _chatState.value.addMessage(chatMessage)
                 }
             }
         }
