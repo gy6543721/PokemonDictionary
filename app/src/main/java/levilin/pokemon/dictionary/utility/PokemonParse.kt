@@ -81,3 +81,27 @@ fun parseStatusToLocalizedStringId(status: Stat): Int {
         else -> R.string.type_unknown
     }
 }
+
+fun toLocalizedFirstIntro(): String {
+    return when(Locale.getDefault().language) {
+        "ja" -> "はじめまして！\nポケット モンスターの せかいへ ようこそ！"
+        "zh" -> "你好，我是大木博士！"
+        else -> "Hello there!\nWelcome to the world of Pokémon!"
+    }
+}
+
+fun toLocalizedSecondIntro(): String {
+    return when(Locale.getDefault().language) {
+        "ja" -> "わたしの なまえは オーキド！\nみんなからは ポケモン はかせと したわれて おるよ！"
+        "zh" -> "歡迎來到神奇寶貝的世界。很高興見到你！"
+        else -> "My name is Oak!\nPeople call me the Pokémon Prof!"
+    }
+}
+
+fun toLocalizedThirdIntro(): String {
+    return when(Locale.getDefault().language) {
+        "ja" -> "この せかいには ポケット モンスターと よばれる!"
+        "zh" -> "你對神奇寶貝世界有什麼問題嗎？我希望能盡我所能回答你的問題。"
+        else -> "This world is inhabited by creatures called Pokémon!"
+    }
+}

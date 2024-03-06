@@ -12,7 +12,9 @@ import kotlinx.coroutines.launch
 import levilin.pokemon.dictionary.model.remote.chat.ChatMessage
 import levilin.pokemon.dictionary.model.remote.chat.MessageType
 import levilin.pokemon.dictionary.repository.remote.chat.ChatRoomState
-import timber.log.Timber
+import levilin.pokemon.dictionary.utility.toLocalizedFirstIntro
+import levilin.pokemon.dictionary.utility.toLocalizedSecondIntro
+import levilin.pokemon.dictionary.utility.toLocalizedThirdIntro
 import java.util.Locale
 
 class ChatRoomViewModel (
@@ -20,8 +22,9 @@ class ChatRoomViewModel (
 ) : ViewModel() {
     private val chat = generativeModel.startChat(
         history = listOf(
-            content(role = "user") { text(text = "Test01") },
-            content(role = "model") { text(text = "Test02") }
+            content(role = "model") { text(text = toLocalizedFirstIntro()) },
+            content(role = "model") { text(text = toLocalizedSecondIntro()) },
+            content(role = "model") { text(text = toLocalizedThirdIntro()) },
         )
     )
 
@@ -41,7 +44,7 @@ class ChatRoomViewModel (
         // Add pending message
         val deviceLanguage = Locale.getDefault().displayLanguage
         val inputContent = content(role = "user") {
-            text(text = "$userMessage (respond in $deviceLanguage)")
+            text(text = "$userMessage (you are オーキド博士 in Pokemon world, respond in $deviceLanguage)")
         }
 
         _chatState.value.addMessage(
@@ -54,7 +57,6 @@ class ChatRoomViewModel (
 
         viewModelScope.launch {
             try {
-                Timber.i("role: ${inputContent.role}")
                 val response = chat.sendMessage(prompt = inputContent)
 
                 _chatState.value.replaceLastPendingMessage()
