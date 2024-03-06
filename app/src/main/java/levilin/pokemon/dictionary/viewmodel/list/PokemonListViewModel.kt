@@ -192,8 +192,8 @@ class PokemonListViewModel @Inject constructor(
                         if (pokemonListEntry != null) {
                             insertItem(pokemonListEntry = pokemonListEntry)
                             localResults += pokemonListEntry
-                            _pokemonList.value += pokemonListEntry
-                            _searchList.value += pokemonListEntry
+                            _searchList.value = localResults.sortedBy { it.id }
+                            _pokemonList.value = _searchList.value
                             cachedPokemonList.value = _pokemonList.value
                         }
                     }
@@ -207,6 +207,7 @@ class PokemonListViewModel @Inject constructor(
             } else {
                 _searchList.value = localResults.sortedBy { it.id }
                 _pokemonList.value = _searchList.value
+                cachedPokemonList.value = _pokemonList.value
             }
         }
     }
