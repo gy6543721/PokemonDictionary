@@ -367,9 +367,12 @@ fun PokemonStatus(
     var animationTriggered by remember {
         mutableStateOf(false)
     }
+
+    val animationMaxValue = if (statusMaxValue < 100) 100f else statusMaxValue.toFloat()
+
     val currentPercent = animateFloatAsState(
         targetValue = if (animationTriggered) {
-            statusValue / statusMaxValue.toFloat()
+            statusValue / animationMaxValue
         } else 0f,
         animationSpec = tween(
             animationDuration,
@@ -388,6 +391,7 @@ fun PokemonStatus(
             modifier = Modifier.width(50.dp),
             text = stringResource(id = statusNameStringID),
             textAlign = TextAlign.Center,
+            fontSize = 12.sp,
             fontWeight = FontWeight.Medium,
             maxLines = 1,
             overflow = TextOverflow.Visible
@@ -419,7 +423,7 @@ fun PokemonStatus(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AdjustableText(
-                    text = (currentPercent.value * statusMaxValue).toInt().toString(),
+                    text = (currentPercent.value * animationMaxValue).toInt().toString(),
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
                     overflow = TextOverflow.Visible
@@ -440,14 +444,14 @@ fun PokemonBaseStatus(
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        for (i in pokemonDetail.pokemonInfo.stats.indices) {
-            val status = pokemonDetail.pokemonInfo.stats[i]
+        for (index in pokemonDetail.pokemonInfo.stats.indices) {
+            val status = pokemonDetail.pokemonInfo.stats[index]
             PokemonStatus(
                 statusNameStringID = parseStatusToLocalizedStringId(status),
                 statusValue = status.baseStat,
                 statusMaxValue = maxBaseStat,
                 statusColor = parseStatusToColor(status),
-                animationDelay = i * animationDelay
+                animationDelay = index * animationDelay
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
