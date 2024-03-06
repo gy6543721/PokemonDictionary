@@ -28,7 +28,7 @@ fun NavGraphView(
         enterTransition = { fadeIn() },
         exitTransition = { fadeOut() },
         popEnterTransition = { fadeIn() },
-        popExitTransition = { fadeOut() },
+        popExitTransition = { fadeOut() }
     ) {
         composable(
             route = "chat_room_screen"
