@@ -9,8 +9,8 @@ class ChatRoomState(
     private val _messages: MutableList<ChatMessage> = messages.toMutableStateList()
     val messages: List<ChatMessage> = _messages
 
-    fun addMessage(msg: ChatMessage) {
-        _messages.add(msg)
+    fun addMessage(message: ChatMessage) {
+        _messages.add(message)
     }
 
     fun replaceLastPendingMessage() {

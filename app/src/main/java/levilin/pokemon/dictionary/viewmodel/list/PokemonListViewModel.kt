@@ -38,6 +38,8 @@ class PokemonListViewModel @Inject constructor(
 
     // Search Properties
     private val cachedPokemonList = MutableStateFlow<List<PokemonListEntry>>(listOf())
+    private val _searchList = MutableStateFlow<List<PokemonListEntry>>(listOf())
+    val searchList: StateFlow<List<PokemonListEntry>> = _searchList
     private val _inputText = MutableStateFlow("")
     val inputText: StateFlow<String> = _inputText
     val isSearching = MutableStateFlow(false)
@@ -126,6 +128,7 @@ class PokemonListViewModel @Inject constructor(
                 else -> {}
             }
             cachedPokemonList.value = _pokemonList.value
+            _searchList.value = _pokemonList.value
         }
     }
 
@@ -190,6 +193,7 @@ class PokemonListViewModel @Inject constructor(
                             insertItem(pokemonListEntry = pokemonListEntry)
                             localResults += pokemonListEntry
                             _pokemonList.value += pokemonListEntry
+                            _searchList.value += pokemonListEntry
                             cachedPokemonList.value = _pokemonList.value
                         }
                     }
@@ -201,7 +205,8 @@ class PokemonListViewModel @Inject constructor(
                     else -> {}
                 }
             } else {
-                _pokemonList.value = localResults.sortedBy { it.id }
+                _searchList.value = localResults.sortedBy { it.id }
+                _pokemonList.value = _searchList.value
             }
         }
     }
@@ -230,6 +235,10 @@ class PokemonListViewModel @Inject constructor(
             updateItem(pokemonListEntry = updatedEntry)
 
             _pokemonList.value = _pokemonList.value.map { pokemonListEntry ->
+                if (pokemonListEntry.id == entry.id) updatedEntry else pokemonListEntry
+            }
+
+            cachedPokemonList.value = cachedPokemonList.value.map { pokemonListEntry ->
                 if (pokemonListEntry.id == entry.id) updatedEntry else pokemonListEntry
             }
 

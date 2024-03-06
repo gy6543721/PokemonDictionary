@@ -2,13 +2,13 @@ package levilin.pokemon.dictionary.model.remote.chat
 
 import java.util.UUID
 
-enum class Participant {
-    USER, PROFESSOR, ERROR
+enum class MessageType {
+    USER, MODEL, ERROR
 }
 
 data class ChatMessage(
     val id: String = UUID.randomUUID().toString(),
     var text: String = "",
-    val participant: Participant = Participant.USER,
+    val messageType: MessageType = MessageType.USER,
     var isPending: Boolean = false
 )

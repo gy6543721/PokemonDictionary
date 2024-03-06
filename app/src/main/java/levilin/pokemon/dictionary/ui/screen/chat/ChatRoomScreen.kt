@@ -41,15 +41,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import levilin.pokemon.dictionary.R
 import levilin.pokemon.dictionary.model.remote.chat.ChatMessage
-import levilin.pokemon.dictionary.model.remote.chat.Participant
+import levilin.pokemon.dictionary.model.remote.chat.MessageType
 import levilin.pokemon.dictionary.repository.remote.chat.GenerativeViewModelFactory
-import levilin.pokemon.dictionary.viewmodel.chat.ChatViewModel
+import levilin.pokemon.dictionary.viewmodel.chat.ChatRoomViewModel
 
 @Composable
 fun ChatRoomScreen(
-    chatViewModel: ChatViewModel = viewModel(factory = GenerativeViewModelFactory)
+    chatRoomViewModel: ChatRoomViewModel = viewModel(factory = GenerativeViewModelFactory)
 ) {
-    val chatState by chatViewModel.chatState.collectAsState()
+    val chatState by chatRoomViewModel.chatState.collectAsState()
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -57,7 +57,7 @@ fun ChatRoomScreen(
         bottomBar = {
             MessageInput(
                 onSendMessage = { inputText ->
-                    chatViewModel.sendMessage(userMessage = inputText)
+                    chatRoomViewModel.sendMessage(userMessage = inputText)
                 },
                 resetScroll = {
                     coroutineScope.launch {
@@ -100,22 +100,22 @@ fun ChatList(
 fun ChatBubbleItem(
     chatMessage: ChatMessage
 ) {
-    val isProfessorMessage = chatMessage.participant == Participant.PROFESSOR ||
-            chatMessage.participant == Participant.ERROR
+    val isModelMessage = chatMessage.messageType == MessageType.MODEL ||
+            chatMessage.messageType == MessageType.ERROR
 
-    val backgroundColor = when (chatMessage.participant) {
-        Participant.PROFESSOR -> MaterialTheme.colors.onPrimary
-        Participant.USER -> MaterialTheme.colors.onSecondary
-        Participant.ERROR -> MaterialTheme.colors.error
+    val backgroundColor = when (chatMessage.messageType) {
+        MessageType.MODEL -> MaterialTheme.colors.onPrimary
+        MessageType.USER -> MaterialTheme.colors.onSecondary
+        MessageType.ERROR -> MaterialTheme.colors.error
     }
 
-    val bubbleShape = if (isProfessorMessage) {
+    val bubbleShape = if (isModelMessage) {
         RoundedCornerShape(4.dp, 20.dp, 20.dp, 20.dp)
     } else {
         RoundedCornerShape(20.dp, 4.dp, 20.dp, 20.dp)
     }
 
-    val horizontalAlignment = if (isProfessorMessage) {
+    val horizontalAlignment = if (isModelMessage) {
         Alignment.Start
     } else {
         Alignment.End
@@ -129,10 +129,10 @@ fun ChatBubbleItem(
     ) {
         Text(
             text = stringResource(id =
-                when (chatMessage.participant) {
-                    Participant.PROFESSOR -> R.string.professor_label
-                    Participant.USER -> R.string.user_label
-                    Participant.ERROR -> R.string.error_label
+                when (chatMessage.messageType) {
+                    MessageType.MODEL -> R.string.professor_label
+                    MessageType.USER -> R.string.user_label
+                    MessageType.ERROR -> R.string.error_label
                 }
             ),
             style = MaterialTheme.typography.body1,

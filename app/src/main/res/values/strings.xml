@@ -9,7 +9,7 @@
     <string name="chat_label">Message</string>
     <string name="user_label">Pokémon Trainer</string>
     <string name="professor_label">Professor Oak</string>
-    <string name="error_label">Error from another dimension</string>
+    <string name="error_label">Error</string>
 
     <string name="text_base_status">Base Status</string>
     <string name="text_hp">HP</string>

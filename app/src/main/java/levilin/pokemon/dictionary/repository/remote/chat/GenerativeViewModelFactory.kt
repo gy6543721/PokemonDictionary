@@ -6,7 +6,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.generationConfig
 import levilin.pokemon.dictionary.BuildConfig
-import levilin.pokemon.dictionary.viewmodel.chat.ChatViewModel
+import levilin.pokemon.dictionary.viewmodel.chat.ChatRoomViewModel
 
 val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(
@@ -17,16 +17,17 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
             temperature = 0.7f
         }
 
+        @Suppress("UNCHECKED_CAST")
         return with(modelClass) {
             when {
-                isAssignableFrom(ChatViewModel::class.java) -> {
+                isAssignableFrom(ChatRoomViewModel::class.java) -> {
                     // Initialize GenerativeModel
                     val generativeModel = GenerativeModel(
                         modelName = "gemini-pro",
                         apiKey = BuildConfig.apiKey,
                         generationConfig = config
                     )
-                    ChatViewModel(
+                    ChatRoomViewModel(
                         generativeModel = generativeModel
                     )
                 }

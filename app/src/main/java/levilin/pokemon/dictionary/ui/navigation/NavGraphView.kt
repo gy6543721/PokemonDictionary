@@ -31,18 +31,38 @@ fun NavGraphView(
         popExitTransition = { fadeOut() }
     ) {
         composable(
-            route = "chat_room_screen"
+            route = "chat_room_screen",
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() }
         ) {
             ChatRoomScreen()
         }
-        composable(route = "pokemon_list_screen") {
+        composable(
+            route = "pokemon_list_screen",
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() }
+        ) {
             PokemonListScreen(navController = navController)
         }
-        composable(route =  "favorite_list_screen") {
+        composable(
+            route =  "favorite_list_screen",
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() }
+        ) {
             FavoriteListScreen(navController = navController)
         }
         composable(
             route = "pokemon_detail_screen/{dominantColor}/{pokemonID}",
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() },
             arguments = listOf(
                 navArgument("dominantColor") {
                     type = NavType.IntType
