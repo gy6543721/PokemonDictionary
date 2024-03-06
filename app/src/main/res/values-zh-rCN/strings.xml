@@ -7,6 +7,11 @@
     <string name="search_bar_placeholder">搜寻宝可梦</string>
     <string name="retry_button">重试</string>
 
+    <string name="chat_label">讯息</string>
+    <string name="user_label">宝可梦训练家</string>
+    <string name="professor_label">大木博士</string>
+    <string name="error_label">异次元的错误</string>
+
     <string name="text_base_status">基本资讯</string>
     <string name="text_hp">ＨＰ</string>
     <string name="text_atk">攻击</string>

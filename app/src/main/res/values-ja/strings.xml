@@ -7,6 +7,11 @@
     <string name="search_bar_placeholder">検索</string>
     <string name="retry_button">再読み込み</string>
 
+    <string name="chat_label">メッセージ</string>
+    <string name="user_label">ポケモントレーナー</string>
+    <string name="professor_label">オーキド博士</string>
+    <string name="error_label">異次元のエラー</string>
+
     <string name="text_base_status">基本情報</string>
     <string name="text_hp">ＨＰ</string>
     <string name="text_atk">こうげき</string>

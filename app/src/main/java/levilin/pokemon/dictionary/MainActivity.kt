@@ -45,7 +45,10 @@ class MainActivity : ComponentActivity() {
                             paddingValue = PaddingValues(0.dp)
                         }
                     }
-                    NavGraphView(navController = navController, modifier = Modifier.padding(paddingValues = paddingValue))
+                    NavGraphView(
+                        modifier = Modifier.padding(paddingValues = paddingValue),
+                        navController = navController
+                    )
                 }
             }
         }
