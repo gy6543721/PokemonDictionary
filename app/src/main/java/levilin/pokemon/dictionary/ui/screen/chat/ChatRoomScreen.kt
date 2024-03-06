@@ -73,7 +73,7 @@ fun ChatRoomScreen(
                 .fillMaxSize()
         ) {
             // Messages List
-            ChatList(
+            ChatMessageList(
                 chatMessages = chatState.messages,
                 listState = listState
             )
@@ -82,7 +82,7 @@ fun ChatRoomScreen(
 }
 
 @Composable
-fun ChatList(
+fun ChatMessageList(
     chatMessages: List<ChatMessage>,
     listState: LazyListState
 ) {
@@ -91,13 +91,13 @@ fun ChatList(
         state = listState
     ) {
         items(chatMessages.reversed()) { message ->
-            ChatBubbleItem(message)
+            MessageBubbleItem(message)
         }
     }
 }
 
 @Composable
-fun ChatBubbleItem(
+fun MessageBubbleItem(
     chatMessage: ChatMessage
 ) {
     val isModelMessage = chatMessage.messageType == MessageType.MODEL ||
@@ -128,6 +128,7 @@ fun ChatBubbleItem(
             .fillMaxWidth()
     ) {
         Text(
+            modifier = Modifier.padding(bottom = 4.dp),
             text = stringResource(id =
                 when (chatMessage.messageType) {
                     MessageType.MODEL -> R.string.professor_label
@@ -136,7 +137,10 @@ fun ChatBubbleItem(
                 }
             ),
             style = MaterialTheme.typography.body1,
-            modifier = Modifier.padding(bottom = 4.dp)
+            color = when (chatMessage.messageType) {
+                MessageType.ERROR -> MaterialTheme.colors.error
+                else -> MaterialTheme.colors.onBackground
+            }
         )
         Row {
             if (chatMessage.isPending) {
