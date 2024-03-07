@@ -75,16 +75,19 @@ fun PokemonList(
     viewModel: PokemonListViewModel = hiltViewModel()
 ) {
     val pokemonList by viewModel.pokemonList.collectAsState()
+    val searchList by viewModel.searchList.collectAsState()
     val endReached by viewModel.endReached.collectAsState()
     val loadError by viewModel.loadError.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
 
+    val listToShow = if (isSearching) searchList else pokemonList
+
     LazyColumn(contentPadding = PaddingValues(16.dp)) {
-        val itemCount = if (pokemonList.size % 2 == 0) {
-            pokemonList.size / 2
+        val itemCount = if (listToShow.size % 2 == 0) {
+            listToShow.size / 2
         } else {
-            pokemonList.size / 2 + 1
+            listToShow.size / 2 + 1
         }
         items(itemCount) { index ->
             if (index >= itemCount - 1 && !endReached && !isLoading && !isSearching) {
@@ -92,7 +95,7 @@ fun PokemonList(
                     viewModel.loadPokemonList()
                 }
             }
-            PokemonRow(rowIndex = index, entries = pokemonList, navController = navController)
+            PokemonRow(rowIndex = index, entries = listToShow, navController = navController)
         }
     }
 
