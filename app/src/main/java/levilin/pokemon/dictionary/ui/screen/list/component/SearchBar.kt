@@ -123,11 +123,11 @@ fun SearchBar(
         )
         if (isHintDisplayed) {
             Text(
-                text = hint,
-                color = MaterialTheme.colors.onBackground,
                 modifier = Modifier
                     .align(Alignment.CenterStart)
                     .padding(horizontal = 20.dp),
+                text = hint,
+                color = MaterialTheme.colors.onSurface,
                 textAlign = TextAlign.Start
             )
         }
