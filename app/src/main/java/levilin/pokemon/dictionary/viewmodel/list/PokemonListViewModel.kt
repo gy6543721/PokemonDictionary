@@ -235,7 +235,7 @@ class PokemonListViewModel @Inject constructor(
             val updatedEntry = entry.copy(isFavorite = isFavorite)
             updateItem(pokemonListEntry = updatedEntry)
 
-            _searchList.value = searchList.value.map { pokemonListEntry ->
+            _searchList.value = _searchList.value.map { pokemonListEntry ->
                 if (pokemonListEntry.id == entry.id) updatedEntry else pokemonListEntry
             }
 
