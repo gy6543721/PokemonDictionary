@@ -100,7 +100,7 @@ fun toLocalizedSecondIntro(): String {
 
 fun toLocalizedThirdIntro(): String {
     return when(Locale.getDefault().language) {
-        "ja" -> "この せかいには ポケット モンスターと よばれる!"
+        "ja" -> "この せかいには ポケット モンスターと よばれる！"
         "zh" -> "你對神奇寶貝世界有什麼問題嗎？我希望能盡我所能回答你的問題。"
         else -> "This world is inhabited by creatures called Pokémon!"
     }
