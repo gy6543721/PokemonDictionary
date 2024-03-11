@@ -5,7 +5,7 @@
 Pokemon Dictionary written written in Kotlin and Compose.  
 Now support English, Japanese, Traditional Chinese and Simplified Chinese.  
 
-[Demo Video](https://youtu.be/u-Y2pNwB11A)  
+[Demo Video](https://youtu.be/VlXGaoFUh3c)  
 
 ## Screenshots
 

@@ -6,19 +6,19 @@ import levilin.pokemon.dictionary.model.remote.chat.ChatMessage
 class ChatRoomState(
     messages: List<ChatMessage> = emptyList()
 ) {
-    private val _messages: MutableList<ChatMessage> = messages.toMutableStateList()
-    val messages: List<ChatMessage> = _messages
+    private val _chatMessages: MutableList<ChatMessage> = messages.toMutableStateList()
+    val chatMessages: List<ChatMessage> = _chatMessages
 
     fun addMessage(message: ChatMessage) {
-        _messages.add(message)
+        _chatMessages.add(message)
     }
 
     fun replaceLastPendingMessage() {
-        val lastMessage = _messages.lastOrNull()
+        val lastMessage = _chatMessages.lastOrNull()
         lastMessage?.let {
             val newMessage = lastMessage.apply { isPending = false }
-            _messages.removeLast()
-            _messages.add(newMessage)
+            _chatMessages.removeLast()
+            _chatMessages.add(newMessage)
         }
     }
 }

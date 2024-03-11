@@ -3,7 +3,6 @@ package levilin.pokemon.dictionary.viewmodel.chat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.ai.client.generativeai.GenerativeModel
-import com.google.ai.client.generativeai.type.asTextOrNull
 import com.google.ai.client.generativeai.type.content
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,31 +11,16 @@ import kotlinx.coroutines.launch
 import levilin.pokemon.dictionary.model.remote.chat.ChatMessage
 import levilin.pokemon.dictionary.model.remote.chat.MessageType
 import levilin.pokemon.dictionary.repository.remote.chat.ChatRoomState
-import levilin.pokemon.dictionary.utility.toLocalizedFirstIntro
-import levilin.pokemon.dictionary.utility.toLocalizedSecondIntro
-import levilin.pokemon.dictionary.utility.toLocalizedThirdIntro
 import java.util.Locale
 
 class ChatRoomViewModel (
     generativeModel: GenerativeModel
 ) : ViewModel() {
     private val chat = generativeModel.startChat(
-        history = listOf(
-            content(role = "model") { text(text = toLocalizedFirstIntro()) },
-            content(role = "model") { text(text = toLocalizedSecondIntro()) },
-            content(role = "model") { text(text = toLocalizedThirdIntro()) },
-        )
+        history = emptyList()
     )
 
-    private val _chatState: MutableStateFlow<ChatRoomState> =
-        MutableStateFlow(ChatRoomState(chat.history.map { content ->
-            // Initial Messages
-            ChatMessage(
-                text = content.parts.first().asTextOrNull() ?: "",
-                messageType = if (content.role == "user") MessageType.USER else MessageType.MODEL,
-                isPending = false
-            )
-        }))
+    private val _chatState: MutableStateFlow<ChatRoomState> = MutableStateFlow(ChatRoomState(emptyList()))
     val chatState: StateFlow<ChatRoomState> = _chatState.asStateFlow()
 
 
