@@ -7,6 +7,14 @@ Now support English, Japanese, Traditional Chinese and Simplified Chinese.
 
 [Demo Video](https://youtu.be/VlXGaoFUh3c)  
 
+## Introduction
+Please add your own API key into `local.properties` after cloning this app.  
+You can get Gemini API key [here](https://ai.google.dev/).  
+
+```
+apiKey=[your api key]
+```
+
 ## Screenshots
 
 Light | Dark
