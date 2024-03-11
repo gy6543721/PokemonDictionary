@@ -48,8 +48,8 @@ fun FavoriteListScreen(
     navController: NavController
 ) {
     Surface(
-        color = MaterialTheme.colors.background,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colors.background
     ) {
         Column {
             FavoriteList(navController = navController)

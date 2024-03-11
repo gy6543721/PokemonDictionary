@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">寶可夢圖鑑</string>
-    <string name="nav_item_pokemon_list">寶可夢</string>
-    <string name="nav_item_favorite_list">我的最愛</string>
+    <string name="nav_item_chat_room_screen">聊天室</string>
+    <string name="nav_item_pokemon_list_screen">寶可夢</string>
+    <string name="nav_item_favorite_list_screen">我的最愛</string>
     <string name="search_bar_placeholder">搜尋寶可夢</string>
-    <string name="base_status">基本資訊</string>
     <string name="retry_button">重試</string>
 
+    <string name="chat_label">訊息</string>
+    <string name="user_label">寶可夢訓練家</string>
+    <string name="professor_label">大木博士</string>
+    <string name="error_label">異次元的錯誤</string>
+
+    <string name="text_base_status">基本資訊</string>
     <string name="text_hp">ＨＰ</string>
     <string name="text_atk">攻擊</string>
     <string name="text_def">防禦</string>
@@ -34,5 +40,4 @@
     <string name="type_fairy">妖精</string>
     <string name="type_stellar">星晶</string>
     <string name="type_unknown">？？？</string>
-
 </resources>
