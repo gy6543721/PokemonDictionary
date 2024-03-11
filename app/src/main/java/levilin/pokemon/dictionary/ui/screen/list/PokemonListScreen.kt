@@ -59,11 +59,10 @@ fun PokemonListScreen(
             SearchBar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(12.dp),
                 hint = stringResource(id = R.string.search_bar_placeholder),
                 viewModel = viewModel
             )
-            Spacer(modifier = Modifier.height(16.dp))
             PokemonList(navController = navController)
         }
     }
