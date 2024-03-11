@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import levilin.pokemon.dictionary.model.remote.chat.ChatMessage
 import levilin.pokemon.dictionary.model.remote.chat.MessageType
 import levilin.pokemon.dictionary.repository.remote.chat.ChatRoomRepository
-import levilin.pokemon.dictionary.repository.remote.chat.ChatRoomState
 import java.util.Locale
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package levilin.pokemon.dictionary.repository.remote.chat
+package levilin.pokemon.dictionary.viewmodel.chat
 
 import androidx.compose.runtime.toMutableStateList
 import levilin.pokemon.dictionary.model.remote.chat.ChatMessage

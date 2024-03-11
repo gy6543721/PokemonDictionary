@@ -17,7 +17,8 @@ import levilin.pokemon.dictionary.repository.remote.chat.ChatRoomRepositoryImpl
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
-@[Module InstallIn(SingletonComponent::class)]
+@Module
+@InstallIn(SingletonComponent::class)
 object ChatRoomModule {
     private val harassment = SafetySetting(HarmCategory.HARASSMENT, BlockThreshold.ONLY_HIGH)
     private val hateSpeech =
@@ -29,7 +30,9 @@ object ChatRoomModule {
         topP = 0.99f
     }
 
-    @[Provides Singleton GeminiPro]
+    @Provides
+    @Singleton
+    @GeminiPro
     fun provideGemini(): GenerativeModel {
         return GenerativeModel(
             modelName = "gemini-pro",
@@ -41,7 +44,9 @@ object ChatRoomModule {
         )
     }
 
-    @[Provides Singleton GeminiProVision]
+    @Provides
+    @Singleton
+    @GeminiProVision
     fun provideGeminiVision(): GenerativeModel {
         return GenerativeModel(
             modelName = "gemini-pro-vision",
@@ -55,7 +60,8 @@ object ChatRoomModule {
         )
     }
 
-    @[Provides Singleton]
+    @Provides
+    @Singleton
     fun provideChatModelRepository(
         @GeminiPro geminiProModel: GenerativeModel,
         @GeminiProVision geminiProVisionModel: GenerativeModel
