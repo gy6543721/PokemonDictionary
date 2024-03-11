@@ -11,12 +11,16 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import levilin.pokemon.dictionary.ui.screen.chat.ChatRoomScreen
 import levilin.pokemon.dictionary.ui.screen.detail.PokemonDetailScreen
 import levilin.pokemon.dictionary.ui.screen.favorite.FavoriteListScreen
 import levilin.pokemon.dictionary.ui.screen.list.PokemonListScreen
 
 @Composable
-fun NavGraphView(navController: NavHostController, modifier: Modifier) {
+fun NavGraphView(
+    modifier: Modifier,
+    navController: NavHostController
+) {
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -26,14 +30,39 @@ fun NavGraphView(navController: NavHostController, modifier: Modifier) {
         popEnterTransition = { fadeIn() },
         popExitTransition = { fadeOut() }
     ) {
-        composable(route = "pokemon_list_screen") {
+        composable(
+            route = "chat_room_screen",
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() }
+        ) {
+            ChatRoomScreen()
+        }
+        composable(
+            route = "pokemon_list_screen",
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() }
+        ) {
             PokemonListScreen(navController = navController)
         }
-        composable(route =  "favorite_list_screen") {
+        composable(
+            route =  "favorite_list_screen",
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() }
+        ) {
             FavoriteListScreen(navController = navController)
         }
         composable(
             route = "pokemon_detail_screen/{dominantColor}/{pokemonID}",
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() },
             arguments = listOf(
                 navArgument("dominantColor") {
                     type = NavType.IntType

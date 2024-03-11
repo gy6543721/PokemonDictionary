@@ -1,11 +1,17 @@
 <resources>
     <string name="app_name">Pokémon Dictionary</string>
-    <string name="nav_item_pokemon_list">Pokémon</string>
-    <string name="nav_item_favorite_list">Favorite</string>
+    <string name="nav_item_chat_room_screen">Chat</string>
+    <string name="nav_item_pokemon_list_screen">Pokémon</string>
+    <string name="nav_item_favorite_list_screen">Favorite</string>
     <string name="search_bar_placeholder">Search</string>
-    <string name="base_status">Base Status</string>
     <string name="retry_button">Retry</string>
 
+    <string name="chat_label">Message</string>
+    <string name="user_label">Pokémon Trainer</string>
+    <string name="professor_label">Professor Oak</string>
+    <string name="error_label">Error</string>
+
+    <string name="text_base_status">Base Status</string>
     <string name="text_hp">HP</string>
     <string name="text_atk">ATK</string>
     <string name="text_def">DEF</string>

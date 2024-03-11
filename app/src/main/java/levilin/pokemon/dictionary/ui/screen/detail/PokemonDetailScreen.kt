@@ -347,7 +347,7 @@ fun PokemonDescription(
         Text(
             text = pokemonDetail.pokemonSpecies.flavorTextEntries.find { description ->
                 description.language.name.contains(Locale.getDefault().language)
-            }?.flavorText ?: stringResource(id = R.string.base_status),
+            }?.flavorText ?: stringResource(id = R.string.text_base_status),
             fontSize = 15.sp,
             color = MaterialTheme.colors.onSurface
         )
