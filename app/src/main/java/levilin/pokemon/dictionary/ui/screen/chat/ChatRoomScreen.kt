@@ -10,16 +10,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
-import levilin.pokemon.dictionary.repository.remote.chat.GenerativeViewModelFactory
 import levilin.pokemon.dictionary.ui.screen.chat.component.ChatMessageInputBar
 import levilin.pokemon.dictionary.ui.screen.chat.component.ChatMessageList
 import levilin.pokemon.dictionary.viewmodel.chat.ChatRoomViewModel
 
 @Composable
 fun ChatRoomScreen(
-    chatRoomViewModel: ChatRoomViewModel = viewModel(factory = GenerativeViewModelFactory)
+    chatRoomViewModel: ChatRoomViewModel = hiltViewModel()
 ) {
     val chatState by chatRoomViewModel.chatState.collectAsState()
     val listState = rememberLazyListState()

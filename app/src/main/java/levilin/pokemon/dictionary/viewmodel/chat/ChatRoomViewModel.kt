@@ -2,30 +2,33 @@ package levilin.pokemon.dictionary.viewmodel.chat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.content
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import levilin.pokemon.dictionary.model.remote.chat.ChatMessage
 import levilin.pokemon.dictionary.model.remote.chat.MessageType
+import levilin.pokemon.dictionary.repository.remote.chat.ChatRoomRepository
 import levilin.pokemon.dictionary.repository.remote.chat.ChatRoomState
 import java.util.Locale
+import javax.inject.Inject
 
-class ChatRoomViewModel (
-    generativeModel: GenerativeModel
+@HiltViewModel
+class ChatRoomViewModel @Inject constructor(
+    chatRoomRepository: ChatRoomRepository
 ) : ViewModel() {
-    private val chat = generativeModel.startChat(
-        history = emptyList()
-    )
+    private val geminiProModel = chatRoomRepository.getGeminiProModel()
+    private val chat = geminiProModel.startChat(history = emptyList())
 
-    private val _chatState: MutableStateFlow<ChatRoomState> = MutableStateFlow(ChatRoomState(emptyList()))
+    private val _chatState: MutableStateFlow<ChatRoomState> =
+        MutableStateFlow(ChatRoomState(emptyList()))
     val chatState: StateFlow<ChatRoomState> = _chatState.asStateFlow()
 
 
     fun sendMessage(userMessage: String) {
-        // Add pending message
+        // User message
         val deviceLanguage = Locale.getDefault().displayLanguage
         val inputContent = content(role = "user") {
             text(text = "$userMessage (you are オーキド博士 in Pokemon world, respond in $deviceLanguage)")
