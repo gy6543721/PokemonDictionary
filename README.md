@@ -40,4 +40,4 @@ Light | Dark
 - OkHttp3
 - Gson
 - Coil
-- Junit
+- Gemini AI
