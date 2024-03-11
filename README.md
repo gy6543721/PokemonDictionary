@@ -2,7 +2,7 @@
 
 <img src="https://github.com/gy6543721/PokemonDictionary/blob/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" height="200"/>
 
-Pokemon Dictionary written written in Kotlin and Compose.  
+Pokemon Dictionary written in Kotlin and Compose.  
 Now support English, Japanese, Traditional Chinese and Simplified Chinese.  
 
 [Demo Video](https://youtu.be/VlXGaoFUh3c)  
