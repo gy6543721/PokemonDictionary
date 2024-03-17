@@ -118,5 +118,5 @@ dependencies {
 
     // Gemini AI
     // Do not update because there are bugs in the latest version
-    implementation("com.google.ai.client.generativeai:generativeai:0.1.2")
+    implementation("com.google.ai.client.generativeai:generativeai:0.2.2")
 }
