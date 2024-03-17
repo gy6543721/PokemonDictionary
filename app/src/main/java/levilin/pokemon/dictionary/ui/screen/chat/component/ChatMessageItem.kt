@@ -72,12 +72,12 @@ fun ChatMessageItem(
     ) {
         Text(
             modifier = Modifier.padding(bottom = 4.dp),
-            text = stringResource(id =
-            when (chatMessage.messageType) {
-                MessageType.MODEL -> R.string.professor_label
-                MessageType.USER -> R.string.user_label
-                MessageType.ERROR -> R.string.error_label
-            }
+            text = stringResource(
+                id = when (chatMessage.messageType) {
+                    MessageType.MODEL -> R.string.professor_label
+                    MessageType.USER -> R.string.user_label
+                    MessageType.ERROR -> R.string.error_label
+                }
             ),
             style = MaterialTheme.typography.body1,
             color = when (chatMessage.messageType) {

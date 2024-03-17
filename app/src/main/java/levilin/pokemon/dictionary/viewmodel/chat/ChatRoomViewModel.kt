@@ -25,12 +25,11 @@ class ChatRoomViewModel @Inject constructor(
         MutableStateFlow(ChatRoomState(emptyList()))
     val chatState: StateFlow<ChatRoomState> = _chatState.asStateFlow()
 
-
     fun sendMessage(userMessage: String) {
         // User message
         val deviceLanguage = Locale.getDefault().displayLanguage
         val inputContent = content(role = "user") {
-            text(text = "$userMessage (you are オーキド博士 in Pokemon world, respond in $deviceLanguage)")
+            text(text = "$userMessage (you are Professor Oak in Pokemon world, respond in $deviceLanguage)")
         }
 
         _chatState.value.addMessage(

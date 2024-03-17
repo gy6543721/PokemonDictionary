@@ -118,5 +118,6 @@ dependencies {
 
     // Gemini AI
     // Do not update because there are bugs in the latest version
+    // noinspection GradleDependency
     implementation("com.google.ai.client.generativeai:generativeai:0.1.2")
 }

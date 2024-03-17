@@ -7,6 +7,8 @@
     "develop"
   ],
   "ignoreDeps": [
-    "com.google.ai.client.generativeai:generativeai"
+    "com.google.ai.client.generativeai:generativeai",
+    "org.jetbrains.kotlin.android",
+    "com.google.devtools.ksp"
   ]
 }
