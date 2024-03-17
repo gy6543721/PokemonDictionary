@@ -38,9 +38,9 @@ fun LoadableAsyncImage(
             model = model,
             contentDescription = contentDescription,
             contentScale = contentScale,
-            onSuccess = { result ->
+            onSuccess = { state ->
                 isLoading = false
-                onImageLoaded(result.result.drawable)
+                onImageLoaded(state.result.drawable)
             },
             onError = { isLoading = false },
             alignment = alignment
