@@ -38,7 +38,8 @@ object ChatRoomModule {
             modelName = "gemini-pro",
             apiKey = BuildConfig.apiKey,
             safetySettings = listOf(
-                harassment, hateSpeech
+                harassment,
+                hateSpeech
             ),
             generationConfig = config
         )

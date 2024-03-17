@@ -53,7 +53,7 @@ fun PokemonListScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(CenterHorizontally),
-                painter = painterResource(id = R.drawable.ic_international_pokmon_logo),
+                painter = painterResource(id = R.drawable.ic_international_pokemon_logo),
                 contentDescription = "pokemon_logo"
             )
             SearchBar(
