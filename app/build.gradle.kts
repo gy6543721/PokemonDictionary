@@ -71,7 +71,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     implementation("androidx.compose.material:material-icons-core:1.6.3")
-    implementation("androidx.compose.material:material-icons-extended:1.6.3")
+    implementation("androidx.compose.material:material-icons-extended:1.6.8")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     // Navigation Compose
