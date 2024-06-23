@@ -14,7 +14,7 @@ hiltNavigationCompose = "1.2.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 kotlin = "2.0.0"
-kotlinxCoroutines = "1.8.0"
+kotlinxCoroutines = "1.8.1"
 ksp = "2.0.0-1.0.22"
 #noinspection GradleDependency
 lifecycle = "2.7.0"
