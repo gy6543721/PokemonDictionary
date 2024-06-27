@@ -10,5 +10,13 @@
     "com.google.ai.client.generativeai:generativeai",
     "org.jetbrains.kotlin.android",
     "com.google.devtools.ksp"
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["maven"],
+      "registryUrls": [
+        "https://artifactory.mycompany.net/artifactory/maven-repo"
+      ]
+    }
   ]
 }
