@@ -9,7 +9,7 @@ coreKtx = "1.13.1"
 espressoCore = "3.6.1"
 #noinspection GradleDependency
 generativeai = "0.1.2"
-hilt = "2.51.1"
+hilt = "2.52"
 hiltNavigationCompose = "1.2.0"
 junit = "4.13.2"
 junitExtensions = "1.2.1"
