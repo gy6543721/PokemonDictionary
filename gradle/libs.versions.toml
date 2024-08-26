@@ -17,7 +17,7 @@ kotlin = "2.0.20"
 kotlinxCoroutines = "1.8.1"
 ksp = "2.0.20-1.0.24"
 #noinspection GradleDependency
-lifecycle = "2.7.0"
+lifecycle = "2.8.4"
 loggingInterceptor = "4.12.0"
 materialIcons = "1.6.8"
 mockwebserver = "4.12.0"
