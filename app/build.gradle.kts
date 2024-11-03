@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "levilin.pokemon.dictionary"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "levilin.pokemon.dictionary"
         minSdk = 30
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 5
         versionName = "0.0.5"
 
@@ -34,11 +34,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -118,4 +118,10 @@ dependencies {
     // Do not update because there are bugs in the latest version
     // noinspection GradleDependency
     implementation(libs.generativeai)
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
