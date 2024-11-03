@@ -16,8 +16,8 @@ class ChatRoomState(
     fun replaceLastPendingMessage() {
         val lastMessage = _chatMessages.lastOrNull()
         lastMessage?.let {
-            val newMessage = lastMessage.apply { isPending = false }
-            _chatMessages.removeLast()
+            val newMessage = lastMessage.copy(isPending = false)
+            _chatMessages.remove(lastMessage)
             _chatMessages.add(newMessage)
         }
     }
