@@ -31,6 +31,7 @@ android {
                 getDefaultProguardFile(name = "proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -115,8 +116,6 @@ dependencies {
     androidTestImplementation(libs.androidx.room.testing)
 
     // Gemini AI
-    // Do not update because there are bugs in the latest version
-    // noinspection GradleDependency
     implementation(libs.generativeai)
 }
 
