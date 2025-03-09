@@ -74,6 +74,7 @@ fun FavoriteList(
         modifier = Modifier
             .fillMaxWidth()
             .verticalScrollbar(state = listState),
+        state = listState,
         contentPadding = PaddingValues(16.dp)
     ) {
         val itemCount = if (favoriteList.size % 2 == 0) {
