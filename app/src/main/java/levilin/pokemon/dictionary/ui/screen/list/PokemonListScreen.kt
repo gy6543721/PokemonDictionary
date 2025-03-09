@@ -1,5 +1,6 @@
 package levilin.pokemon.dictionary.ui.screen.list
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -115,6 +116,7 @@ fun PokemonList(
     }
 }
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun PokemonEntry(
     modifier: Modifier = Modifier,

@@ -1,5 +1,6 @@
 package levilin.pokemon.dictionary.ui.screen.favorite
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -78,6 +79,7 @@ fun FavoriteList(
     }
 }
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun FavoriteEntry(
     modifier: Modifier = Modifier,

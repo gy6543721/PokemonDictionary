@@ -58,7 +58,10 @@ fun SearchBar(
         IconButton(
             onClick = {
                 isHintDisplayed = true
-                viewModel.clearInputText()
+                viewModel.apply {
+                    clearInputText()
+                    searchPokemonList(query = "")
+                }
                 focusManager.clearFocus()
             },
             modifier = Modifier.padding(end = 5.dp)
