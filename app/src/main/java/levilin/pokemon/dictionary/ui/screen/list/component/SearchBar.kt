@@ -38,7 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import levilin.pokemon.dictionary.ui.theme.buttonIconColor
-import levilin.pokemon.dictionary.viewmodel.list.PokemonListViewModel
+import levilin.pokemon.dictionary.ui.screen.list.PokemonListViewModel
 
 @Composable
 fun SearchBar(

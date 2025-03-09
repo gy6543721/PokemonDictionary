@@ -38,7 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.request.ImageRequest
 import levilin.pokemon.dictionary.model.local.PokemonListEntry
-import levilin.pokemon.dictionary.viewmodel.list.PokemonListViewModel
+import levilin.pokemon.dictionary.ui.screen.list.PokemonListViewModel
 import levilin.pokemon.dictionary.ui.screen.list.component.FavoriteButton
 import levilin.pokemon.dictionary.ui.theme.RobotoCondensed
 import levilin.pokemon.dictionary.utility.LoadableAsyncImage

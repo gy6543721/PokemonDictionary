@@ -36,7 +36,6 @@ import levilin.pokemon.dictionary.model.local.PokemonListEntry
 import levilin.pokemon.dictionary.ui.screen.list.component.FavoriteButton
 import levilin.pokemon.dictionary.ui.screen.list.component.SearchBar
 import levilin.pokemon.dictionary.utility.LoadableAsyncImage
-import levilin.pokemon.dictionary.viewmodel.list.PokemonListViewModel
 
 @Composable
 fun PokemonListScreen(

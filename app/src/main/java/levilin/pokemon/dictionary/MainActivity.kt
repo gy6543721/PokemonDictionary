@@ -3,8 +3,12 @@ package levilin.pokemon.dictionary
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,7 +32,15 @@ class MainActivity : ComponentActivity() {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
 
-                Scaffold(bottomBar = { BottomNavView(navController = navController, bottomBarState = bottomBarState) }) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colors.background)
+                        .statusBarsPadding()
+                        .navigationBarsPadding(),
+                    bottomBar = {
+                        BottomNavView(navController = navController, bottomBarState = bottomBarState)
+                    }
+                ) { innerPadding ->
                     var paddingValue = innerPadding
                     when (navBackStackEntry?.destination?.route) {
                         "chat_room_screen" -> {

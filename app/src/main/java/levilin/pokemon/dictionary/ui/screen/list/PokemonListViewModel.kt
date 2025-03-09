@@ -1,4 +1,4 @@
-package levilin.pokemon.dictionary.viewmodel.list
+package levilin.pokemon.dictionary.ui.screen.list
 
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable

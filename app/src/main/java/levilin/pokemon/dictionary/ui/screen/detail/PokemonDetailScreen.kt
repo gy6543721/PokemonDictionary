@@ -45,7 +45,6 @@ import levilin.pokemon.dictionary.utility.NetworkResult
 import levilin.pokemon.dictionary.utility.parseStatusToLocalizedStringId
 import levilin.pokemon.dictionary.utility.parseStatusToColor
 import levilin.pokemon.dictionary.utility.parseTypeToColor
-import levilin.pokemon.dictionary.viewmodel.detail.PokemonDetailViewModel
 import java.util.*
 import kotlin.math.round
 
