@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -43,6 +44,7 @@ import levilin.pokemon.dictionary.ui.screen.list.PokemonListViewModel
 import levilin.pokemon.dictionary.ui.screen.list.component.FavoriteButton
 import levilin.pokemon.dictionary.ui.theme.RobotoCondensed
 import levilin.pokemon.dictionary.utility.LoadableAsyncImage
+import levilin.pokemon.dictionary.utility.verticalScrollbar
 
 @Composable
 fun FavoriteListScreen(
@@ -63,11 +65,17 @@ fun FavoriteList(
     navController: NavController,
     pokemonListViewModel: PokemonListViewModel = hiltViewModel()
 ) {
+    val listState = rememberLazyListState()
     val favoriteList by pokemonListViewModel.pokemonList.collectAsState().value
         .filter { it.isFavorite }
         .let { mutableStateOf(it) }
 
-    LazyColumn(contentPadding = PaddingValues(16.dp)) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScrollbar(state = listState),
+        contentPadding = PaddingValues(16.dp)
+    ) {
         val itemCount = if (favoriteList.size % 2 == 0) {
             favoriteList.size / 2
         } else {
