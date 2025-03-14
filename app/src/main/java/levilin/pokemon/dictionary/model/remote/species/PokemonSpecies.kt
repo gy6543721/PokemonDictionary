@@ -1,7 +1,9 @@
 package levilin.pokemon.dictionary.model.remote.species
 
+import androidx.compose.runtime.Immutable
 import com.google.gson.annotations.SerializedName
 
+@Immutable
 data class PokemonSpecies(
     @SerializedName("base_happiness")
     val baseHappiness: Int,
