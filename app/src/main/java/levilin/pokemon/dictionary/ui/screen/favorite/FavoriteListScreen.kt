@@ -1,5 +1,6 @@
 package levilin.pokemon.dictionary.ui.screen.favorite
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -38,10 +40,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.request.ImageRequest
 import levilin.pokemon.dictionary.model.local.PokemonListEntry
-import levilin.pokemon.dictionary.viewmodel.list.PokemonListViewModel
+import levilin.pokemon.dictionary.ui.screen.list.PokemonListViewModel
 import levilin.pokemon.dictionary.ui.screen.list.component.FavoriteButton
 import levilin.pokemon.dictionary.ui.theme.RobotoCondensed
 import levilin.pokemon.dictionary.utility.LoadableAsyncImage
+import levilin.pokemon.dictionary.utility.verticalScrollbar
 
 @Composable
 fun FavoriteListScreen(
@@ -62,11 +65,18 @@ fun FavoriteList(
     navController: NavController,
     pokemonListViewModel: PokemonListViewModel = hiltViewModel()
 ) {
+    val listState = rememberLazyListState()
     val favoriteList by pokemonListViewModel.pokemonList.collectAsState().value
         .filter { it.isFavorite }
         .let { mutableStateOf(it) }
 
-    LazyColumn(contentPadding = PaddingValues(16.dp)) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScrollbar(state = listState),
+        state = listState,
+        contentPadding = PaddingValues(16.dp)
+    ) {
         val itemCount = if (favoriteList.size % 2 == 0) {
             favoriteList.size / 2
         } else {
@@ -78,6 +88,7 @@ fun FavoriteList(
     }
 }
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun FavoriteEntry(
     modifier: Modifier = Modifier,

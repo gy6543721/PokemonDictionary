@@ -1,10 +1,12 @@
 package levilin.pokemon.dictionary.model.local
 
+import androidx.compose.runtime.Immutable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import levilin.pokemon.dictionary.utility.ConstantValue.LIST_TABLE_NAME
 
+@Immutable
 @Entity(tableName = LIST_TABLE_NAME)
 data class PokemonListEntry(
     @PrimaryKey

@@ -14,7 +14,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import levilin.pokemon.dictionary.ui.screen.chat.component.ChatMessageInputBar
 import levilin.pokemon.dictionary.ui.screen.chat.component.ChatMessageList
-import levilin.pokemon.dictionary.viewmodel.chat.ChatRoomViewModel
 
 @Composable
 fun ChatRoomScreen(

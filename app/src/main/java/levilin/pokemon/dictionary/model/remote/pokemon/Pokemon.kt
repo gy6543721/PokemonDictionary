@@ -1,7 +1,9 @@
 package levilin.pokemon.dictionary.model.remote.pokemon
 
+import androidx.compose.runtime.Immutable
 import com.google.gson.annotations.SerializedName
 
+@Immutable
 data class Pokemon(
     val abilities: List<Ability>,
     @SerializedName("base_experience")

@@ -1,4 +1,4 @@
-package levilin.pokemon.dictionary.viewmodel.detail
+package levilin.pokemon.dictionary.ui.screen.detail
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

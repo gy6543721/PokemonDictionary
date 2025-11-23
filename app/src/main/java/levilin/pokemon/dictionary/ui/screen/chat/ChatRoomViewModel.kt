@@ -1,4 +1,4 @@
-package levilin.pokemon.dictionary.viewmodel.chat
+package levilin.pokemon.dictionary.ui.screen.chat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,10 +1,11 @@
 package levilin.pokemon.dictionary.ui.screen.list
 
-import androidx.compose.foundation.Image
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.Surface
@@ -22,7 +23,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -36,7 +36,7 @@ import levilin.pokemon.dictionary.model.local.PokemonListEntry
 import levilin.pokemon.dictionary.ui.screen.list.component.FavoriteButton
 import levilin.pokemon.dictionary.ui.screen.list.component.SearchBar
 import levilin.pokemon.dictionary.utility.LoadableAsyncImage
-import levilin.pokemon.dictionary.viewmodel.list.PokemonListViewModel
+import levilin.pokemon.dictionary.utility.verticalScrollbar
 
 @Composable
 fun PokemonListScreen(
@@ -49,13 +49,13 @@ fun PokemonListScreen(
     ) {
         Column {
             Spacer(modifier = Modifier.height(20.dp))
-            Image(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(CenterHorizontally),
-                painter = painterResource(id = R.drawable.ic_international_pokemon_logo),
-                contentDescription = "pokemon_logo"
-            )
+//            Image(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .align(CenterHorizontally),
+//                painter = painterResource(id = R.drawable.ic_international_pokemon_logo),
+//                contentDescription = "pokemon_logo"
+//            )
             SearchBar(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -81,8 +81,15 @@ fun PokemonList(
     val isSearching by viewModel.isSearching.collectAsState()
 
     val listToShow = if (isSearching) searchList else pokemonList
+    val listState = rememberLazyListState()
 
-    LazyColumn(contentPadding = PaddingValues(16.dp)) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScrollbar(state = listState),
+        state = listState,
+        contentPadding = PaddingValues(16.dp)
+    ) {
         val itemCount = if (listToShow.size % 2 == 0) {
             listToShow.size / 2
         } else {
@@ -116,6 +123,7 @@ fun PokemonList(
     }
 }
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun PokemonEntry(
     modifier: Modifier = Modifier,

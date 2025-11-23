@@ -1,5 +1,6 @@
-package levilin.pokemon.dictionary.viewmodel.list
+package levilin.pokemon.dictionary.ui.screen.list
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -60,13 +61,11 @@ class PokemonListViewModel @Inject constructor(
                     val count = result.data?.count ?: 0
                     endReached.value = currentPage * PAGE_SIZE >= count
 
-                    result.data?.results?.forEach { entry ->
+                    val newEntries = result.data?.results?.mapNotNull { entry ->
                         withContext(Dispatchers.IO) {
-                            val id = if (entry.url.endsWith("/")) {
-                                entry.url.dropLast(1).takeLastWhile { it.isDigit() }
-                            } else {
-                                entry.url.takeLastWhile { it.isDigit() }
-                            }.toInt()
+                            val id = entry.url.trimEnd('/').takeLastWhile { it.isDigit() }.toInt()
+
+                            if (cachedPokemonList.value.any { it.id == id }) return@withContext null
 
                             val pokemonName = entry.name.replaceFirstChar {
                                 if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
@@ -75,48 +74,34 @@ class PokemonListViewModel @Inject constructor(
                             val pokemonNameLocalized = when (val speciesResult =
                                 remoteRepository.getPokemonSpecies(id = id)) {
                                 is NetworkResult.Success -> speciesResult.data?.names?.find {
-                                    it.language.name.contains(
-                                        Locale.getDefault().language
-                                    )
+                                    it.language.name.contains(Locale.getDefault().language)
                                 }?.name ?: pokemonName
-
                                 else -> pokemonName
                             }
 
-                            if ((_pokemonList.value.find { it.id == id }?.pokemonName
-                                    ?: pokemonName) != pokemonNameLocalized
-                            ) {
-                                val updatedEntry = _pokemonList.value.find { it.id == id }
-                                    ?.copy(pokemonName = pokemonNameLocalized)
-                                if (updatedEntry != null) {
-                                    updateItem(pokemonListEntry = updatedEntry)
-                                }
-                            }
+                            PokemonListEntry(
+                                id = id,
+                                pokemonName = pokemonNameLocalized,
+                                imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png",
+                                isFavorite = false
+                            )
+                        }
+                    } ?: emptyList()
 
-                            if (_pokemonList.value.any { it.id == id }) {
-                                return@withContext
-                            } else {
-                                val imageUrl =
-                                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png"
+                    if (newEntries.isNotEmpty()) {
+                        val updatedList = cachedPokemonList.value.toMutableList()
+                        updatedList.addAll(newEntries)
+                        cachedPokemonList.value = updatedList
+                        _pokemonList.value = cachedPokemonList.value
 
-                                val pokemonListEntry = PokemonListEntry(
-                                    id = id,
-                                    pokemonName = pokemonNameLocalized,
-                                    imageUrl = imageUrl,
-                                    isFavorite = false
-                                )
-
-                                insertItem(pokemonListEntry = pokemonListEntry)
-                            }
+                        newEntries.forEach { item ->
+                            insertItem(pokemonListEntry = item)
                         }
                     }
 
                     currentPage++
-
                     loadError.value = ""
                     isLoading.value = false
-
-                    getAllItems()
                 }
 
                 is NetworkResult.Error -> {
@@ -127,30 +112,26 @@ class PokemonListViewModel @Inject constructor(
 
                 else -> {}
             }
-            cachedPokemonList.value = _pokemonList.value
-            _searchList.value = _pokemonList.value
         }
     }
 
+    @SuppressLint("DefaultLocale")
     fun searchPokemonList(query: String) {
         isSearching.value = true
         _inputText.value = query
-        _pokemonList.value = cachedPokemonList.value
+        if (_inputText.value.isEmpty()) {
+            _pokemonList.value = cachedPokemonList.value
+            isSearching.value = false
+            return
+        }
 
         viewModelScope.launch(Dispatchers.Default) {
-            if (_inputText.value.isEmpty()) {
-                isSearching.value = false
-                return@launch
-            }
-
-            val localResults = _pokemonList.value.filter { pokemonListEntry ->
+            val localResults = cachedPokemonList.value.filter { pokemonListEntry ->
                 pokemonListEntry.pokemonName.contains(_inputText.value.trim(), ignoreCase = true) ||
                         String.format("%03d", pokemonListEntry.id).contains(_inputText.value.trim())
             }.toMutableList()
 
             if (localResults.isEmpty()) {
-                _pokemonList.value = emptyList()
-
                 val apiResult = withContext(Dispatchers.IO) {
                     try {
                         if (_inputText.value.isDigitsOnly()) {
@@ -173,11 +154,8 @@ class PokemonListViewModel @Inject constructor(
                             val pokemonNameLocalized = when (val speciesResult =
                                 remoteRepository.getPokemonSpecies(id = pokemon.id)) {
                                 is NetworkResult.Success -> speciesResult.data?.names?.find {
-                                    it.language.name.contains(
-                                        Locale.getDefault().language
-                                    )
+                                    it.language.name.contains(Locale.getDefault().language)
                                 }?.name ?: pokemon.name
-
                                 else -> pokemon.name
                             }
 
@@ -189,26 +167,20 @@ class PokemonListViewModel @Inject constructor(
                             )
                         }
 
-                        if (pokemonListEntry != null) {
+                        if (pokemonListEntry != null && cachedPokemonList.value.none { it.id == pokemonListEntry.id }) {
+                            cachedPokemonList.value += pokemonListEntry
                             insertItem(pokemonListEntry = pokemonListEntry)
-                            localResults += pokemonListEntry
-                            _searchList.value = localResults.sortedBy { it.id }
-                            _pokemonList.value = _searchList.value
-                            cachedPokemonList.value = _pokemonList.value
                         }
                     }
-
                     is NetworkResult.Error -> {
                         loadError.value = apiResult.message ?: "No Result Found."
                     }
-
                     else -> {}
                 }
-            } else {
-                _searchList.value = localResults.sortedBy { it.id }
-                _pokemonList.value = _searchList.value
-                cachedPokemonList.value = _pokemonList.value
             }
+
+            _searchList.value = localResults.sortedBy { it.id }
+            _pokemonList.value = _searchList.value
         }
     }
 
@@ -223,7 +195,7 @@ class PokemonListViewModel @Inject constructor(
 
     fun clearInputText() {
         _inputText.value = ""
-        searchPokemonList(_inputText.value)
+        _pokemonList.value = cachedPokemonList.value
     }
 
     fun checkFavorite(input: PokemonListEntry): Boolean {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pokémon Dictionary</string>
+    <string name="app_name">Poké AI Dictionary</string>
     <string name="nav_item_chat_room_screen">Chat</string>
     <string name="nav_item_pokemon_list_screen">Pokémon</string>
     <string name="nav_item_favorite_list_screen">Favorite</string>

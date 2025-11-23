@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import levilin.pokemon.dictionary.model.local.PokemonListEntry
 import levilin.pokemon.dictionary.ui.theme.favouriteButtonColor
-import levilin.pokemon.dictionary.viewmodel.list.PokemonListViewModel
+import levilin.pokemon.dictionary.ui.screen.list.PokemonListViewModel
 
 @Composable
 fun FavoriteButton(
