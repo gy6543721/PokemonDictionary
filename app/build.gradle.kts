@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.agp)
     alias(libs.plugins.compose.compiler)
@@ -9,12 +11,12 @@ plugins {
 
 android {
     namespace = "levilin.pokemon.dictionary"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "levilin.pokemon.dictionary"
         minSdk = 30
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 7
         versionName = "1.0.1"
 
@@ -38,8 +40,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_17
+        }
     }
     buildFeatures {
         compose = true

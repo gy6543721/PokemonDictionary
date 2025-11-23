@@ -35,7 +35,7 @@ object ChatRoomModule {
     @GeminiPro
     fun provideGemini(): GenerativeModel {
         return GenerativeModel(
-            modelName = "gemini-1.5-pro-latest",
+            modelName = "gemini-2.5-flash",
             apiKey = BuildConfig.apiKey,
             safetySettings = listOf(
                 harassment,
@@ -50,7 +50,7 @@ object ChatRoomModule {
     @GeminiProVision
     fun provideGeminiVision(): GenerativeModel {
         return GenerativeModel(
-            modelName = "gemini-1.5-flash",
+            modelName = "gemini-2.5-flash",
             apiKey = BuildConfig.apiKey,
             safetySettings = listOf(
                 harassment,
