@@ -3,7 +3,7 @@
   "extends": [
     "config:recommended"
   ],
-  "baseBranches": [
+  "baseBranchPatterns": [
     "develop"
   ],
   "ignoreDeps": [
@@ -13,7 +13,9 @@
   ],
   "packageRules": [
     {
-      "matchDatasources": ["maven"],
+      "matchDatasources": [
+        "maven"
+      ],
       "registryUrls": [
         "https://artifactory.mycompany.net/artifactory/maven-repo"
       ]
